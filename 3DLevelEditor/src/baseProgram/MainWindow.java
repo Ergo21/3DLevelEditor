@@ -20,6 +20,7 @@ public class MainWindow extends Application {
     }
 
     private Group createContent() {
+    	System.out.println("Running createContent()");
         Group root = new Group();
         //HBox hbox = new HBox(20);
 
