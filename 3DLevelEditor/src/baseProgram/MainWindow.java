@@ -1,3 +1,4 @@
+
 package baseProgram;
 
 //import java.util.ArrayList;
@@ -13,12 +14,27 @@ import javafx.scene.control.MenuItem;
 //import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * The Level Editor's Main Window, which launches the rest of the program.
+ * @author Ergo21
+ *
+ */
+
 public class MainWindow extends Application {
 
     public static void main(String[] args) {
         launch(args);
     }
-
+    
+    /**
+     * Creates the menu options with MenuBar in the main window and returns a Group.
+     * <p>
+     * This is mainly to test JavaDoc, as well as GitHub and Eclipse.
+     * 
+     * @return		the root display
+     * @see			Group
+     * @see			MenuBar
+     */
     private Group createContent() {
     	System.out.println("Running createContent()");
         Group root = new Group();
