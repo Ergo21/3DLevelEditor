@@ -1,4 +1,3 @@
-
 package baseProgram;
 
 import javafx.application.*;
@@ -24,7 +23,9 @@ public class MainWindow extends Application {
 	
 	private Stage stage;
 	private MenuBar menuBar;
-
+	private PluginManager rootPM;
+	private World rootWorld;
+	
     public static void main(String[] args) {
         launch(args);
     }
@@ -142,6 +143,9 @@ public class MainWindow extends Application {
 
     @Override
     public void start(Stage s) throws Exception {
+    	rootWorld = new World(this);
+        rootPM = new PluginManager(this, rootWorld);
+    	
     	stage = s;
         stage.setWidth(300);
         stage.setHeight(300);
@@ -150,11 +154,13 @@ public class MainWindow extends Application {
 
         stage.setScene(scene);
 
-        stage.show();
+        stage.show();      
+        
         addMenuBarItem("File", "New");
         addMenuBarItem("Edit", "Transform");
-        addMenuBarItem("Plugins", "Plugin Manager");
+        addMenuBarItem(event -> rootPM.installPlugins(), "Plugins", "Plugin Manager");
         addMenuBarItem(event -> System.out.println("Testing method passing to addMenuBarItem"), "File", "Load");
+        
     }
     
     /**
