@@ -1,9 +1,9 @@
 
 package baseProgram;
 
-//import java.util.ArrayList;
-
 import javafx.application.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 //import javafx.scene.control.Button;
@@ -21,57 +21,42 @@ import javafx.stage.Stage;
  */
 
 public class MainWindow extends Application {
+	
+	private Stage stage;
+	private MenuBar menuBar;
 
     public static void main(String[] args) {
         launch(args);
     }
     
     /**
-     * Creates the menu options with MenuBar in the main window and returns a Group.
+     * Creates the MenuBar in the main window, to which we later add MenuItems, and returns a Group.
      * <p>
-     * This is mainly to test JavaDoc, as well as GitHub and Eclipse.
      * 
      * @return		the root display
      * @see			Group
      * @see			MenuBar
      */
     private Group createContent() {
-    	System.out.println("Running createContent()");
         Group root = new Group();
-        //HBox hbox = new HBox(20);
 
-        MenuBar menuBar = new MenuBar();
-        createMenu(menuBar, "File","New", "World");
-        createMenu(menuBar, "File","New","Level");
-        createMenu(menuBar, "File","Load","World");
-        createMenu(menuBar, "File","Load","Level");
-        createMenu(menuBar, "Edit","Transform");
-        createMenu(menuBar, "File","Exit");
-        createMenu(menuBar, "Exit");
-        createMenu(menuBar);
-        createMenu(menuBar, "Plugins", "Model Loader", "Load Obj");
-        
-        /*Button btn1 = new Button("test");
-
-        Button btn2 = new Button("add");
-        btn2.setOnAction(event -> {
-            VBox vbox = new VBox(0);
-            vbox.getChildren().add(new Button("I came from plugin"));
-            vbox.getChildren().add(new Button("So did I!"));
-
-            hbox.getChildren().add(vbox);
-        });
-
-        hbox.getChildren().addAll(btn1, btn2);*/
+        menuBar = new MenuBar();
 
         root.getChildren().addAll(menuBar);
-
-
 
         return root;
     }
     
-    private void createMenu(MenuBar menuBar, String... tokens) {
+    /**
+     * Creates a new MenuItem at directory passed, with event menuFunction and name as the final String.
+     * <p>
+     * Requires at least 2 Strings, as MenuBar doesn't add MenuItems.
+     * 
+     * @param menuBar	MenuBar to add to
+     * @param menuFunction	Function to run when MenuItem clicked on
+     * @param tokens	Ellipsis of Strings that determine the directory, final String is MenuItem name
+     */
+    private void createMenu(MenuBar menuBar, EventHandler<ActionEvent> menuFunction, String... tokens) {
     	
     	if(tokens.length < 2) {
     		System.out.println("Adding a menu to menu bar requires > 1 directories");
@@ -98,7 +83,7 @@ public class MainWindow extends Application {
     		
     	MenuItem mI = new MenuItem();
 		mI.setText(tokens[tokens.length - 1]);
-		mI.setOnAction(event -> System.out.println(tokens[tokens.length-1]));
+		mI.setOnAction(menuFunction);
     	
     	if(0 < tokens.length - 2) {
     		Menu finMen = iterAddMenu(1, tokens, mainMenu); 			
@@ -110,6 +95,17 @@ public class MainWindow extends Application {
     	
     }
     
+    /**
+     * Returns the Menu to which the MenuItem is added. Creates or gets existing directories from file[].
+     * <p>
+     * Self calls to always return the final directory.
+     * 
+     * @param num	Which String of file[] the function is on.
+     * @param file	String array that determines MenuItem directory and name
+     * @param toAddTo	Menu we add new or existing Menu to
+     * @return	If at the end of file[] return the Menu added to toAddTo, else call itself with 
+     * parameters (num+1, file[], new or existing Menu we added to toAddTo)
+     */
     private Menu iterAddMenu(int num, String[] file, Menu toAddTo) {
     	
     	int foundAt = -1;
@@ -124,7 +120,14 @@ public class MainWindow extends Application {
 		m.setText(file[num]);
     	
     	if(foundAt != -1) {
-    		m = (Menu)toAddTo.getItems().get(foundAt);
+    		if(toAddTo.getItems().get(foundAt).getClass() == MenuItem.class){
+    			toAddTo.getItems().remove(foundAt);
+    			toAddTo.getItems().add(foundAt, m);
+    		}
+    		else {
+    			m = (Menu)toAddTo.getItems().get(foundAt);
+    		}
+    		
     	}
     	else {
     		toAddTo.getItems().add(m);
@@ -138,7 +141,8 @@ public class MainWindow extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage s) throws Exception {
+    	stage = s;
         stage.setWidth(300);
         stage.setHeight(300);
 
@@ -147,6 +151,31 @@ public class MainWindow extends Application {
         stage.setScene(scene);
 
         stage.show();
+        addMenuBarItem("File", "New");
+        addMenuBarItem("Edit", "Transform");
+        addMenuBarItem("Plugins", "Plugin Manager");
+        addMenuBarItem(event -> System.out.println("Testing method passing to addMenuBarItem"), "File", "Load");
+    }
+    
+    /**
+     * Public method to add MenuItem to MenuBar with directory directories[], 
+     * with a function to print MenuItem's name, or last of directories[].
+     * 
+     * @param directories Directory and name of MenuItem
+     */
+    public void addMenuBarItem(String... directories) {
+    	createMenu(menuBar, event -> System.out.println(directories[directories.length - 1]), directories);
+    }
+    
+    /**
+     * Public method to add MenuItem to MenuBar with directory directories[], 
+     * with function menuFunction.
+     * 
+     * @param menuFunction	Method called when MenuItem clicked
+     * @param directories	Directory and name of MenuItem
+     */
+    public void addMenuBarItem(EventHandler<ActionEvent> menuFunction, String... directories) {
+    	createMenu(menuBar, menuFunction, directories);
     }
 
 }
