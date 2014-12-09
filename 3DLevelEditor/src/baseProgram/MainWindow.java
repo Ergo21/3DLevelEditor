@@ -51,7 +51,7 @@ public class MainWindow extends Application {
     /**
      * Creates a new MenuItem at directory passed, with event menuFunction and name as the final String.
      * <p>
-     * Requires at least 2 Strings, as MenuBar doesn't add MenuItems.
+     * Requires at least 2 Strings, as MenuBar doesn't add MenuItems. Will not create an item if MenuItem with the same name already exists.
      * 
      * @param menuBar	MenuBar to add to
      * @param menuFunction	Function to run when MenuItem clicked on
@@ -87,11 +87,31 @@ public class MainWindow extends Application {
 		mI.setOnAction(menuFunction);
     	
     	if(0 < tokens.length - 2) {
-    		Menu finMen = iterAddMenu(1, tokens, mainMenu); 			
-    		finMen.getItems().add(mI);
+    		Menu finMen = iterAddMenu(1, tokens, mainMenu); 
+    		boolean notAdded = true;
+    		for(int i = 0; i < finMen.getItems().size(); i++) {
+    			if(finMen.getItems().get(i).getText().equals(mI.getText())){
+    				System.out.println("Button with same name and directory already added");
+    				notAdded = false;
+    				break;
+    			}
+    		}
+    		if(notAdded){
+    			finMen.getItems().add(mI);
+    		}  		
     	}
     	else {
-    		mainMenu.getItems().add(mI);
+    		boolean notAdded = true;
+    		for(int i = 0; i < mainMenu.getItems().size(); i++) {
+    			if(mainMenu.getItems().get(i).getText().equals(mI.getText())){
+    				System.out.println("Button with same name and directory already added");
+    				notAdded = false;
+    				break;
+    			}
+    		}
+    		if(notAdded){
+    			mainMenu.getItems().add(mI);
+    		} 
     	}		
     	
     }
@@ -158,7 +178,7 @@ public class MainWindow extends Application {
         
         addMenuBarItem("File", "New");
         addMenuBarItem("Edit", "Transform");
-        addMenuBarItem(event -> rootPM.installPlugins(), "Plugins", "Plugin Manager");
+        addMenuBarItem(event -> rootPM.installPlugins(), "Plugins", "Load Plugins");
         addMenuBarItem(event -> System.out.println("Testing method passing to addMenuBarItem"), "File", "Load");
         
     }
