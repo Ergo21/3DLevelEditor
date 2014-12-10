@@ -119,7 +119,7 @@ public class PluginManager {
 			}
 		}
 		catch(Exception e){
-			System.out.println("Error");
+			System.out.println("Error in PluginManager.getPlugin()");
 		}
 		
 		return null;
