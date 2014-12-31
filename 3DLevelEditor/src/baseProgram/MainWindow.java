@@ -3,6 +3,7 @@ package baseProgram;
 import javafx.application.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 //import javafx.scene.control.Button;
@@ -181,7 +182,10 @@ public class MainWindow extends Application {
         addMenuBarItem(event -> rootPM.installPlugins(), "Plugins", "Load Plugins");
         addMenuBarItem(event -> System.out.println("Testing method passing to addMenuBarItem"), "File", "Load");
         
+        stage.setOnCloseRequest(event -> Platform.exit());
+        
     }
+    
     
     /**
      * Public method to add MenuItem to MenuBar with directory directories[], 
