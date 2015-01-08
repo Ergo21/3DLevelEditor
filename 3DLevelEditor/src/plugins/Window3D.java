@@ -1,6 +1,5 @@
 package plugins;
 
-
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -10,7 +9,9 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -25,6 +26,11 @@ import common.*;
 public class Window3D {
 	private PluginManager pMRef;
 	private Stage stage;
+	PerspectiveCamera camera;
+	
+	private Rotate rotateX;
+	private Rotate rotateY;
+	
 	public Window3D(PluginManager pM) {
 		pMRef = pM;
 	}
@@ -36,6 +42,9 @@ public class Window3D {
 		stage.setHeight(200);
 
         Scene scene = new Scene(createContent());
+        
+        scene.setOnKeyPressed(event->handleKeyboard(event));
+        scene.setOnMouseMoved(event->handleMouse(event));
         
         stage.setScene(scene);
         
@@ -77,7 +86,7 @@ public class Window3D {
                                 new KeyValue(c3.rz.angleProperty(), 360d)));
         animation.setCycleCount(Timeline.INDEFINITE);
 
-        PerspectiveCamera camera = new PerspectiveCamera(true);
+        camera = new PerspectiveCamera(true);
         camera.getTransforms().add(new Translate(0, 0, -10));
 
         Group root = new Group();
@@ -88,18 +97,87 @@ public class Window3D {
         subScene.setFill(Color.BLACK);
         subScene.widthProperty().bind(stage.widthProperty());
         subScene.heightProperty().bind(stage.heightProperty());
+        
+        rotateX = new Rotate(0, Rotate.X_AXIS);
+        //rotateY = new Rotate(0, 0,0,10, Rotate.Y_AXIS);
+        rotateY = new Rotate(0, Rotate.Y_AXIS);
 
         return new Group(subScene);
     }
 
-    public void play() {
+    public void play() {   	
         animation.play();
     }
 
     public void stop() {
         animation.pause();
     }
-  
+    
+    public void handleKeyboard(KeyEvent ke){
+        switch(ke.getText()){
+    		case "x":
+    		{
+    			if(ke.isControlDown()){      			
+    			
+    			}
+    			else if(ke.isShiftDown()){
+    			
+    			}
+    		}
+    		break;
+    		case "y":
+    		{
+    			if(ke.isControlDown()){      			
+    				rotateY.setAngle(1);
+    		        camera.getTransforms().add(rotateY); 	
+    			}
+    			else if(ke.isShiftDown()){
+    			
+    			}
+    		}
+    		break;
+    		case "z":
+    		{
+    			if(ke.isControlDown()){      			
+    			
+    			}
+    			else if(ke.isShiftDown()){
+    			
+    			}
+    		}
+    		break;
+        }
+    }
+    
+    double curMX = 0;
+    double rotYA = 0;
+	double curMY = 0;
+	double rotXA = 0;
+	long timePaused = 0;
+    public void handleMouse(MouseEvent me){  
+    	double curChX = me.getSceneX() - curMX; 
+		curChX = curChX*(180/stage.widthProperty().doubleValue());
+		double curChY = me.getSceneY() - curMY;
+		curChY = curChY*(180/stage.widthProperty().doubleValue());
+    	if(me.isControlDown()) { 
+    		rotYA += curChX;
+    		camera.getTransforms().remove(rotateY);
+    		rotateY.setAngle(rotYA);  		
+    		camera.getTransforms().add(rotateY); 	
+    		rotXA += curChY;
+    		camera.getTransforms().remove(rotateX);
+    		rotateX.setAngle(-rotXA);  	
+    		camera.getTransforms().add(rotateX); 	
+    		//rotateY.setAngle((curMouseX - me.getScreenX())/50);
+	       // camera.getTransforms().add(rotateY); 	
+    	}
+    	else if(me.isShiftDown() && System.nanoTime() - timePaused > 20){
+    		timePaused = System.nanoTime();
+    	}
+    	
+    	curMX = me.getSceneX();
+    	curMY = me.getSceneY();
+    }
 
     class Cube extends Box {
 
