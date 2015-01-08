@@ -26,7 +26,8 @@ import common.*;
 public class Window3D {
 	private PluginManager pMRef;
 	private Stage stage;
-	PerspectiveCamera camera;
+	private SubScene subScene;
+	private PerspectiveCamera camera;
 	
 	private Rotate rotateX;
 	private Rotate rotateY;
@@ -44,7 +45,8 @@ public class Window3D {
         Scene scene = new Scene(createContent());
         
         scene.setOnKeyPressed(event->handleKeyboard(event));
-        scene.setOnMouseMoved(event->handleMouse(event));
+        scene.setOnMouseMoved(event->handleMouseMove(event));
+        scene.setOnMouseClicked(event->handleMouseInput(event));;
         
         stage.setScene(scene);
         
@@ -92,7 +94,7 @@ public class Window3D {
         Group root = new Group();
         root.getChildren().addAll(c, c2, c3);
 
-        SubScene subScene = new SubScene(root, 200, 200, true, SceneAntialiasing.BALANCED);
+        subScene = new SubScene(root, 200, 200, true, SceneAntialiasing.BALANCED);
         subScene.setCamera(camera);
         subScene.setFill(Color.BLACK);
         subScene.widthProperty().bind(stage.widthProperty());
@@ -154,7 +156,7 @@ public class Window3D {
 	double curMY = 0;
 	double rotXA = 0;
 	long timePaused = 0;
-    public void handleMouse(MouseEvent me){  
+    public void handleMouseMove(MouseEvent me){  
     	double curChX = me.getSceneX() - curMX; 
 		curChX = curChX*(180/stage.widthProperty().doubleValue());
 		double curChY = me.getSceneY() - curMY;
@@ -175,8 +177,15 @@ public class Window3D {
     		timePaused = System.nanoTime();
     	}
     	
+    	
     	curMX = me.getSceneX();
     	curMY = me.getSceneY();
+    }
+    
+    public void handleMouseInput(MouseEvent me){
+    	if(me.getTarget() != subScene){
+    		System.out.println(me.getTarget().getClass());
+    	}    	
     }
 
     class Cube extends Box {
