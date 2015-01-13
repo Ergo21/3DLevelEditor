@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -34,6 +35,8 @@ public class Window3D {
 	private Point3D camYAx;
 	private Rotate rotateX;
 	private Rotate rotateY;
+	private Box target;
+	private Group root;
 	
 	public Window3D(PluginManager pM) {
 		pMRef = pM;
@@ -98,7 +101,7 @@ public class Window3D {
         camera = new PerspectiveCamera(true);
         camera.getTransforms().add(new Translate(0, 0, -10));
 
-        Group root = new Group();
+        root = new Group();
         root.getChildren().addAll(c, c2, c3);
 
         subScene = new SubScene(root, 200, 200, true, SceneAntialiasing.BALANCED);
@@ -125,6 +128,26 @@ public class Window3D {
     
     public void handleKeyboard(KeyEvent ke){
         switch(ke.getText()){
+        	case "w":
+        	{
+        		camera.getTransforms().add(new Translate(0, 0, 1));
+        	}
+        	break;
+        	case "a":
+        	{
+        		camera.getTransforms().add(new Translate(-1, 0, 0));
+        	}
+        	break;
+        	case "s":
+        	{
+        		camera.getTransforms().add(new Translate(0, 0, -1));
+        	}
+        	break;
+        	case "d":
+        	{
+        		camera.getTransforms().add(new Translate(1, 0, 0));
+        	}
+        	break;
     		case "x":
     		{
     			if(ke.isControlDown()){      			
@@ -137,6 +160,7 @@ public class Window3D {
     		break;
     		case "y":
     		{
+    			
     			if(ke.isControlDown()){      			
     				rotateY.setAngle(1);
     		        camera.getTransforms().add(rotateY); 	
@@ -173,7 +197,13 @@ public class Window3D {
     		camera.getTransforms().add(rotateY); 	
     		camera.getTransforms().remove(rotateX);
     		rotateX.setAngle(rotateX.getAngle() - curChY);  	
-    		camera.getTransforms().add(rotateX); 	
+    		camera.getTransforms().add(rotateX); 
+    		if(target != null){
+    			
+    		}
+    		else if(target == null){
+    			
+    		}			
     	}
     	else if(me.isShiftDown()){
     	}
@@ -184,10 +214,13 @@ public class Window3D {
     }
     
     public void handleMouseInput(MouseEvent me){
-    	if(me.getTarget() != subScene){
-    		System.out.println(me.getTarget().getClass());
+    	if( me.getTarget() != subScene && me.getTarget() != target){
     		selectObject((Box)me.getTarget());
     	}    	
+    	else if(me.getTarget() == subScene){
+    		//root.getChildren().remove(target);
+    		//target = null;
+    	}
     }
     
     public void selectObject(Box b){
@@ -197,6 +230,13 @@ public class Window3D {
     	
     	camera.getTransforms().remove(rotateX);
     	camera.getTransforms().remove(rotateY);
+    	root.getChildren().remove(target);
+    	target = new Box(b.getWidth()+1, b.getHeight()+1, b.getDepth()+1);
+    	target.getTransforms().add(new Translate(b.getTranslateX(), b.getTranslateY(), b.getTranslateZ()));
+    	
+    	target.setDrawMode(DrawMode.LINE);
+    	
+    	root.getChildren().add(target);
     	
     	for(int i = 0; i < camera.getTransforms().size(); i++){
     		p = p.add(-camera.getTransforms().get(i).getTx(), 
@@ -212,7 +252,6 @@ public class Window3D {
     	camera.getTransforms().add(rotateX);
     	camera.getTransforms().add(rotateY);
     	lookAt(p);
-    	
     }
     
     Rotate lookAtX;
