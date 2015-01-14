@@ -29,17 +29,10 @@ import common.*;
 
 public class Window3D {
 	private PluginManager pMRef;
+	private W3DController control;
 	private Stage stage;
 	private SubScene subScene;
 	private PerspectiveCamera camera;
-	private Point3D rotPoi;
-	
-	private Point3D camXAx;
-	private Point3D camYAx;
-	private Rotate rotateX;
-	private Rotate rotateY;
-	private Box targetBox;
-	private ArrayList<Box> selected;
 	private Group root;
 	
 	public Window3D(PluginManager pM) {
@@ -47,20 +40,21 @@ public class Window3D {
 	}
 	
 	public void pluginStart() {
-		selected = new ArrayList<Box>();
-		camXAx = new Point3D(1,0,0);
-		camYAx = new Point3D(0,1,0);
 		
 		stage = new Stage(StageStyle.UTILITY);
 		stage.setWidth(200);
 		stage.setHeight(200);
+		
+		camera = new PerspectiveCamera(true);
 
         Scene scene = new Scene(createContent());
         
-        scene.setOnKeyPressed(event->handleKeyboard(event));
-        scene.setOnMouseMoved(event->handleMouseMove(event));
-        scene.setOnMouseClicked(event->handleMouseInput(event));
-        scene.setOnMouseDragged(event->handleMouseMove(event));
+        control = new W3DController(camera, stage, subScene, root);
+        
+        scene.setOnKeyPressed(event->control.handleKeyboard(event));
+        scene.setOnMouseMoved(event->control.handleMouseMove(event));
+        scene.setOnMouseClicked(event->control.handleMouseInput(event));
+        scene.setOnMouseDragged(event->control.handleMouseMove(event));
         
         stage.setScene(scene);
         
@@ -85,8 +79,8 @@ public class Window3D {
         c2.rx.setAngle(45);
         c2.ry.setAngle(45);
 
-        Cube c3 = new Cube(1, Color.RED);
-        c3.setTranslateX(-2);
+        Cube c3 = new Cube(5, Color.RED);
+        c3.setTranslateX(-10);
         c3.rx.setAngle(45);
         c3.ry.setAngle(45);
 
@@ -102,7 +96,6 @@ public class Window3D {
                                 new KeyValue(c3.rz.angleProperty(), 360d)));
         animation.setCycleCount(Timeline.INDEFINITE);
 
-        camera = new PerspectiveCamera(true);
         camera.getTransforms().add(new Translate(0, 0, -10));
 
         root = new Group();
@@ -114,10 +107,6 @@ public class Window3D {
         subScene.widthProperty().bind(stage.widthProperty());
         subScene.heightProperty().bind(stage.heightProperty());
         
-        rotateX = new Rotate(0, camXAx);
-        rotateY = new Rotate(0, camYAx);
-        //rotateX = new Rotate(0, Rotate.X_AXIS);
-        //rotateY = new Rotate(0, Rotate.Y_AXIS);
 
         return new Group(subScene);
     }
@@ -130,151 +119,6 @@ public class Window3D {
         animation.pause();
     }
     
-    public void handleKeyboard(KeyEvent ke){
-        switch(ke.getText()){
-        	case "w":
-        	{
-        		camera.getTransforms().add(new Translate(0, 0, 1));
-        	}
-        	break;
-        	case "a":
-        	{
-        		camera.getTransforms().add(new Translate(-1, 0, 0));
-        	}
-        	break;
-        	case "s":
-        	{
-        		camera.getTransforms().add(new Translate(0, 0, -1));
-        	}
-        	break;
-        	case "d":
-        	{
-        		camera.getTransforms().add(new Translate(1, 0, 0));
-        	}
-        	break;
-    		case "x":
-    		{
-    			if(ke.isControlDown()){      			
-    			
-    			}
-    			else if(ke.isShiftDown()){
-    			
-    			}
-    		}
-    		break;
-    		case "y":
-    		{
-    			
-    			if(ke.isControlDown()){      			
-    				rotateY.setAngle(1);
-    		        camera.getTransforms().add(rotateY); 	
-    			}
-    			else if(ke.isShiftDown()){
-    			
-    			}
-    		}
-    		break;
-    		case "z":
-    		{
-    			if(ke.isControlDown()){      			
-    			
-    			}
-    			else if(ke.isShiftDown()){
-    			
-    			}
-    		}
-    		break;
-        }
-    }
-    
-    double curMX = 0;
-	double curMY = 0;
-	long timePaused = 0;
-    public void handleMouseMove(MouseEvent me){  
-    	double curChX = me.getSceneX() - curMX; 
-		curChX = curChX*(180/stage.widthProperty().doubleValue());
-		double curChY = me.getSceneY() - curMY;
-		curChY = curChY*(180/stage.widthProperty().doubleValue());
-    	if(me.isSecondaryButtonDown()) {  	
-			camera.getTransforms().remove(rotateY);
-    		rotateY.setAngle(rotateY.getAngle() + curChX);  		
-    		camera.getTransforms().add(rotateY); 	
-    		camera.getTransforms().remove(rotateX);
-    		rotateX.setAngle(rotateX.getAngle() - curChY);  	
-    		camera.getTransforms().add(rotateX); 
-    	}
-    	else if(me.isShiftDown()){
-    	}
-    	
-    	
-    	curMX = me.getSceneX();
-    	curMY = me.getSceneY();
-    }
-    
-    public void handleMouseInput(MouseEvent me){
-    	if(me.getButton() == MouseButton.PRIMARY && me.getTarget() != subScene && me.getTarget() != targetBox){
-    		selectObject((Box)me.getTarget());
-    	}    	
-    	else if(me.getButton() == MouseButton.PRIMARY && me.getTarget() == subScene){
-    		root.getChildren().remove(targetBox);
-    		targetBox = null;
-    		camera.getTransforms().remove(rotateX);
-    		camera.getTransforms().remove(rotateY);
-    		rotateX = new Rotate(0, Rotate.X_AXIS);
-            rotateY = new Rotate(0, Rotate.Y_AXIS);
-    	}
-    }
-    
-    public void selectObject(Box b){
-    	Point3D p = new Point3D(0, 0, 0);
-    	
-    	p = p.add(b.getTranslateX(), b.getTranslateY(), b.getTranslateZ());
-    	
-    	camera.getTransforms().remove(rotateX);
-    	camera.getTransforms().remove(rotateY);
-    	root.getChildren().remove(targetBox);
-    	targetBox = new Box(b.getWidth()+1, b.getHeight()+1, b.getDepth()+1);
-    	targetBox.getTransforms().add(new Translate(b.getTranslateX(), b.getTranslateY(), b.getTranslateZ()));
-    	
-    	targetBox.setDrawMode(DrawMode.LINE);
-    	
-    	root.getChildren().add(targetBox);
-    	
-    	for(int i = 0; i < camera.getTransforms().size(); i++){
-    		p = p.add(-camera.getTransforms().get(i).getTx(), 
-    				  -camera.getTransforms().get(i).getTy(), 
-    				  -camera.getTransforms().get(i).getTz());
-    	}
-    	
-    	lookAt(p); 	
-    	
-    	double len = Math.sqrt((Math.pow(p.getX(), 2) + Math.pow(p.getY(), 2) + Math.pow(p.getZ(), 2) )); 
-
-    	rotateX = new Rotate(0, 0, 0, len, Rotate.X_AXIS);
-        rotateY = new Rotate(0, 0, 0, len, Rotate.Y_AXIS);
-        
-    	camera.getTransforms().add(rotateX);
-    	camera.getTransforms().add(rotateY);
-    }
-    
-    Rotate lookAtX;
-    Rotate lookAtY;
-    
-    void lookAt(Point3D p){
-    	camera.getTransforms().remove(lookAtX);
-    	camera.getTransforms().remove(lookAtY);
-    	Point3D p2 = new Point3D(0,0,0);
-    	for(int i = 0; i < camera.getTransforms().size(); i++){
-    		p2 = p2.add(-camera.getTransforms().get(i).getTx(), 
-    				  -camera.getTransforms().get(i).getTy(), 
-    				  -camera.getTransforms().get(i).getTz());
-    	}
-    	
-    	lookAtX = new Rotate(Math.toDegrees(-Math.atan(p.getY()/p.getZ())), Rotate.X_AXIS);
-    	lookAtY = new Rotate(Math.toDegrees(Math.atan(p.getX()/p.getZ())), Rotate.Y_AXIS);
-    	camera.getTransforms().add(lookAtX);
-        camera.getTransforms().add(lookAtY);
-    }
 
     class Cube extends Box {
 
