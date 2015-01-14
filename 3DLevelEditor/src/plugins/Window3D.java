@@ -1,5 +1,7 @@
 package plugins;
 
+import java.util.ArrayList;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -11,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -35,7 +38,8 @@ public class Window3D {
 	private Point3D camYAx;
 	private Rotate rotateX;
 	private Rotate rotateY;
-	private Box target;
+	private Box targetBox;
+	private ArrayList<Box> selected;
 	private Group root;
 	
 	public Window3D(PluginManager pM) {
@@ -43,7 +47,7 @@ public class Window3D {
 	}
 	
 	public void pluginStart() {
-		
+		selected = new ArrayList<Box>();
 		camXAx = new Point3D(1,0,0);
 		camYAx = new Point3D(0,1,0);
 		
@@ -110,8 +114,8 @@ public class Window3D {
         subScene.widthProperty().bind(stage.widthProperty());
         subScene.heightProperty().bind(stage.heightProperty());
         
-        rotateX = new Rotate(0, 0,0,10, camXAx);
-        rotateY = new Rotate(0, 0,0,10, camYAx);
+        rotateX = new Rotate(0, camXAx);
+        rotateY = new Rotate(0, camYAx);
         //rotateX = new Rotate(0, Rotate.X_AXIS);
         //rotateY = new Rotate(0, Rotate.Y_AXIS);
 
@@ -191,19 +195,13 @@ public class Window3D {
 		curChX = curChX*(180/stage.widthProperty().doubleValue());
 		double curChY = me.getSceneY() - curMY;
 		curChY = curChY*(180/stage.widthProperty().doubleValue());
-    	if(me.isSecondaryButtonDown()) { 
-    		camera.getTransforms().remove(rotateY);
+    	if(me.isSecondaryButtonDown()) {  	
+			camera.getTransforms().remove(rotateY);
     		rotateY.setAngle(rotateY.getAngle() + curChX);  		
     		camera.getTransforms().add(rotateY); 	
     		camera.getTransforms().remove(rotateX);
     		rotateX.setAngle(rotateX.getAngle() - curChY);  	
     		camera.getTransforms().add(rotateX); 
-    		if(target != null){
-    			
-    		}
-    		else if(target == null){
-    			
-    		}			
     	}
     	else if(me.isShiftDown()){
     	}
@@ -214,12 +212,16 @@ public class Window3D {
     }
     
     public void handleMouseInput(MouseEvent me){
-    	if( me.getTarget() != subScene && me.getTarget() != target){
+    	if(me.getButton() == MouseButton.PRIMARY && me.getTarget() != subScene && me.getTarget() != targetBox){
     		selectObject((Box)me.getTarget());
     	}    	
-    	else if(me.getTarget() == subScene){
-    		//root.getChildren().remove(target);
-    		//target = null;
+    	else if(me.getButton() == MouseButton.PRIMARY && me.getTarget() == subScene){
+    		root.getChildren().remove(targetBox);
+    		targetBox = null;
+    		camera.getTransforms().remove(rotateX);
+    		camera.getTransforms().remove(rotateY);
+    		rotateX = new Rotate(0, Rotate.X_AXIS);
+            rotateY = new Rotate(0, Rotate.Y_AXIS);
     	}
     }
     
@@ -230,13 +232,13 @@ public class Window3D {
     	
     	camera.getTransforms().remove(rotateX);
     	camera.getTransforms().remove(rotateY);
-    	root.getChildren().remove(target);
-    	target = new Box(b.getWidth()+1, b.getHeight()+1, b.getDepth()+1);
-    	target.getTransforms().add(new Translate(b.getTranslateX(), b.getTranslateY(), b.getTranslateZ()));
+    	root.getChildren().remove(targetBox);
+    	targetBox = new Box(b.getWidth()+1, b.getHeight()+1, b.getDepth()+1);
+    	targetBox.getTransforms().add(new Translate(b.getTranslateX(), b.getTranslateY(), b.getTranslateZ()));
     	
-    	target.setDrawMode(DrawMode.LINE);
+    	targetBox.setDrawMode(DrawMode.LINE);
     	
-    	root.getChildren().add(target);
+    	root.getChildren().add(targetBox);
     	
     	for(int i = 0; i < camera.getTransforms().size(); i++){
     		p = p.add(-camera.getTransforms().get(i).getTx(), 
@@ -244,14 +246,15 @@ public class Window3D {
     				  -camera.getTransforms().get(i).getTz());
     	}
     	
-    	//lookAt(p);
+    	lookAt(p); 	
     	
-    	rotateX.setAngle(0);
-        rotateY.setAngle(0);
+    	double len = Math.sqrt((Math.pow(p.getX(), 2) + Math.pow(p.getY(), 2) + Math.pow(p.getZ(), 2) )); 
+
+    	rotateX = new Rotate(0, 0, 0, len, Rotate.X_AXIS);
+        rotateY = new Rotate(0, 0, 0, len, Rotate.Y_AXIS);
         
     	camera.getTransforms().add(rotateX);
     	camera.getTransforms().add(rotateY);
-    	lookAt(p);
     }
     
     Rotate lookAtX;
