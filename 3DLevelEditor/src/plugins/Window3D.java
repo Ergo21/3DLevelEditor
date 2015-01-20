@@ -1,24 +1,17 @@
 package plugins;
 
-import java.util.ArrayList;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -39,6 +32,9 @@ public class Window3D {
 		pMRef = pM;
 	}
 	
+	/**
+	 *  Sets up plugin with stage, camera, and listeners
+	 */
 	public void pluginStart() {
 		
 		stage = new Stage(StageStyle.UTILITY);
@@ -69,6 +65,10 @@ public class Window3D {
 	
 	private Timeline animation;
 
+	/**
+	 * Creates all objects shown. Will be overwritten to load from Data when complete.
+	 * @return Scene to add to Stage
+	 */
     public Parent createContent() {
         Cube c = new Cube(1, Color.GREEN);
         c.rx.setAngle(45);

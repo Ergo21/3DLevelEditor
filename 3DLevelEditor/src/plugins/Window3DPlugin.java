@@ -11,12 +11,20 @@ public class Window3DPlugin extends TLEPlugin {
 		pluginName = "Window3DPlugin";
 	}
 	
+	/**
+	 * Adds new buttons under Plugins/3D Window. 
+	 * 
+	 * @param pM	PluginManager for the Plugin to interact with the Base Program
+	 */
 	@Override
 	public void install(PluginManager pM) {
 		mainPlMan = pM;
 		mainPlMan.getMWin().addMenuBarItem(event -> createWindow(), "Plugins", "3D Window", "New Window");
 	}
 	
+	/**
+	 * Creates a 3D Window showing the current level. Activated from "Plugins/3D Window/New Window" button. 
+	 */
 	public void createWindow(){
 		Window3D thiWin = new Window3D(mainPlMan);
 		thiWin.pluginStart();

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -16,6 +14,7 @@ import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+import common.*;
 
 public class W3DController{
 	
@@ -29,6 +28,15 @@ public class W3DController{
 	private ArrayList<Box> targetBoxes;
 	private ArrayList<Box> selected;
 	
+	
+	/**
+	 * Handles user input to control the world.
+	 * 
+	 * @param c Camera from Stage
+	 * @param s Stage
+	 * @param ss SubScene from Stage
+	 * @param r The root
+	 */
 	public W3DController(PerspectiveCamera c, Stage s, SubScene ss, Group r){
 		camera = c;
 		stage = s;
@@ -43,7 +51,11 @@ public class W3DController{
         rotateY = new Rotate(0, Rotate.Y_AXIS);
 	}
 	
-
+	/**
+	 * Handles keyboard event, handles object transforms and camera movement.
+	 * @param ke KeyEvent
+	 */
+	
     public void handleKeyboard(KeyEvent ke){
         switch(ke.getText()){
         	case "w":
@@ -103,7 +115,10 @@ public class W3DController{
         }
     }
 	
-    
+    /**
+     * Handles mouse movement event, handles camera rotation.
+     * @param me MouseEvent
+     */
 
     public void handleMouseMove(MouseEvent me){  
     	double curChX = me.getSceneX() - curMX; 
@@ -130,6 +145,11 @@ public class W3DController{
     double curMX = 0;
 	double curMY = 0;
 	long timePaused = 0;
+	
+	/**
+	 *  Handles Mouse input, handles selecting object/s.
+	 * @param me MouseEvent
+	 */
     
     public void handleMouseInput(MouseEvent me){
     	if(me.getButton() == MouseButton.PRIMARY && me.getTarget() != subScene &&  !targetBoxes.contains(me.getTarget()) && !selected.contains(me.getTarget())){ 		
@@ -155,6 +175,11 @@ public class W3DController{
     	}
     }
     
+    
+    /**
+     * Adds object b to selection.
+     * @param b Added to selection
+     */
     public void selectObject(Box b){
     	
     	Point3D p = new Point3D(0, 0, 0);
@@ -216,7 +241,12 @@ public class W3DController{
     Rotate lookAtX;
     Rotate lookAtY;
     
-    void lookAt(Point3D p){
+    /**
+     * Rotates Camera to focus on point p.
+     * @param p Point the camera looks at.
+     */
+    
+    public void lookAt(Point3D p){
     	camera.getTransforms().remove(lookAtX);
     	camera.getTransforms().remove(lookAtY);
     	Point3D p2 = new Point3D(0,0,0);
@@ -232,7 +262,11 @@ public class W3DController{
         camera.getTransforms().add(lookAtY);
     }
     
-    void updateRotPoint(){
+    /**
+     * Updates point camera rotates around. Mainly used when camera moves.
+     */
+    
+    public void updateRotPoint(){
 
     	Point3D p = new Point3D(0, 0, 0);
     	
