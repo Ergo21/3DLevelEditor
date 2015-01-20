@@ -26,7 +26,7 @@ public class W3DController{
 	
 	private Rotate rotateX;
 	private Rotate rotateY;
-	private Box targetBox;
+	private ArrayList<Box> targetBoxes;
 	private ArrayList<Box> selected;
 	
 	public W3DController(PerspectiveCamera c, Stage s, SubScene ss, Group r){
@@ -36,6 +36,7 @@ public class W3DController{
 		subScene = ss;
 		root = r;
 		
+		targetBoxes = new ArrayList<Box>();
 		selected = new ArrayList<Box>();
 		
 		rotateX = new Rotate(0, Rotate.X_AXIS);
@@ -48,21 +49,25 @@ public class W3DController{
         	case "w":
         	{
         		camera.getTransforms().add(new Translate(0, 0, 1));
+        		updateRotPoint();
         	}
         	break;
         	case "a":
         	{
         		camera.getTransforms().add(new Translate(-1, 0, 0));
+        		updateRotPoint();
         	}
         	break;
         	case "s":
         	{
         		camera.getTransforms().add(new Translate(0, 0, -1));
+        		updateRotPoint();
         	}
         	break;
         	case "d":
         	{
         		camera.getTransforms().add(new Translate(1, 0, 0));
+        		updateRotPoint();
         	}
         	break;
     		case "x":
@@ -127,16 +132,21 @@ public class W3DController{
 	long timePaused = 0;
     
     public void handleMouseInput(MouseEvent me){
-    	if(me.getButton() == MouseButton.PRIMARY && me.getTarget() != subScene && me.getTarget() != targetBox && !selected.contains(me.getTarget())){ 		
+    	if(me.getButton() == MouseButton.PRIMARY && me.getTarget() != subScene &&  !targetBoxes.contains(me.getTarget()) && !selected.contains(me.getTarget())){ 		
     		if(!me.isControlDown()){
+    			for(int i = 0; i < targetBoxes.size(); i++){
+        			root.getChildren().remove(targetBoxes.get(i));
+        		}
             	selected.clear();
     		}
         	selected.add((Box) me.getTarget());
     		selectObject((Box)me.getTarget());
     	}    	
-    	else if(me.getButton() == MouseButton.PRIMARY && me.getTarget() == subScene){
-    		root.getChildren().remove(targetBox);
-    		targetBox = null;
+    	else if(me.getButton() == MouseButton.PRIMARY && me.getTarget() == subScene && !me.isControlDown()){ 		
+    		for(int i = 0; i < targetBoxes.size(); i++){
+    			root.getChildren().remove(targetBoxes.get(i));
+    		}
+    		targetBoxes.clear();
     		selected.clear();
     		camera.getTransforms().remove(rotateX);
     		camera.getTransforms().remove(rotateY);
@@ -151,69 +161,40 @@ public class W3DController{
     	
     	camera.getTransforms().remove(rotateX);
     	camera.getTransforms().remove(rotateY);
-    	root.getChildren().remove(targetBox);
     	
-    	double trX = 0, trY = 0, trZ = 0, trW = 0, trH = 0, trD = 0;
-    	double trXMi = selected.get(0).getTranslateX(), trXMa = selected.get(0).getTranslateX(), 
-    			trYMi = selected.get(0).getTranslateY(), trYMa = selected.get(0).getTranslateY(), 
-    			trZMi = selected.get(0).getTranslateZ(), trZMa = selected.get(0).getTranslateZ();
+    	double trX = selected.get(selected.size()-1).getTranslateX(), 
+    			trY = selected.get(selected.size()-1).getTranslateY(), 
+    			trZ = selected.get(selected.size()-1).getTranslateZ(), 
+    			trW = selected.get(selected.size()-1).getWidth(), 
+    			trH = selected.get(selected.size()-1).getHeight(), 
+    			trD = selected.get(selected.size()-1).getDepth();
     	
+    	trW = Math.sqrt(Math.pow(trW/2, 2) + Math.pow(trH/2, 2) + Math.pow(trD/2, 2));
+    	trH = Math.sqrt(Math.pow(trW/2, 2) + Math.pow(trH/2, 2) + Math.pow(trD/2, 2));
+    	trD = Math.sqrt(Math.pow(trW/2, 2) + Math.pow(trH/2, 2) + Math.pow(trD/2, 2));
+    	
+    	
+    	
+    	targetBoxes.add(new Box(trW*2, trH*2, trD*2));
+    	targetBoxes.get(targetBoxes.size()-1).getTransforms().add(new Translate(trX, trY, trZ));
+    	
+    	targetBoxes.get(targetBoxes.size()-1).setDrawMode(DrawMode.LINE);
+    	
+    	root.getChildren().add(targetBoxes.get(targetBoxes.size()-1));
+    	
+    	double pTX = 0, pTY = 0, pTZ = 0;
     	for(int i = 0; i < selected.size(); i++){
-    		trX += selected.get(i).getTranslateX();
-    		trY += selected.get(i).getTranslateY();
-    		trZ += selected.get(i).getTranslateZ();
-    		if(selected.get(i).getTranslateX() < trXMi){
-    			trXMi = selected.get(i).getTranslateX(); 
-    		}
-    		else if(selected.get(i).getTranslateX() > trXMa){
-    			trXMa = selected.get(i).getTranslateX(); 
-    		}
-    		
-    		if(selected.get(i).getTranslateY() < trYMi){
-    			trYMi = selected.get(i).getTranslateY(); 
-    		}
-    		else if(selected.get(i).getTranslateY() > trYMa){
-    			trYMa = selected.get(i).getTranslateY(); 
-    		}
-    		
-    		if(selected.get(i).getTranslateZ() < trZMi){
-    			trZMi = selected.get(i).getTranslateZ(); 
-    		}
-    		else if(selected.get(i).getTranslateZ() > trZMa){
-    			trZMa = selected.get(i).getTranslateZ(); 
-    		}
-    		
-    		if(selected.get(i).getWidth() > trW){
-    			trW = selected.get(i).getWidth();
-    		}
-    		
-    		if(selected.get(i).getHeight() > trH){
-    			trH = selected.get(i).getHeight();
-    		}
-    		
-    		if(selected.get(i).getDepth() > trD){
-    			trD = selected.get(i).getDepth();
-    		}
-    		
+    		pTX += selected.get(i).getTranslateX();
+    		pTY += selected.get(i).getTranslateY();
+    		pTZ += selected.get(i).getTranslateZ();
     	}
-    	trX = trX/selected.size();
-    	trY = trY/selected.size();
-    	trZ = trZ/selected.size();
-    	double trW2 = Math.sqrt(Math.pow(trW/2, 2) + Math.pow(trH/2, 2) + Math.pow(trD/2, 2));
-    	double trH2 = Math.sqrt(Math.pow(trW/2, 2) + Math.pow(trH/2, 2) + Math.pow(trD/2, 2));
-    	double trD2 = Math.sqrt(Math.pow(trW/2, 2) + Math.pow(trH/2, 2) + Math.pow(trD/2, 2));
-    	trW += Math.abs(trXMa - trXMi) + trW2;
-    	trH += Math.abs(trYMa - trYMi) + trH2;
-    	trD += Math.abs(trZMa - trZMi) + trD2;
     	
-    	p = p.add(trX, trY, trZ);
+    	pTX = pTX/selected.size();
+    	pTY = pTY/selected.size();
+    	pTZ = pTZ/selected.size();
     	
-    	targetBox = new Box(trW+1, trH+1, trD+1);
-    	targetBox.getTransforms().add(new Translate(trX, trY, trZ));
+    	p = p.add(pTX, pTY, pTZ);
     	
-    	targetBox.setDrawMode(DrawMode.LINE);
-    	
-    	root.getChildren().add(targetBox);
     	
     	for(int i = 0; i < camera.getTransforms().size(); i++){
     		p = p.add(-camera.getTransforms().get(i).getTx(), 
@@ -225,8 +206,8 @@ public class W3DController{
     	
     	double len = Math.sqrt((Math.pow(p.getX(), 2) + Math.pow(p.getY(), 2) + Math.pow(p.getZ(), 2) )); 
 
-    	rotateX = new Rotate(0, 0, 0, len, Rotate.X_AXIS);
-        rotateY = new Rotate(0, 0, 0, len, Rotate.Y_AXIS);
+    	rotateX = new Rotate(rotateX.getAngle(), 0, 0, len, Rotate.X_AXIS);
+        rotateY = new Rotate(rotateY.getAngle(), 0, 0, len, Rotate.Y_AXIS);
         
     	camera.getTransforms().add(rotateX);
     	camera.getTransforms().add(rotateY);
@@ -249,5 +230,42 @@ public class W3DController{
     	lookAtY = new Rotate(Math.toDegrees(Math.atan(p.getX()/p.getZ())), Rotate.Y_AXIS);
     	camera.getTransforms().add(lookAtX);
         camera.getTransforms().add(lookAtY);
+    }
+    
+    void updateRotPoint(){
+
+    	Point3D p = new Point3D(0, 0, 0);
+    	
+    	camera.getTransforms().remove(rotateX);
+    	camera.getTransforms().remove(rotateY);
+    	
+    	double pTX = 0, pTY = 0, pTZ = 0, cTX = 0, cTY = 0, cTZ = 0;
+    	for(int i = 0; i < selected.size(); i++){
+    		pTX += selected.get(i).getTranslateX();
+    		pTY += selected.get(i).getTranslateY();
+    		pTZ += selected.get(i).getTranslateZ();
+    	}
+    	
+    	pTX = pTX/selected.size();
+    	pTY = pTY/selected.size();
+    	pTZ = pTZ/selected.size();
+    	
+    	p = p.add(pTX, pTY, pTZ);
+    	
+    	for(int i = 0; i < camera.getTransforms().size(); i++){
+    		cTX += -camera.getTransforms().get(i).getTx(); 
+    		cTY += -camera.getTransforms().get(i).getTy();
+    		cTZ += -camera.getTransforms().get(i).getTz();
+    	}
+    	
+    	p = p.add(cTX, cTY, cTZ);
+    	
+    	double len = Math.sqrt((Math.pow(p.getX(), 2) + Math.pow(p.getY(), 2) + Math.pow(p.getZ(), 2) )); 
+
+    	rotateX = new Rotate(rotateX.getAngle(), cTX, cTY, len, Rotate.X_AXIS);
+        rotateY = new Rotate(rotateY.getAngle(), cTX, cTY, len, Rotate.Y_AXIS);
+        
+    	camera.getTransforms().add(rotateX);
+    	camera.getTransforms().add(rotateY);
     }
 }
