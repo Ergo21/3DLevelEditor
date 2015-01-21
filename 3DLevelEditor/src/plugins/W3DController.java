@@ -61,25 +61,33 @@ public class W3DController{
         	case "w":
         	{
         		camera.getTransforms().add(new Translate(0, 0, 1));
-        		updateRotPoint();
-        	}
+        		if(selected.size() > 0){
+        			updateRotPoint();
+        		}
+           	}
         	break;
         	case "a":
         	{
         		camera.getTransforms().add(new Translate(-1, 0, 0));
-        		updateRotPoint();
+        		if(selected.size() > 0){
+        			updateRotPoint();
+        		}
         	}
         	break;
         	case "s":
         	{
         		camera.getTransforms().add(new Translate(0, 0, -1));
-        		updateRotPoint();
+        		if(selected.size() > 0){
+        			updateRotPoint();
+        		}
         	}
         	break;
         	case "d":
         	{
         		camera.getTransforms().add(new Translate(1, 0, 0));
-        		updateRotPoint();
+        		if(selected.size() > 0){
+        			updateRotPoint();
+        		}
         	}
         	break;
     		case "x":
@@ -110,6 +118,11 @@ public class W3DController{
     			else if(ke.isShiftDown()){
     			
     			}
+    		}
+    		break;
+    		case "t":
+    		{
+    			
     		}
     		break;
         }
