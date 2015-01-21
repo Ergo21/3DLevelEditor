@@ -48,6 +48,7 @@ public class Window3D {
         control = new W3DController(camera, stage, subScene, root);
         
         scene.setOnKeyPressed(event->control.handleKeyboard(event));
+        scene.setOnKeyReleased(event->control.handleKeyboardRelease(event));
         scene.setOnMouseMoved(event->control.handleMouseMove(event));
         scene.setOnMouseClicked(event->control.handleMouseInput(event));
         scene.setOnMouseDragged(event->control.handleMouseMove(event));
@@ -112,7 +113,7 @@ public class Window3D {
     }
 
     public void play() {   	
-        animation.play();
+        //animation.play();
     }
 
     public void stop() {

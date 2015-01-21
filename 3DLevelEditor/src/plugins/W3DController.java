@@ -27,6 +27,7 @@ public class W3DController{
 	private Rotate rotateY;
 	private ArrayList<Box> targetBoxes;
 	private ArrayList<Box> selected;
+	private String choAct;
 	
 	
 	/**
@@ -49,6 +50,7 @@ public class W3DController{
 		
 		rotateX = new Rotate(0, Rotate.X_AXIS);
         rotateY = new Rotate(0, Rotate.Y_AXIS);
+        choAct = "";
 	}
 	
 	/**
@@ -93,39 +95,110 @@ public class W3DController{
     		case "x":
     		{
     			if(ke.isControlDown()){      			
-    				
+    				choAct = "rX";
     			}
     			else if(ke.isShiftDown()){
-    			
+    				choAct = "mX";
+    			}
+    			else if(ke.isAltDown()){
+    				choAct = "sX";
     			}
     		}
     		break;
     		case "y":
     		{
-    			
     			if(ke.isControlDown()){      			
+    				choAct = "rY";
     			}
     			else if(ke.isShiftDown()){
-    			
+    				choAct = "mY";
+    			}
+    			else if(ke.isAltDown()){
+    				choAct = "sY";
     			}
     		}
     		break;
     		case "z":
     		{
     			if(ke.isControlDown()){      			
-    			
+    				choAct = "rZ";
     			}
     			else if(ke.isShiftDown()){
-    			
+    				choAct = "mZ";
     			}
+    			else if(ke.isAltDown()){
+    				choAct = "sZ";
+    			}
+    			
     		}
     		break;
+    		case "l":
+    		{
+    			updateRotPoint();
+    		}
+    		break; 
     		case "t":
     		{
     			
     		}
     		break;
         }
+    }
+    
+    public void handleKeyboardRelease(KeyEvent ke){
+    	switch(ke.getText()){
+    		case "x":
+    		{
+    			if(ke.isControlDown()){      			
+    				choAct = "rX";
+    			}
+    			else if(ke.isShiftDown()){
+    				choAct = "mX";
+    			}
+    			else if(ke.isAltDown()){
+    				choAct = "sX";
+    			}
+    			else{
+    				choAct = "";
+    			}
+    		}
+    		break;
+    		case "y":
+    		{
+    			if(ke.isControlDown()){      			
+    				choAct = "rY";
+    			}
+    			else if(ke.isShiftDown()){
+    				choAct = "mY";
+    			}
+    			else if(ke.isAltDown()){
+    				choAct = "sY";
+    			}
+    			else{
+    				choAct = "";
+    			}
+    		}
+    		break;
+    		case "z":
+    		{
+    			if(ke.isControlDown()){      			
+    				choAct = "rZ";
+    			}
+    			else if(ke.isShiftDown()){
+    				choAct = "mZ";
+    			}
+    			else if(ke.isAltDown()){
+    				choAct = "sZ";
+    			}
+    			else{
+    				choAct = "";
+    			}
+    		}
+    		break;
+    		default:{
+    			choAct = "";
+    		}
+    	}
     }
 	
     /**
@@ -138,7 +211,7 @@ public class W3DController{
 		curChX = curChX*(180/stage.widthProperty().doubleValue());
 		double curChY = me.getSceneY() - curMY;
 		curChY = curChY*(180/stage.widthProperty().doubleValue());
-    	if(me.isSecondaryButtonDown()) {  	
+    	if(me.isSecondaryButtonDown() && choAct.equals("")) {  	
 			camera.getTransforms().remove(rotateY);
     		rotateY.setAngle(rotateY.getAngle() + curChX);  		
     		camera.getTransforms().add(rotateY); 	
@@ -146,8 +219,21 @@ public class W3DController{
     		rotateX.setAngle(rotateX.getAngle() - curChY);  	
     		camera.getTransforms().add(rotateX); 
     	}
-    	else if(me.isShiftDown()){
-    		
+    	else if(!choAct.equals("")){
+    		if(choAct.charAt(0) == 'm'){
+    			double mov = 0;
+    			if(choAct.charAt(1) == 'X'){
+    				mov = curChX;
+    			}
+    			else if(choAct.charAt(1) == 'Y'){
+    				mov = curChY;
+    			}
+    			else if(choAct.charAt(1) == 'Z'){
+    				mov = (curChX-curChY)/2;
+    			}
+    			
+    			transMov(mov, choAct.charAt(1));
+    		}
     	}
     	
     	
@@ -314,5 +400,40 @@ public class W3DController{
         
     	camera.getTransforms().add(rotateX);
     	camera.getTransforms().add(rotateY);
+    }
+    
+    private void transMov(double m, char a){
+    	switch(a){
+    		case 'X':
+    		{
+    			for(int i = 0; i < selected.size(); i++){
+    				selected.get(i).setTranslateX(selected.get(i).getTranslateX()+m);
+    			}
+    			for(int i = 0; i < targetBoxes.size(); i++){
+    				targetBoxes.get(i).setTranslateX(targetBoxes.get(i).getTranslateX()+m);
+    			}
+    		}
+    		break;
+    		case 'Y':
+    		{
+    			for(int i = 0; i < selected.size(); i++){
+    				selected.get(i).setTranslateY(selected.get(i).getTranslateY()+m);
+    			}
+    			for(int i = 0; i < targetBoxes.size(); i++){
+    				targetBoxes.get(i).setTranslateY(targetBoxes.get(i).getTranslateY()+m);
+    			}
+    		}
+    		break;
+    		case 'Z':
+    		{
+    			for(int i = 0; i < selected.size(); i++){
+    				selected.get(i).setTranslateZ(selected.get(i).getTranslateZ()+m);
+    			}
+    			for(int i = 0; i < targetBoxes.size(); i++){
+    				targetBoxes.get(i).setTranslateZ(targetBoxes.get(i).getTranslateZ()+m);
+    			}
+    		}
+    		break;
+    	}
     }
 }
