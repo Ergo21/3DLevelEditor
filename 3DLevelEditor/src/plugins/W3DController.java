@@ -339,7 +339,9 @@ public class W3DController{
     	
     	
     	targetBoxes.add(new Box(trW*2, trH*2, trD*2));
-    	targetBoxes.get(targetBoxes.size()-1).getTransforms().add(new Translate(trX, trY, trZ));
+    	targetBoxes.get(targetBoxes.size()-1).setTranslateX(trX);
+    	targetBoxes.get(targetBoxes.size()-1).setTranslateY(trY);
+    	targetBoxes.get(targetBoxes.size()-1).setTranslateZ(trZ);
     	
     	targetBoxes.get(targetBoxes.size()-1).setDrawMode(DrawMode.LINE);
     	
@@ -454,17 +456,7 @@ public class W3DController{
         			}
     			}
     			else if(t == 'r'){
-    				double temX = 0, temY = 0, temZ = 0;
-    				for(int i = 0; i < targetBoxes.size(); i++){
-        				temX -= targetBoxes.get(i).getTranslateX();
-        				temY -= targetBoxes.get(i).getTranslateY();
-        				temZ -= targetBoxes.get(i).getTranslateZ();
-        			}
-    				temX = temX/targetBoxes.size();
-    				temY = temY/targetBoxes.size();
-    				temZ = temZ/targetBoxes.size();
-    				
-    				Rotate rota = new Rotate(m, temX, temY, temZ, Rotate.X_AXIS);
+    				Rotate rota = new Rotate(m, Rotate.X_AXIS);
     				
     				for(int i = 0; i < selected.size(); i++){
         				selected.get(i).getTransforms().add(rota);
@@ -492,17 +484,7 @@ public class W3DController{
         			}
     			}
     			else if(t == 'r'){
-    				double temX = 0, temY = 0, temZ = 0;
-    				for(int i = 0; i < targetBoxes.size(); i++){
-        				temX -= targetBoxes.get(i).getTranslateX();
-        				temY -= targetBoxes.get(i).getTranslateY();
-        				temZ -= targetBoxes.get(i).getTranslateZ();
-        			}
-    				temX = temX/targetBoxes.size();
-    				temY = temY/targetBoxes.size();
-    				temZ = temZ/targetBoxes.size();
-    				
-    				Rotate rota = new Rotate(m, temX, temY, temZ, Rotate.Y_AXIS);
+    				Rotate rota = new Rotate(m, Rotate.Y_AXIS);
     				
     				for(int i = 0; i < selected.size(); i++){
         				selected.get(i).getTransforms().add(rota);
@@ -530,17 +512,7 @@ public class W3DController{
         			}
     			}
     			else if(t == 'r'){
-    				double temX = 0, temY = 0, temZ = 0;
-    				for(int i = 0; i < targetBoxes.size(); i++){
-        				temX -= targetBoxes.get(i).getTranslateX();
-        				temY -= targetBoxes.get(i).getTranslateY();
-        				temZ -= targetBoxes.get(i).getTranslateZ();
-        			}
-    				temX = temX/targetBoxes.size();
-    				temY = temY/targetBoxes.size();
-    				temZ = temZ/targetBoxes.size();
-    				
-    				Rotate rota = new Rotate(m, temX, temY, temZ, Rotate.Z_AXIS);
+    				Rotate rota = new Rotate(m, Rotate.Z_AXIS);
     				
     				for(int i = 0; i < selected.size(); i++){
         				selected.get(i).getTransforms().add(rota);
