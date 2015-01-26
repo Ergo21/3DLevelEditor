@@ -16,6 +16,12 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import common.*;
 
+/**
+ * Handles the input of Window3D, and manipulates the world.
+ * @author Ergo21
+ *
+ */
+
 public class W3DController{
 	
 	private PerspectiveCamera camera;
@@ -25,8 +31,8 @@ public class W3DController{
 	
 	private Rotate rotateX;
 	private Rotate rotateY;
-	private ArrayList<Box> targetBoxes;
-	private ArrayList<Box> selected;
+	private ArrayList<Box> targetBoxes;		//Boxes that show what is selected
+	private ArrayList<Box> selected;		//Objects to be transformed
 	private String choAct;
 	
 	
@@ -232,7 +238,35 @@ public class W3DController{
     				mov = (curChX-curChY)/2;
     			}
     			
-    			transMov(mov, choAct.charAt(1));
+    			translate(choAct.charAt(0), mov, choAct.charAt(1));
+    		}
+    		else if(choAct.charAt(0) == 'r'){
+    			double rot = 0;
+    			if(choAct.charAt(1) == 'X'){
+    				rot = curChX;
+    			}
+    			else if(choAct.charAt(1) == 'Y'){
+    				rot = curChY;
+    			}
+    			else if(choAct.charAt(1) == 'Z'){
+    				rot = (curChX-curChY)/2;
+    			}
+    			
+    			translate(choAct.charAt(0), rot, choAct.charAt(1));
+    		}
+    		if(choAct.charAt(0) == 's'){
+    			double sca = 0;
+    			if(choAct.charAt(1) == 'X'){
+    				sca = curChX;
+    			}
+    			else if(choAct.charAt(1) == 'Y'){
+    				sca = curChY;
+    			}
+    			else if(choAct.charAt(1) == 'Z'){
+    				sca = (curChX-curChY)/2;
+    			}
+    			
+    			translate(choAct.charAt(0), sca, choAct.charAt(1));
     		}
     	}
     	
@@ -402,35 +436,103 @@ public class W3DController{
     	camera.getTransforms().add(rotateY);
     }
     
-    private void transMov(double m, char a){
+    private void translate(char t, double m, char a){
     	switch(a){
     		case 'X':
     		{
-    			for(int i = 0; i < selected.size(); i++){
-    				selected.get(i).setTranslateX(selected.get(i).getTranslateX()+m);
+    			if(t == 'm'){
+    				for(int i = 0; i < selected.size(); i++){
+        				selected.get(i).setTranslateX(selected.get(i).getTranslateX()+m);
+        			}
+        			for(int i = 0; i < targetBoxes.size(); i++){
+        				targetBoxes.get(i).setTranslateX(targetBoxes.get(i).getTranslateX()+m);
+        			}
     			}
-    			for(int i = 0; i < targetBoxes.size(); i++){
-    				targetBoxes.get(i).setTranslateX(targetBoxes.get(i).getTranslateX()+m);
+    			else if(t == 'r'){
+    				double temX = 0, temY = 0, temZ = 0;
+    				for(int i = 0; i < targetBoxes.size(); i++){
+        				temX -= targetBoxes.get(i).getTranslateX();
+        				temY -= targetBoxes.get(i).getTranslateY();
+        				temZ -= targetBoxes.get(i).getTranslateZ();
+        			}
+    				temX = temX/targetBoxes.size();
+    				temY = temY/targetBoxes.size();
+    				temZ = temZ/targetBoxes.size();
+    				
+    				Rotate rota = new Rotate(m, temX, temY, temZ, Rotate.X_AXIS);
+    				
+    				for(int i = 0; i < selected.size(); i++){
+        				selected.get(i).getTransforms().add(rota);
+        			}
     			}
+    			else if(t == 's'){
+    				
+    			}
+    			
     		}
     		break;
     		case 'Y':
     		{
-    			for(int i = 0; i < selected.size(); i++){
-    				selected.get(i).setTranslateY(selected.get(i).getTranslateY()+m);
+    			if(t == 'm'){
+    				for(int i = 0; i < selected.size(); i++){
+        				selected.get(i).setTranslateY(selected.get(i).getTranslateY()+m);
+        			}
+        			for(int i = 0; i < targetBoxes.size(); i++){
+        				targetBoxes.get(i).setTranslateY(targetBoxes.get(i).getTranslateY()+m);
+        			}
     			}
-    			for(int i = 0; i < targetBoxes.size(); i++){
-    				targetBoxes.get(i).setTranslateY(targetBoxes.get(i).getTranslateY()+m);
+    			else if(t == 'r'){
+    				double temX = 0, temY = 0, temZ = 0;
+    				for(int i = 0; i < targetBoxes.size(); i++){
+        				temX -= targetBoxes.get(i).getTranslateX();
+        				temY -= targetBoxes.get(i).getTranslateY();
+        				temZ -= targetBoxes.get(i).getTranslateZ();
+        			}
+    				temX = temX/targetBoxes.size();
+    				temY = temY/targetBoxes.size();
+    				temZ = temZ/targetBoxes.size();
+    				
+    				Rotate rota = new Rotate(m, temX, temY, temZ, Rotate.Y_AXIS);
+    				
+    				for(int i = 0; i < selected.size(); i++){
+        				selected.get(i).getTransforms().add(rota);
+        			}
     			}
+    			else if(t == 's'){
+    				
+    			}
+    			
     		}
     		break;
     		case 'Z':
     		{
-    			for(int i = 0; i < selected.size(); i++){
-    				selected.get(i).setTranslateZ(selected.get(i).getTranslateZ()+m);
+    			if(t == 'm'){
+        			for(int i = 0; i < selected.size(); i++){
+        				selected.get(i).setTranslateZ(selected.get(i).getTranslateZ()+m);
+        			}
+        			for(int i = 0; i < targetBoxes.size(); i++){
+        				targetBoxes.get(i).setTranslateZ(targetBoxes.get(i).getTranslateZ()+m);
+        			}
     			}
-    			for(int i = 0; i < targetBoxes.size(); i++){
-    				targetBoxes.get(i).setTranslateZ(targetBoxes.get(i).getTranslateZ()+m);
+    			else if(t == 'r'){
+    				double temX = 0, temY = 0, temZ = 0;
+    				for(int i = 0; i < targetBoxes.size(); i++){
+        				temX -= targetBoxes.get(i).getTranslateX();
+        				temY -= targetBoxes.get(i).getTranslateY();
+        				temZ -= targetBoxes.get(i).getTranslateZ();
+        			}
+    				temX = temX/targetBoxes.size();
+    				temY = temY/targetBoxes.size();
+    				temZ = temZ/targetBoxes.size();
+    				
+    				Rotate rota = new Rotate(m, temX, temY, temZ, Rotate.Z_AXIS);
+    				
+    				for(int i = 0; i < selected.size(); i++){
+        				selected.get(i).getTransforms().add(rota);
+        			}
+    			}
+    			else if(t == 's'){
+    				
     			}
     		}
     		break;

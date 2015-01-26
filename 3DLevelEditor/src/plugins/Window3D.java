@@ -20,6 +20,12 @@ import javafx.util.Duration;
 import baseProgram.PluginManager;
 import common.*;
 
+/**
+ * Creates a 3D Window to display the world.
+ * @author Ergo21
+ *
+ */
+
 public class Window3D {
 	private PluginManager pMRef;
 	private W3DController control;
