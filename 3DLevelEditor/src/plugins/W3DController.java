@@ -76,9 +76,14 @@ public class W3DController{
         	break;
         	case "a":
         	{
-        		camera.getTransforms().add(new Translate(-1, 0, 0));
-        		if(selected.size() > 0){
-        			updateRotPoint();
+        		if(!ke.isAltDown()){
+        			camera.getTransforms().add(new Translate(-1, 0, 0));
+        			if(selected.size() > 0){
+        				updateRotPoint();
+        			}
+        		}
+        		else{
+        			choAct = "sA";
         		}
         	}
         	break;
@@ -254,7 +259,7 @@ public class W3DController{
     			
     			translate(choAct.charAt(0), rot, choAct.charAt(1));
     		}
-    		if(choAct.charAt(0) == 's'){
+    		else if(choAct.charAt(0) == 's'){
     			double sca = 0;
     			if(choAct.charAt(1) == 'X'){
     				sca = curChX;
@@ -262,7 +267,7 @@ public class W3DController{
     			else if(choAct.charAt(1) == 'Y'){
     				sca = curChY;
     			}
-    			else if(choAct.charAt(1) == 'Z'){
+    			else {
     				sca = (curChX-curChY)/2;
     			}
     			
@@ -466,7 +471,12 @@ public class W3DController{
         			}
     			}
     			else if(t == 's'){
-    				
+    				for(int i = 0; i < targetBoxes.size(); i++){
+    					targetBoxes.get(i).setScaleX(targetBoxes.get(i).getScaleX()+m);
+        			}
+    				for(int i = 0; i < selected.size(); i++){
+        				selected.get(i).setScaleX(selected.get(i).getScaleX()+m);
+        			}
     			}
     			
     		}
@@ -499,7 +509,12 @@ public class W3DController{
         			}
     			}
     			else if(t == 's'){
-    				
+    				for(int i = 0; i < targetBoxes.size(); i++){
+    					targetBoxes.get(i).setScaleY(targetBoxes.get(i).getScaleY()+m);
+        			}
+    				for(int i = 0; i < selected.size(); i++){
+        				selected.get(i).setScaleY(selected.get(i).getScaleY()+m);
+        			}
     			}
     			
     		}
@@ -532,7 +547,28 @@ public class W3DController{
         			}
     			}
     			else if(t == 's'){
-    				
+    				for(int i = 0; i < targetBoxes.size(); i++){
+    					targetBoxes.get(i).setScaleZ(targetBoxes.get(i).getScaleZ()+m);
+        			}
+    				for(int i = 0; i < selected.size(); i++){
+        				selected.get(i).setScaleZ(selected.get(i).getScaleZ()+m);
+        			}
+    			}
+    		}
+    		break;
+    		case 'A':{
+    			if(t == 's'){
+    				m = m/2;
+    				for(int i = 0; i < targetBoxes.size(); i++){
+    					targetBoxes.get(i).setScaleX(targetBoxes.get(i).getScaleX()+m);
+    					targetBoxes.get(i).setScaleY(targetBoxes.get(i).getScaleY()+m);
+    					targetBoxes.get(i).setScaleZ(targetBoxes.get(i).getScaleZ()+m);
+        			}
+    				for(int i = 0; i < selected.size(); i++){
+    					selected.get(i).setScaleX(selected.get(i).getScaleX()+m);
+    					selected.get(i).setScaleY(selected.get(i).getScaleY()+m);
+        				selected.get(i).setScaleZ(selected.get(i).getScaleZ()+m);
+        			}
     			}
     		}
     		break;
