@@ -3,6 +3,8 @@ package baseProgram;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -13,6 +15,7 @@ import common.*;
 public class World {
 	MainWindow rootWindow;
 	HashMap<String, ArrayList<Node>> worldData;
+	Runnable resetWindow;
 	
 	public World(MainWindow mW){
 		rootWindow = mW;
@@ -51,6 +54,17 @@ public class World {
         c.rx.setAngle(45);
         c.ry.setAngle(45);
         worldData.get("CurrentLevel").add(c);
+        runResetWindow();
+	}
+	
+	public void setResetWindow(Runnable rW){
+		resetWindow = rW;
+	}
+	
+	public void runResetWindow(){
+		if(resetWindow != null){
+			resetWindow.run();
+		}
 	}
 	
 	class Cube extends Box {

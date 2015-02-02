@@ -48,6 +48,8 @@ public class Window3D {
         
         control = new W3DController(pMRef, camera, stage, subScene, root);
         
+        pMRef.getWorld().setResetWindow(()->control.resetWindow());
+        
         scene.setOnKeyPressed(event->control.handleKeyboard(event));
         scene.setOnKeyReleased(event->control.handleKeyboardRelease(event));
         scene.setOnMouseMoved(event->control.handleMouseMove(event));

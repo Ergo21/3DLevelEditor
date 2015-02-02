@@ -163,18 +163,7 @@ public class W3DController{
     		break; 
     		case "r":
     		{
-    			ArrayList<Node> tLev = pMRef.getWorld().getData().get("CurrentLevel");
-    	        
-    	        if(tLev != null){
-    	        	root.getChildren().clear();
-    	        	root.getChildren().addAll(tLev);
-    	        	rotateX.setAngle(0);
-    	        	rotateY.setAngle(0);
-    	        	camera.getTransforms().clear();
-    	        	camera.getTransforms().add(new Translate(0, 0, -10));
-    	        	targetBoxes.clear();
-    	        	selected.clear();
-    	        } 
+    			resetWindow();
     		}
     		break;
     		case "t":
@@ -568,5 +557,21 @@ public class W3DController{
     		}
     		break;
     	}
+    }
+    
+    public void resetWindow(){
+    	ArrayList<Node> tLev = pMRef.getWorld().getData().get("CurrentLevel");
+        
+        if(tLev != null){
+        	root.getChildren().clear();
+        	root.getChildren().addAll(tLev);
+        	rotateX.setAngle(0);
+        	rotateY.setAngle(0);
+        	camera.getTransforms().clear();
+        	camera.getTransforms().add(new Translate(0, 0, -10));
+        	targetBoxes.clear();
+        	selected.clear();
+        } 
+    	
     }
 }
