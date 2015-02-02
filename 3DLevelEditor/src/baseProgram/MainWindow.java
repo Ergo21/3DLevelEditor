@@ -163,10 +163,7 @@ public class MainWindow extends Application {
     }
 
     @Override
-    public void start(Stage s) throws Exception {
-    	rootWorld = new World(this);
-        rootPM = new PluginManager(this, rootWorld);
-    	
+    public void start(Stage s) throws Exception {    	
     	stage = s;
         stage.setWidth(300);
         stage.setHeight(300);
@@ -183,6 +180,9 @@ public class MainWindow extends Application {
         addMenuBarItem(event -> System.out.println("Testing method passing to addMenuBarItem"), "File", "Load");
         
         stage.setOnCloseRequest(event -> Platform.exit());
+        
+        rootWorld = new World(this);
+        rootPM = new PluginManager(this, rootWorld);
         
     }
     

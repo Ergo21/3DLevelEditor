@@ -1,15 +1,15 @@
 package plugins;
 
+import java.util.ArrayList;
+
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
-import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -46,7 +46,7 @@ public class Window3D {
 
         Scene scene = new Scene(createContent());
         
-        control = new W3DController(camera, stage, subScene, root);
+        control = new W3DController(pMRef, camera, stage, subScene, root);
         
         scene.setOnKeyPressed(event->control.handleKeyboard(event));
         scene.setOnKeyReleased(event->control.handleKeyboardRelease(event));
@@ -73,7 +73,11 @@ public class Window3D {
 
         root = new Group();
         
-        root.getChildren().addAll(pMRef.getWorld().getData().get("CurrentLevel"));
+        ArrayList<Node> tLev = pMRef.getWorld().getData().get("CurrentLevel");
+        
+        if(tLev != null){
+        	root.getChildren().addAll(tLev);
+        }       	
 
         subScene = new SubScene(root, 200, 200, true, SceneAntialiasing.BALANCED);
         subScene.setCamera(camera);

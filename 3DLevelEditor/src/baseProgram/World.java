@@ -38,10 +38,19 @@ public class World {
         cC.add(c3);
         
         worldData.put("CurrentLevel", cC);
+        rootWindow.addMenuBarItem(event -> clearLevel(), "File", "Delete Current Level");
 	}
 	
 	public HashMap<String, ArrayList<Node>> getData(){
 		return worldData; 
+	}
+	
+	public void clearLevel(){
+		worldData.get("CurrentLevel").clear();
+		Cube c = new Cube(2, Color.GREEN);
+        c.rx.setAngle(45);
+        c.ry.setAngle(45);
+        worldData.get("CurrentLevel").add(c);
 	}
 	
 	class Cube extends Box {

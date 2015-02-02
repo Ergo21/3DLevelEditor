@@ -2,8 +2,10 @@ package plugins;
 
 import java.util.ArrayList;
 
+import baseProgram.PluginManager;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SubScene;
 import javafx.scene.input.KeyEvent;
@@ -23,7 +25,7 @@ import common.*;
  */
 
 public class W3DController{
-	
+	private PluginManager pMRef;
 	private PerspectiveCamera camera;
 	private Stage stage;
 	private Group root;
@@ -35,6 +37,13 @@ public class W3DController{
 	private ArrayList<Box> selected;		//Objects to be transformed
 	private String choAct;
 	
+    private Rotate lookAtX;
+    private Rotate lookAtY;
+    
+
+    private double curMX = 0;
+    private double curMY = 0;
+	
 	
 	/**
 	 * Handles user input to control the world.
@@ -44,7 +53,8 @@ public class W3DController{
 	 * @param ss SubScene from Stage
 	 * @param r The root
 	 */
-	public W3DController(PerspectiveCamera c, Stage s, SubScene ss, Group r){
+	public W3DController(PluginManager p, PerspectiveCamera c, Stage s, SubScene ss, Group r){
+		pMRef = p;
 		camera = c;
 		stage = s;
 		
@@ -57,6 +67,9 @@ public class W3DController{
 		rotateX = new Rotate(0, Rotate.X_AXIS);
         rotateY = new Rotate(0, Rotate.Y_AXIS);
         choAct = "";
+        
+        lookAtX = new Rotate(0, Rotate.X_AXIS);
+    	lookAtY = new Rotate(0, Rotate.Y_AXIS);
 	}
 	
 	/**
@@ -148,6 +161,22 @@ public class W3DController{
     			updateRotPoint();
     		}
     		break; 
+    		case "r":
+    		{
+    			ArrayList<Node> tLev = pMRef.getWorld().getData().get("CurrentLevel");
+    	        
+    	        if(tLev != null){
+    	        	root.getChildren().clear();
+    	        	root.getChildren().addAll(tLev);
+    	        	rotateX.setAngle(0);
+    	        	rotateY.setAngle(0);
+    	        	camera.getTransforms().clear();
+    	        	camera.getTransforms().add(new Translate(0, 0, -10));
+    	        	targetBoxes.clear();
+    	        	selected.clear();
+    	        } 
+    		}
+    		break;
     		case "t":
     		{
     			
@@ -280,9 +309,6 @@ public class W3DController{
     	curMY = me.getSceneY();
     }
     
-    double curMX = 0;
-	double curMY = 0;
-	long timePaused = 0;
 	
 	/**
 	 *  Handles Mouse input, handles selecting object/s.
@@ -377,9 +403,6 @@ public class W3DController{
     	camera.getTransforms().add(rotateX);
     	camera.getTransforms().add(rotateY);
     }
-    
-    Rotate lookAtX;
-    Rotate lookAtY;
     
     /**
      * Rotates Camera to focus on point p.
