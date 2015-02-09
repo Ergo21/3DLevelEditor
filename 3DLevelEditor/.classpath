@@ -2,5 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="D:/Projects/GIT/3DLevelEditor/3DLevelEditor/libs/JFXModelImporters/jim3dsModelImporterJFX.jar"/>
+	<classpathentry kind="lib" path="D:/Projects/GIT/3DLevelEditor/3DLevelEditor/libs/JFXModelImporters/jimColModelImporterJFX.jar"/>
+	<classpathentry kind="lib" path="D:/Projects/GIT/3DLevelEditor/3DLevelEditor/libs/JFXModelImporters/jimFxmlModelImporterJFX.jar"/>
+	<classpathentry kind="lib" path="D:/Projects/GIT/3DLevelEditor/3DLevelEditor/libs/JFXModelImporters/jimObjModelImporterJFX.jar"/>
+	<classpathentry kind="lib" path="D:/Projects/GIT/3DLevelEditor/3DLevelEditor/libs/JFXModelImporters/jimStlMeshImporterJFX.jar"/>
+	<classpathentry kind="lib" path="D:/Projects/GIT/3DLevelEditor/3DLevelEditor/libs/JFXModelImporters/jimX3dModelImporterJFX.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

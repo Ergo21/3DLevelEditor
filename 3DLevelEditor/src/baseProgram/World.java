@@ -22,10 +22,6 @@ public class World {
 		rootWindow = mW;
 		worldData = new HashMap<String, ArrayList<Node>>();
 		resetWindows = new HashMap<String, Runnable>();
-		
-		Cube c = new Cube(1, Color.GREEN);
-        c.rx.setAngle(45);
-        c.ry.setAngle(45);
 
         Cube c2 = new Cube(1, Color.BLUE);
         c2.setTranslateX(2);
@@ -38,7 +34,6 @@ public class World {
         c3.ry.setAngle(45);
         
         ArrayList<Node> cC = new ArrayList<Node>();
-        cC.add(c);
         cC.add(c2);
         cC.add(c3);
         
@@ -52,7 +47,8 @@ public class World {
 	
 	public void clearLevel(){
 		worldData.get("CurrentLevel").clear();
-		Cube c = new Cube(2, Color.GREEN);
+		Cube c = new Cube(2, Color.AZURE);
+		c.setTranslateX(-10);
         c.rx.setAngle(45);
         c.ry.setAngle(45);
         worldData.get("CurrentLevel").add(c);
