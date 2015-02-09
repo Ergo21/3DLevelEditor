@@ -5,6 +5,7 @@ import java.io.File;
 
 import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
 
+import javafx.scene.Group;
 import javafx.scene.shape.MeshView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -45,13 +46,16 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 if(selectedFile != null){
 		 	ObjModelImporter oIm = new ObjModelImporter();
 		 	oIm.read(selectedFile);
+		 	
 		 	MeshView[] models = oIm.getImport();
-		 
+		 	
 		 	if(models != null && models.length > 0){ 
-		 		for(int i = 0; i < models.length; i++){
-		 			mainPlMan.getWorld().getData().get("CurrentLevel").add(models[i]);
-		 		}
+		 		Group gNode = new Group();
+		 		gNode.getChildren().addAll(models);
+
+		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(gNode);
 		 	}
+		 	oIm.close();
 		}
 		 mainPlMan.getWorld().runResetWindow();
 	}

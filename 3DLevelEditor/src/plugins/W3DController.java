@@ -13,6 +13,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
+import javafx.scene.shape.Shape3D;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -34,7 +35,7 @@ public class W3DController{
 	private Rotate rotateX;
 	private Rotate rotateY;
 	private ArrayList<Box> targetBoxes;		//Boxes that show what is selected
-	private ArrayList<Box> selected;		//Objects to be transformed
+	private ArrayList<Node> selected;		//Objects to be transformed
 	private String choAct;
 	
     private Rotate lookAtX;
@@ -62,7 +63,7 @@ public class W3DController{
 		root = r;
 		
 		targetBoxes = new ArrayList<Box>();
-		selected = new ArrayList<Box>();
+		selected = new ArrayList<Node>();
 		
 		rotateX = new Rotate(0, Rotate.X_AXIS);
         rotateY = new Rotate(0, Rotate.Y_AXIS);
@@ -312,8 +313,15 @@ public class W3DController{
         		}
             	selected.clear();
     		}
-        	selected.add((Box) me.getTarget());
-    		selectObject((Box)me.getTarget());
+    		Node n = (Node)me.getTarget();
+    		if(n.getParent() != null && n.getParent() != root){
+    			selected.add(n.getParent());
+        		selectObject();
+    		}
+    		else{
+            	selected.add((Node)me.getTarget());
+        		selectObject();
+    		}
     	}    	
     	else if(me.getButton() == MouseButton.PRIMARY && me.getTarget() == subScene && !me.isControlDown()){ 		
     		for(int i = 0; i < targetBoxes.size(); i++){
@@ -333,27 +341,25 @@ public class W3DController{
      * Adds object b to selection.
      * @param b Added to selection
      */
-    public void selectObject(Box b){
+    public void selectObject(){
     	
     	Point3D p = new Point3D(0, 0, 0);
     	
     	camera.getTransforms().remove(rotateX);
     	camera.getTransforms().remove(rotateY);
     	
-    	double trX = selected.get(selected.size()-1).getTranslateX(), 
-    			trY = selected.get(selected.size()-1).getTranslateY(), 
-    			trZ = selected.get(selected.size()-1).getTranslateZ(), 
-    			trW = selected.get(selected.size()-1).getWidth(), 
-    			trH = selected.get(selected.size()-1).getHeight(), 
-    			trD = selected.get(selected.size()-1).getDepth();
-    	
-    	trW = Math.sqrt(Math.pow(trW/2, 2) + Math.pow(trH/2, 2) + Math.pow(trD/2, 2));
-    	trH = Math.sqrt(Math.pow(trW/2, 2) + Math.pow(trH/2, 2) + Math.pow(trD/2, 2));
-    	trD = Math.sqrt(Math.pow(trW/2, 2) + Math.pow(trH/2, 2) + Math.pow(trD/2, 2));
-    	
+    	double trX = (selected.get(selected.size()-1).boundsInParentProperty().get().getMaxX() + 
+    			selected.get(selected.size()-1).boundsInParentProperty().get().getMinX())/2, 
+    			trY = (selected.get(selected.size()-1).boundsInParentProperty().get().getMaxY() + 
+    	    			selected.get(selected.size()-1).boundsInParentProperty().get().getMinY())/2, 
+    			trZ = (selected.get(selected.size()-1).boundsInParentProperty().get().getMaxZ() + 
+    	    			selected.get(selected.size()-1).boundsInParentProperty().get().getMinZ())/2, 
+    			trW = selected.get(selected.size()-1).boundsInParentProperty().get().getWidth(), 
+    			trH = selected.get(selected.size()-1).boundsInParentProperty().get().getHeight(), 
+    			trD = selected.get(selected.size()-1).boundsInParentProperty().get().getDepth();
     	
     	
-    	targetBoxes.add(new Box(trW*2, trH*2, trD*2));
+    	targetBoxes.add(new Box(trW, trH, trD));
     	targetBoxes.get(targetBoxes.size()-1).setTranslateX(trX);
     	targetBoxes.get(targetBoxes.size()-1).setTranslateY(trY);
     	targetBoxes.get(targetBoxes.size()-1).setTranslateZ(trZ);
@@ -364,9 +370,12 @@ public class W3DController{
     	
     	double pTX = 0, pTY = 0, pTZ = 0;
     	for(int i = 0; i < selected.size(); i++){
-    		pTX += selected.get(i).getTranslateX();
-    		pTY += selected.get(i).getTranslateY();
-    		pTZ += selected.get(i).getTranslateZ();
+    		pTX += (selected.get(i).boundsInParentProperty().get().getMaxX() +
+    				selected.get(i).boundsInParentProperty().get().getMinX())/2;
+    		pTY += (selected.get(i).boundsInParentProperty().get().getMaxY() +
+    				selected.get(i).boundsInParentProperty().get().getMinY())/2;
+    		pTZ += (selected.get(i).boundsInParentProperty().get().getMaxZ() +
+    				selected.get(i).boundsInParentProperty().get().getMinZ())/2;
     	}
     	
     	pTX = pTX/selected.size();
@@ -427,9 +436,12 @@ public class W3DController{
     	
     	double pTX = 0, pTY = 0, pTZ = 0, cTX = 0, cTY = 0, cTZ = 0;
     	for(int i = 0; i < selected.size(); i++){
-    		pTX += selected.get(i).getTranslateX();
-    		pTY += selected.get(i).getTranslateY();
-    		pTZ += selected.get(i).getTranslateZ();
+    		pTX += (selected.get(i).boundsInParentProperty().get().getMaxX() +
+    				selected.get(i).boundsInParentProperty().get().getMinX())/2;
+    		pTY += (selected.get(i).boundsInParentProperty().get().getMaxY() +
+    				selected.get(i).boundsInParentProperty().get().getMinY())/2;
+    		pTZ += (selected.get(i).boundsInParentProperty().get().getMaxZ() +
+    				selected.get(i).boundsInParentProperty().get().getMinZ())/2;
     	}
     	
     	pTX = pTX/selected.size();

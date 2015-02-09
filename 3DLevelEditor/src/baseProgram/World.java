@@ -2,6 +2,7 @@ package baseProgram;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,7 +17,6 @@ public class World {
 	MainWindow rootWindow;
 	HashMap<String, ArrayList<Node>> worldData;
 	HashMap<String, Runnable> resetWindows;
-	Runnable resetWindow;
 	
 	public World(MainWindow mW){
 		rootWindow = mW;
@@ -60,8 +60,9 @@ public class World {
 	}
 	
 	public void runResetWindow(){
-		if(resetWindow != null){
-			resetWindow.run();
+		Object[] s = resetWindows.keySet().toArray();
+		for(int i = 0; i < s.length; i++){
+			resetWindows.get(s[i]).run();
 		}
 	}
 	
