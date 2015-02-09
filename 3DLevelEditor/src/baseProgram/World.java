@@ -15,11 +15,13 @@ import common.*;
 public class World {
 	MainWindow rootWindow;
 	HashMap<String, ArrayList<Node>> worldData;
+	HashMap<String, Runnable> resetWindows;
 	Runnable resetWindow;
 	
 	public World(MainWindow mW){
 		rootWindow = mW;
 		worldData = new HashMap<String, ArrayList<Node>>();
+		resetWindows = new HashMap<String, Runnable>();
 		
 		Cube c = new Cube(1, Color.GREEN);
         c.rx.setAngle(45);
@@ -57,8 +59,8 @@ public class World {
         runResetWindow();
 	}
 	
-	public void setResetWindow(Runnable rW){
-		resetWindow = rW;
+	public void addResetWindow(String rN, Runnable rW){
+		resetWindows.put(rN, rW);
 	}
 	
 	public void runResetWindow(){

@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
 import baseProgram.PluginManager;
 import common.*;
 
@@ -48,7 +49,7 @@ public class Window3D {
         
         control = new W3DController(pMRef, camera, stage, subScene, root);
         
-        pMRef.getWorld().setResetWindow(()->control.resetWindow());
+        pMRef.getWorld().addResetWindow("Window3D", ()->control.resetWindow());
         
         scene.setOnKeyPressed(event->control.handleKeyboard(event));
         scene.setOnKeyReleased(event->control.handleKeyboardRelease(event));
