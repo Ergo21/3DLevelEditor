@@ -1,7 +1,6 @@
 package plugins;
 
 import java.util.ArrayList;
-
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -13,9 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import baseProgram.PluginManager;
-import common.*;
 
 /**
  * Creates a 3D Window to display the world.

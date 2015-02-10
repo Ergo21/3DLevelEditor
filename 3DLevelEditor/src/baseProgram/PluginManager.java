@@ -105,21 +105,19 @@ public class PluginManager {
 				
 				String className = je.getName().substring(0, je.getName().length()-6);
 				className = className.replace('/', '.');
-				Class c = cl.loadClass(className);
+				Class<?> c = cl.loadClass(className);
 				
 				jFile.close();
-				System.out.println(c.getName());
-				System.out.println(c.getSuperclass());
 				
 				if(TLEPlugin.class.isAssignableFrom(c)) {
 					System.out.println(c.getName() + " Class found to extend TLEPlugin");
-					return c;
+					return (Class<? extends TLEPlugin>) c;
 				}
 				
 			}
 		}
 		catch(Exception e){
-			System.out.println("Error in PluginManager.getPlugin()");
+			System.out.println("Error in PluginManager.getPlugin():" + e);
 		}
 		
 		return null;

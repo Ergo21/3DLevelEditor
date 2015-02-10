@@ -2,16 +2,11 @@ package baseProgram;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
-import common.*;
 
 public class World {
 	MainWindow rootWindow;

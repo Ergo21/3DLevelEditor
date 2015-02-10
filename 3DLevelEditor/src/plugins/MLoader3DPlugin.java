@@ -3,7 +3,6 @@ package plugins;
 
 import java.io.File;
 
-import com.interactivemesh.jfx.importer.ModelImporter;
 import com.interactivemesh.jfx.importer.col.ColModelImporter;
 import com.interactivemesh.jfx.importer.fxml.FxmlModelImporter;
 import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
