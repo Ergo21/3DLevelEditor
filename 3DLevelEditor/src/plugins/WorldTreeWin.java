@@ -70,7 +70,11 @@ public class WorldTreeWin {
         if(tWor != null){   	
         	for(int i = 0; i < keys.length; i++){
         		TreeItem<String> item = new TreeItem<String> (keys[i]);
-        		//tWor.get(keys[i]).get(0)
+        		for(int j = 0; j < tWor.get(keys[i]).size(); j++){
+        			TreeItem<String> item2 = new TreeItem<String> (tWor.get(keys[i]).get(j).getName());
+        			item.getChildren().add(item2);
+        		}
+        		
         		root.getChildren().add(item);
         	}
         }
