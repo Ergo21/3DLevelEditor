@@ -2,7 +2,6 @@ package plugins;
 
 import java.util.ArrayList;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
@@ -14,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import baseProgram.PluginManager;
 
+import common.*;
 /**
  * Creates a 3D Window to display the world.
  * @author Ergo21
@@ -73,7 +73,7 @@ public class Window3D {
 
         root = new Group();
         
-        ArrayList<Node> tLev = pMRef.getWorld().getData().get("CurrentLevel");
+        ArrayList<TLEData> tLev = pMRef.getWorld().getData().get("CurrentLevel");
         
         if(tLev != null){
         	root.getChildren().addAll(tLev);

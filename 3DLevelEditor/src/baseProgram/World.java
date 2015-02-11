@@ -2,11 +2,12 @@ package baseProgram;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
+
+import common.*;
 
 /**
  * The Level Editor's Data structure, all plugins read and edit this data.
@@ -15,12 +16,12 @@ import javafx.scene.transform.Rotate;
  */
 public class World {
 	MainWindow rootWindow;
-	HashMap<String, ArrayList<Node>> worldData;
+	HashMap<String, ArrayList<TLEData>> worldData;
 	HashMap<String, Runnable> resetWindows;
 	
 	public World(MainWindow mW){
 		rootWindow = mW;
-		worldData = new HashMap<String, ArrayList<Node>>();
+		worldData = new HashMap<String, ArrayList<TLEData>>();
 		resetWindows = new HashMap<String, Runnable>();
 
         Cube c2 = new Cube(1, Color.BLUE);
@@ -33,15 +34,19 @@ public class World {
         c3.rx.setAngle(45);
         c3.ry.setAngle(45);
         
-        ArrayList<Node> cC = new ArrayList<Node>();
-        cC.add(c2);
-        cC.add(c3);
+        ArrayList<TLEData> cC = new ArrayList<TLEData>();
+        TLEData t2 = new TLEData("Cube 1", "1");
+        t2.setMesh(c2);
+        TLEData t3 = new TLEData("Cube 2", "2");
+        t3.setMesh(c3);
+        cC.add(t2);
+        cC.add(t3);
         
         worldData.put("CurrentLevel", cC);
         rootWindow.addMenuBarItem(event -> clearLevel(), "File", "Delete Current Level");
 	}
 	
-	public HashMap<String, ArrayList<Node>> getData(){
+	public HashMap<String, ArrayList<TLEData>> getData(){
 		return worldData; 
 	}
 	
@@ -51,7 +56,9 @@ public class World {
 		c.setTranslateX(-10);
         c.rx.setAngle(45);
         c.ry.setAngle(45);
-        worldData.get("CurrentLevel").add(c);
+        TLEData t = new TLEData("Cube 3", "3");
+        t.setMesh(c);
+        worldData.get("CurrentLevel").add(t);
         runResetWindow();
 	}
 	

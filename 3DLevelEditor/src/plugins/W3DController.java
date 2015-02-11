@@ -2,6 +2,8 @@ package plugins;
 
 import java.util.ArrayList;
 
+import common.*;
+
 import baseProgram.PluginManager;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
@@ -570,7 +572,7 @@ public class W3DController{
     }
     
     public void resetWindow(){
-    	ArrayList<Node> tLev = pMRef.getWorld().getData().get("CurrentLevel");
+    	ArrayList<TLEData> tLev = pMRef.getWorld().getData().get("CurrentLevel");
         
         if(tLev != null){
         	root.getChildren().clear();

@@ -3,7 +3,6 @@ package plugins;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -11,6 +10,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import baseProgram.PluginManager;
+
+import common.*;
 
 /**
  * Creates a 3D Window to display the world.
@@ -62,14 +63,14 @@ public class WorldTreeWin {
 	 */
     public TreeItem<String> createContent(TreeItem<String> root) {
         
-        HashMap<String, ArrayList<Node>> tWor = pMRef.getWorld().getData();
+        HashMap<String, ArrayList<TLEData>> tWor = pMRef.getWorld().getData();
         String[] keys = new String[1];
         tWor.keySet().toArray(keys);		
         
         if(tWor != null){   	
         	for(int i = 0; i < keys.length; i++){
         		TreeItem<String> item = new TreeItem<String> (keys[i]);
-        		//tWor.get(keys[i]).get(0).
+        		//tWor.get(keys[i]).get(0)
         		root.getChildren().add(item);
         	}
         }

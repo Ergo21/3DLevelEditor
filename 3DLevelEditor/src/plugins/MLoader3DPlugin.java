@@ -83,8 +83,9 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 	if(models != null && models.length > 0){ 
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
-
-		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(gNode);
+		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+		 		t.setMesh(gNode);
+		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
 		 	}
 		 	mI.close();
 		}
@@ -97,8 +98,10 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 	if(models != null && models.length > 0){ 
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
-
-		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(gNode);
+		 		
+		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+		 		t.setMesh(gNode);
+		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
 		 	}
 		 	mI.close();
 		}
@@ -111,8 +114,10 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 	if(models != null && models.length > 0){ 
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
-
-		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(gNode);
+		 		
+		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+		 		t.setMesh(gNode);
+		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
 		 	}
 		 	mI.close();
 		}
@@ -121,8 +126,9 @@ public class MLoader3DPlugin extends TLEPlugin {
 			mI.read(f);
 		 	
 		 	Node models = mI.getImport();
-		 	
-		 	mainPlMan.getWorld().getData().get("CurrentLevel").add(models);
+		 	TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+	 		t.setMesh(models);
+		 	mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
 		 	mI.close();
 		}
 		else if(f.getName().endsWith(".stl")){
@@ -131,7 +137,10 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 	
 		 	TriangleMesh models = mI.getImport();
 		 	MeshView mV = new MeshView(models);
-		 	mainPlMan.getWorld().getData().get("CurrentLevel").add(mV);
+		 	
+		 	TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+	 		t.setMesh(mV);
+		 	mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
 		 	mI.close();
 		}
 		else if(f.getName().endsWith(".x3d") || f.getName().endsWith(".x3dz")){
@@ -143,8 +152,10 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 	if(models != null && models.length > 0){ 
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
-
-		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(gNode);
+		 		
+		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+		 		t.setMesh(gNode);
+		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
 		 	}
 		 	mI.close();
 		}
