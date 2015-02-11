@@ -8,6 +8,11 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 
+/**
+ * The Level Editor's Data structure, all plugins read and edit this data.
+ * @author Ergo21
+ *
+ */
 public class World {
 	MainWindow rootWindow;
 	HashMap<String, ArrayList<Node>> worldData;

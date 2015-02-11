@@ -19,10 +19,16 @@ import javafx.stage.Stage;
 import baseProgram.PluginManager;
 import common.*;
 
+/**
+ * This plugin handles model files and sends the data to World.
+ * @author Ergo21
+ *
+ */
+
 public class MLoader3DPlugin extends TLEPlugin {
 	File currentFile;
 	public MLoader3DPlugin(){
-		pluginName = "Window3DPlugin";
+		pluginName = "MLoader3DPlugin";
 	}
 	
 	/**
@@ -37,7 +43,7 @@ public class MLoader3DPlugin extends TLEPlugin {
 	}
 	
 	/**
-	 * Opens a window to load a valid model Activated from "Plugins/3D Model Loader/Load Model" button. 
+	 * Opens a window to load a valid model. Activated from "Plugins/3D Model Loader/Load Model" button. 
 	 */
 	public void loadModel(){
 		Stage stage = new Stage();

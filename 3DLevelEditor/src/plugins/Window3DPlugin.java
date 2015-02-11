@@ -5,6 +5,12 @@ import baseProgram.PluginManager;
 
 import common.*;
 
+/**
+ * This plugin creates a 3D Window to display the current level.
+ * @author Ergo21
+ *
+ */
+
 public class Window3DPlugin extends TLEPlugin {
 	
 	public Window3DPlugin(){
