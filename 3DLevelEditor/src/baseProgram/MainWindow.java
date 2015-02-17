@@ -39,7 +39,6 @@ public class MainWindow extends Application {
         Group root = new Group();
 
         menuBar = new MenuBar();
-
         root.getChildren().addAll(menuBar);
 
         return root;
@@ -203,5 +202,42 @@ public class MainWindow extends Application {
     public void addMenuBarItem(EventHandler<ActionEvent> menuFunction, String... directories) {
     	createMenu(menuBar, menuFunction, directories);
     }
-
+    
+    public EventHandler<ActionEvent> getButton(String s){
+    	for(int i = 0; i < menuBar.getMenus().size(); i++){
+    		for(int j = 0; j < menuBar.getMenus().get(i).getItems().size(); j++){
+    			if(menuBar.getMenus().get(i).getItems().get(j).getClass() == Menu.class){
+    				EventHandler<ActionEvent> e = searchButton(s, (Menu)menuBar.getMenus().get(i).getItems().get(j));
+    				if(e != null){
+    					return e;
+    				}
+    			}
+    			else if(menuBar.getMenus().get(i).getItems().get(j).getClass() == MenuItem.class){
+    				if(menuBar.getMenus().get(i).getItems().get(j).getText().equals(s)){
+    					return menuBar.getMenus().get(i).getItems().get(j).getOnAction();
+    				}
+    			}
+    		}
+    		
+    	}
+    
+    	return null;
+    }
+    
+    private EventHandler<ActionEvent> searchButton(String s, Menu m){
+    	for(int i = 0; i < m.getItems().size(); i++){
+    		if(m.getItems().get(i).getClass() == Menu.class){
+				EventHandler<ActionEvent> e = searchButton(s, (Menu)m.getItems().get(i));
+				if(e != null){
+					return e;
+				}
+			}
+			else if(m.getItems().get(i).getClass() == MenuItem.class){
+				if(m.getItems().get(i).getText().equals(s)){
+					return m.getItems().get(i).getOnAction();
+				}
+			}
+    	}
+    	return null;
+    }
 }

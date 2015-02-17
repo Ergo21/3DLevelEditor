@@ -40,7 +40,7 @@ public class MLoader3DPlugin extends TLEPlugin {
 	@Override
 	public void install(PluginManager pM) {
 		mainPlMan = pM;
-		mainPlMan.getMWin().addMenuBarItem(event -> loadModel(), "Plugins", "3D Model Loader", "Load Model");
+		mainPlMan.getMWin().addMenuBarItem(event -> loadModel(), "Plugins", "3D Model Loader", "Load New Model");
 	}
 	
 	/**

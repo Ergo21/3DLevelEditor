@@ -5,14 +5,20 @@ import java.util.HashMap;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Cell;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -27,7 +33,7 @@ import common.*;
 public class WorldTreeWin {
 	private PluginManager pMRef;
 	private Stage stage;
-	TreeItem<String> rootItem;
+	TreeItem<YggItem> rootItem;
 	
 	public WorldTreeWin(PluginManager pM) {
 		pMRef = pM;
@@ -45,18 +51,19 @@ public class WorldTreeWin {
 		
 		pMRef.getWorld().addResetWindow("WindowTree", ()->resetWindow());
 	        
-	    rootItem = new TreeItem<String> ("World");
+	    rootItem = new TreeItem<YggItem> (new YggItem("World", new TLEData("World", "Yggdrasil")));
 	    rootItem.setExpanded(true);
 	    
 	    rootItem = createContent(rootItem);
 	    
-	    TreeView<String> tree = new TreeView<String> (rootItem);   
-	    tree.setCellFactory(new Callback<TreeView<String>, TreeCell<String>>(){
+	    TreeView<YggItem> tree = new TreeView<YggItem> (rootItem);   
+	    /*tree.setCellFactory(new Callback<TreeView<String>, TreeCell<String>>(){
 	    	@Override
 	    	public TreeCell<String> call(TreeView<String> p) {
 	    		return new YggCell();
 	    	}
- 	    });
+ 	    });*/
+	    //tree.set
 	    StackPane root = new StackPane();
 	    root.getChildren().add(tree);
 	    Scene subScene = new Scene(root, 200, 400);
@@ -73,7 +80,7 @@ public class WorldTreeWin {
 	 * Creates all objects shown. Will be overwritten to load from Data when complete.
 	 * @return Scene to add to Stage
 	 */
-    public TreeItem<String> createContent(TreeItem<String> root) {
+    public TreeItem<YggItem> createContent(TreeItem<YggItem> root) {
         
         HashMap<String, ArrayList<TLEData>> tWor = pMRef.getWorld().getData();
         String[] keys = new String[0];		
@@ -81,12 +88,38 @@ public class WorldTreeWin {
         if(tWor != null){ 
         	keys = tWor.keySet().toArray(keys);
         	for(int i = 0; i < keys.length; i++){
-        		TreeItem<String> item = new TreeItem<String> (keys[i]);
+        		TreeItem<YggItem> item = new TreeItem<YggItem> (new YggItem(keys[i], new TLEData(keys[i], keys[i] + " Tree")));
         		if(tWor.get(keys[i]).size() > 0){
         			for(int j = 0; j < tWor.get(keys[i]).size(); j++){
-            			TreeItem<String> item2 = new TreeItem<String> (tWor.get(keys[i]).get(j).getName());
-            			
-            			item.getChildren().add(item2);
+        				YggItem item2 = new YggItem(tWor.get(keys[i]).get(j).getName(), tWor.get(keys[i]).get(j));
+        				item2.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+							@Override
+							public void handle(MouseEvent e) {
+								if(e.getButton() == MouseButton.SECONDARY){
+									ContextMenu m = new ContextMenu();
+									MenuItem mI1 = new MenuItem("Load Mesh Into Current World");
+					        		mI1.setOnAction(new EventHandler<ActionEvent>() {
+					            		public void handle(ActionEvent t){
+					            			System.out.println("Loaded model into current.");
+					            			TLEData item3 = new TLEData(item2.getTLEData().getName(), item2.getTLEData().getID() + "01");
+					            			//item3.setMesh(item2.getTLEData().getMesh());
+					            			//Group g = new Group();
+					            			//g.clone();
+					            			item2.getTLEData().getChildren().add(item3);
+					            			pMRef.getWorld().getData().get("CurrentLevel").add(item3);
+					            			pMRef.getWorld().runResetWindow();
+					            		}
+					            	});
+					        		m.getItems().add(mI1);
+					        		m.show(stage, e.getScreenX(), e.getScreenY());
+								}
+							}
+            				
+            			});
+        				TreeItem<YggItem> item3 = new TreeItem<YggItem>(item2);
+        				
+            			item.getChildren().add(item3);
             		}
         		}      		
         		
@@ -102,18 +135,26 @@ public class WorldTreeWin {
     	rootItem = createContent(rootItem);
     }
     
+    private class YggItem extends Text{
+    	private TLEData item;
+    	
+    	public YggItem(String s, TLEData t){
+    		super(s);
+    		item = t;
+    	}
+    	
+    	public TLEData getTLEData(){
+    		return item;
+    	}
+    }
+    
     private class YggCell extends TreeCell<String>{
     	private TextField textField;
     	private ContextMenu addMenu = new ContextMenu();
     	
     	public YggCell(){
-    		MenuItem addMenuItem = new MenuItem("Load Mesh");
-    		addMenu.getItems().add(addMenuItem);
-    		addMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-    			public void handle(ActionEvent t){
-    				System.out.println(t.getEventType());
-    			}
-    		});
+    		System.out.println(getTreeItem());
+    		addMenu.getItems().addAll(createMenu());
     	}
     	
     	@Override
@@ -131,6 +172,60 @@ public class WorldTreeWin {
     		if(getTreeItem() != null && getTreeItem().isLeaf()){
     			setContextMenu(addMenu);
     		}
+    	}
+    	
+    	private ArrayList<MenuItem> createMenu(){
+    		ArrayList<MenuItem> m = new ArrayList<MenuItem>();
+    		if(isWithin("Meshes", getTreeItem())){
+    			MenuItem mI1 = new MenuItem("Load Mesh Into Current World");
+        		mI1.setOnAction(new EventHandler<ActionEvent>() {
+            		public void handle(ActionEvent t){
+            			System.out.println("Loaded model into current.");
+            			pMRef.getWorld().runResetWindow();
+            		}
+            	});
+        		m.add(mI1);
+    		}
+    		
+    		
+    		/*EventHandler<ActionEvent> a1 = pMRef.getMWin().getButton("Load New Model");
+    		MenuItem mI1 = new MenuItem("Load New Mesh");
+    		if(a1 == null){
+    			mI1.setOnAction(new EventHandler<ActionEvent>() {
+        			public void handle(ActionEvent t){
+        				System.out.println("Suitable loader not installed.");
+        			}
+        		});
+    		}
+    		else {
+    			mI1.setOnAction(a1);
+    		}
+    		m.add(mI1);*/
+    			
+    		
+    		return m;
+    	}
+    	
+    	private boolean isWithin(String s, TreeItem<String> t){
+    		if(t == null){
+    			return false;
+    		}
+    		System.out.println(t.getValue());
+    		if(t.getValue().equals(s)){
+    			return true;
+    		}
+    		
+    		if(t.getParent() == null){
+    			return false;
+    		}
+    		
+    		if(t.getParent().getValue().equals("World")){
+    			return false;
+    		}
+    		else{
+    			return isWithin(s, t.getParent());
+    		}
+    		
     	}
     	
     	private String getString(){

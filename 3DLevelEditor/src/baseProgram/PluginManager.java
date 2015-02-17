@@ -124,6 +124,23 @@ public class PluginManager {
 	}
 	
 	/**
+	 * Returns the names of the loaded plugins.
+	 * @return PluginNames to check what has been loaded.
+	 */
+	public ArrayList<String> getLoadedPluginsN(){
+		return pluginNames;
+	}
+	
+	
+	/**
+	 * Returns the plugins loaded by manager. Unadvised.
+	 * @return PluginsLoaded to allow plugin interaction.
+	 */
+	public HashMap<String, TLEPlugin> getLoadedPluginsP(){
+		return pluginList;
+	}
+	
+	/**
 	 * Returns the MainWindow passed in constructor.
 	 * @return	MainWindow for plugins to interact with.
 	 */
