@@ -43,6 +43,7 @@ public class World {
         cC.add(t3);
         
         worldData.put("CurrentLevel", cC);
+        worldData.put("Meshes", new ArrayList<TLEData>());
         rootWindow.addMenuBarItem(event -> clearLevel(), "File", "Delete Current Level");
 	}
 	

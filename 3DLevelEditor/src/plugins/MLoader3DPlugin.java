@@ -2,6 +2,7 @@ package plugins;
 
 
 import java.io.File;
+import java.util.ArrayList;
 
 import com.interactivemesh.jfx.importer.col.ColModelImporter;
 import com.interactivemesh.jfx.importer.fxml.FxmlModelImporter;
@@ -85,7 +86,13 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 		gNode.getChildren().addAll(models);
 		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
 		 		t.setMesh(gNode);
-		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
+		 		if(!checkIfLoaded(t)){
+		 			mainPlMan.getWorld().getData().get("Meshes").add(t);
+		 		}
+		 		else{
+		 			System.out.println("File already loaded");
+		 		}
+		 		
 		 	}
 		 	mI.close();
 		}
@@ -101,7 +108,12 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 		
 		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
 		 		t.setMesh(gNode);
-		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
+		 		if(!checkIfLoaded(t)){
+		 			mainPlMan.getWorld().getData().get("Meshes").add(t);
+		 		}
+		 		else{
+		 			System.out.println("File already loaded");
+		 		}
 		 	}
 		 	mI.close();
 		}
@@ -117,7 +129,12 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 		
 		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
 		 		t.setMesh(gNode);
-		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
+		 		if(!checkIfLoaded(t)){
+		 			mainPlMan.getWorld().getData().get("Meshes").add(t);
+		 		}
+		 		else{
+		 			System.out.println("File already loaded");
+		 		}
 		 	}
 		 	mI.close();
 		}
@@ -128,7 +145,12 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 	Node models = mI.getImport();
 		 	TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
 	 		t.setMesh(models);
-		 	mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
+	 		if(!checkIfLoaded(t)){
+	 			mainPlMan.getWorld().getData().get("Meshes").add(t);
+	 		}
+	 		else{
+	 			System.out.println("File already loaded");
+	 		}
 		 	mI.close();
 		}
 		else if(f.getName().endsWith(".stl")){
@@ -140,7 +162,12 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 	
 		 	TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
 	 		t.setMesh(mV);
-		 	mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
+	 		if(!checkIfLoaded(t)){
+	 			mainPlMan.getWorld().getData().get("Meshes").add(t);
+	 		}
+	 		else{
+	 			System.out.println("File already loaded");
+	 		}
 		 	mI.close();
 		}
 		else if(f.getName().endsWith(".x3d") || f.getName().endsWith(".x3dz")){
@@ -155,10 +182,25 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 		
 		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
 		 		t.setMesh(gNode);
-		 		mainPlMan.getWorld().getData().get("CurrentLevel").add(t);
+		 		if(!checkIfLoaded(t)){
+		 			mainPlMan.getWorld().getData().get("Meshes").add(t);
+		 		}
+		 		else{
+		 			System.out.println("File already loaded");
+		 		}
 		 	}
 		 	mI.close();
 		}
 	 	
+	}
+	
+	public boolean checkIfLoaded(TLEData t){
+		ArrayList<TLEData> m = mainPlMan.getWorld().getData().get("Meshes");
+		for(int i = 0; i < m.size(); i++){
+			if(m.get(i).getName().equals(t.getName())){
+				return true;
+			}
+		}
+		return false;
 	}
 }

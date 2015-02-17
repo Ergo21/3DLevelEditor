@@ -107,10 +107,10 @@ public class PluginManager {
 				className = className.replace('/', '.');
 				Class<?> c = cl.loadClass(className);
 				
-				jFile.close();
 				
 				if(TLEPlugin.class.isAssignableFrom(c)) {
 					System.out.println(c.getName() + " Class found to extend TLEPlugin");
+					jFile.close();
 					return (Class<? extends TLEPlugin>) c;
 				}
 				
