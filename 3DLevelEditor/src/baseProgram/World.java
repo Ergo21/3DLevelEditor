@@ -2,11 +2,10 @@ package baseProgram;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
-import javafx.scene.transform.Rotate;
-
 import common.*;
 
 /**
@@ -24,20 +23,18 @@ public class World {
 		worldData = new HashMap<String, ArrayList<TLEData>>();
 		resetWindows = new HashMap<String, Runnable>();
 
-        Cube c2 = new Cube(1, Color.BLUE);
+        Box c2 = new Box(1, 1,1);
         c2.setTranslateX(2);
-        c2.rx.setAngle(45);
-        c2.ry.setAngle(45);
+        c2.setMaterial(new PhongMaterial(Color.BLUE));
 
-        Cube c3 = new Cube(5, Color.RED);
+        Box c3 = new Box(5, 5,5);
         c3.setTranslateX(-10);
-        c3.rx.setAngle(45);
-        c3.ry.setAngle(45);
+        c3.setMaterial(new PhongMaterial(Color.RED));
         
         ArrayList<TLEData> cC = new ArrayList<TLEData>();
-        TLEData t2 = new TLEData("Cube 1", "1");
+        TLEData t2 = new TLEData("Cube 1", "1", "NA");
         t2.setMesh(c2);
-        TLEData t3 = new TLEData("Cube 2", "2");
+        TLEData t3 = new TLEData("Cube 2", "2", "NA");
         t3.setMesh(c3);
         cC.add(t2);
         cC.add(t3);
@@ -47,17 +44,22 @@ public class World {
         rootWindow.addMenuBarItem(event -> clearLevel(), "File", "Delete Current Level");
 	}
 	
+	public void setData(HashMap<String, ArrayList<TLEData>> d){
+		if(d != null){
+			worldData = d;
+		}
+	}
+	
 	public HashMap<String, ArrayList<TLEData>> getData(){
 		return worldData; 
 	}
 	
 	public void clearLevel(){
 		worldData.get("CurrentLevel").clear();
-		Cube c = new Cube(2, Color.AZURE);
+		Box c = new Box(2, 2, 2);
+		c.setMaterial(new PhongMaterial(Color.AZURE));
 		c.setTranslateX(-10);
-        c.rx.setAngle(45);
-        c.ry.setAngle(45);
-        TLEData t = new TLEData("Cube 3", "3");
+        TLEData t = new TLEData("Cube 3", "3", "NA");
         t.setMesh(c);
         worldData.get("CurrentLevel").add(t);
         runResetWindow();
@@ -74,9 +76,9 @@ public class World {
 		}
 	}
 	
-	class Cube extends Box {
-
-        final Rotate rx = new Rotate(0, Rotate.X_AXIS);
+	/*class Cube extends Box implements Serializable {
+		private static final long serialVersionUID = 7245809316554124934L;
+		final Rotate rx = new Rotate(0, Rotate.X_AXIS);
         final Rotate ry = new Rotate(0, Rotate.Y_AXIS);
         final Rotate rz = new Rotate(0, Rotate.Z_AXIS);
 
@@ -85,5 +87,5 @@ public class World {
             setMaterial(new PhongMaterial(color));
             getTransforms().addAll(rz, ry, rx);
         }
-    }
+    }*/
 }

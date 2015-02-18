@@ -45,7 +45,7 @@ public class WorldTreeWin {
 		
 		pMRef.getWorld().addResetWindow("WindowTree", ()->resetWindow());
 	        
-	    rootItem = new TreeItem<YggItem> (new YggItem("World", new TLEData("World", "Yggdrasil")));
+	    rootItem = new TreeItem<YggItem> (new YggItem("World", new TLEData("World", "Yggdrasil", "NA")));
 	    rootItem.setExpanded(true);
 	    
 	    rootItem = createContent(rootItem);
@@ -75,7 +75,7 @@ public class WorldTreeWin {
         if(tWor != null){ 
         	keys = tWor.keySet().toArray(keys);
         	for(int i = 0; i < keys.length; i++){
-        		TreeItem<YggItem> item = new TreeItem<YggItem> (new YggItem(keys[i], new TLEData(keys[i], keys[i] + " Tree")));
+        		TreeItem<YggItem> item = new TreeItem<YggItem> (new YggItem(keys[i], new TLEData(keys[i], keys[i] + " Tree", "NA")));
         		if(tWor.get(keys[i]).size() > 0){
         			for(int j = 0; j < tWor.get(keys[i]).size(); j++){
         				YggItem item2 = new YggItem(tWor.get(keys[i]).get(j).getName(), tWor.get(keys[i]).get(j));
@@ -89,7 +89,7 @@ public class WorldTreeWin {
 					        		mI1.setOnAction(new EventHandler<ActionEvent>() {
 					            		public void handle(ActionEvent t){
 					            			System.out.println("Loaded model into current.");
-					            			TLEData item3 = new TLEData(item2.getTLEData().getName(), item2.getTLEData().getID() + "01");
+					            			TLEData item3 = new TLEData(item2.getTLEData().getName(), item2.getTLEData().getID(), item2.getTLEData().getMeshPath());
 					            			//item3.setMesh(item2.getTLEData().getMesh());
 					            			//Group g = new Group();
 					            			//g.clone();

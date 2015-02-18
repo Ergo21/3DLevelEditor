@@ -84,7 +84,7 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 	if(models != null && models.length > 0){ 
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
-		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+		 		TLEData t = new TLEData(f.getName(), "obj1", f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			mainPlMan.getWorld().getData().get("Meshes").add(t);
@@ -106,7 +106,7 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
 		 		
-		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+		 		TLEData t = new TLEData(f.getName(), "3ds1", f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			mainPlMan.getWorld().getData().get("Meshes").add(t);
@@ -127,7 +127,7 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
 		 		
-		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+		 		TLEData t = new TLEData(f.getName(), "d/zae1", f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			mainPlMan.getWorld().getData().get("Meshes").add(t);
@@ -143,7 +143,7 @@ public class MLoader3DPlugin extends TLEPlugin {
 			mI.read(f);
 		 	
 		 	Node models = mI.getImport();
-		 	TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+		 	TLEData t = new TLEData(f.getName(), "fxml1", f.getAbsolutePath());
 	 		t.setMesh(models);
 	 		if(!checkIfLoaded(t)){
 	 			mainPlMan.getWorld().getData().get("Meshes").add(t);
@@ -160,7 +160,7 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 	TriangleMesh models = mI.getImport();
 		 	MeshView mV = new MeshView(models);
 		 	
-		 	TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+		 	TLEData t = new TLEData(f.getName(), "stl1", f.getAbsolutePath());
 	 		t.setMesh(mV);
 	 		if(!checkIfLoaded(t)){
 	 			mainPlMan.getWorld().getData().get("Meshes").add(t);
@@ -180,7 +180,7 @@ public class MLoader3DPlugin extends TLEPlugin {
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
 		 		
-		 		TLEData t = new TLEData(f.getName(), f.getAbsolutePath());
+		 		TLEData t = new TLEData(f.getName(), "x3d/z1", f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			mainPlMan.getWorld().getData().get("Meshes").add(t);
