@@ -5,14 +5,9 @@ import java.util.HashMap;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Cell;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseButton;
@@ -21,7 +16,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import baseProgram.PluginManager;
 import common.*;
 
@@ -56,14 +50,7 @@ public class WorldTreeWin {
 	    
 	    rootItem = createContent(rootItem);
 	    
-	    TreeView<YggItem> tree = new TreeView<YggItem> (rootItem);   
-	    /*tree.setCellFactory(new Callback<TreeView<String>, TreeCell<String>>(){
-	    	@Override
-	    	public TreeCell<String> call(TreeView<String> p) {
-	    		return new YggCell();
-	    	}
- 	    });*/
-	    //tree.set
+	    TreeView<YggItem> tree = new TreeView<YggItem> (rootItem); 
 	    StackPane root = new StackPane();
 	    root.getChildren().add(tree);
 	    Scene subScene = new Scene(root, 200, 400);
@@ -106,7 +93,8 @@ public class WorldTreeWin {
 					            			//item3.setMesh(item2.getTLEData().getMesh());
 					            			//Group g = new Group();
 					            			//g.clone();
-					            			item2.getTLEData().getChildren().add(item3);
+					            			//item2.getTLEData().getMesh().getChildren().add(item3);
+					            			//item3.
 					            			pMRef.getWorld().getData().get("CurrentLevel").add(item3);
 					            			pMRef.getWorld().runResetWindow();
 					            		}
@@ -129,7 +117,10 @@ public class WorldTreeWin {
 
         return root;
     }    
-
+    
+    /**
+     *	Method passed to world to reset this window.
+     */
     public void resetWindow(){
     	rootItem.getChildren().clear();
     	rootItem = createContent(rootItem);
@@ -148,88 +139,4 @@ public class WorldTreeWin {
     	}
     }
     
-    private class YggCell extends TreeCell<String>{
-    	private TextField textField;
-    	private ContextMenu addMenu = new ContextMenu();
-    	
-    	public YggCell(){
-    		System.out.println(getTreeItem());
-    		addMenu.getItems().addAll(createMenu());
-    	}
-    	
-    	@Override
-    	public void updateItem(String item, boolean empty){
-    		super.updateItem(item, empty);
-    		
-    		if(empty){
-    			setText(null);
-    			setGraphic(null);
-    		}
-    		else{
-    			setText(getString());
-    		}
-    		
-    		if(getTreeItem() != null && getTreeItem().isLeaf()){
-    			setContextMenu(addMenu);
-    		}
-    	}
-    	
-    	private ArrayList<MenuItem> createMenu(){
-    		ArrayList<MenuItem> m = new ArrayList<MenuItem>();
-    		if(isWithin("Meshes", getTreeItem())){
-    			MenuItem mI1 = new MenuItem("Load Mesh Into Current World");
-        		mI1.setOnAction(new EventHandler<ActionEvent>() {
-            		public void handle(ActionEvent t){
-            			System.out.println("Loaded model into current.");
-            			pMRef.getWorld().runResetWindow();
-            		}
-            	});
-        		m.add(mI1);
-    		}
-    		
-    		
-    		/*EventHandler<ActionEvent> a1 = pMRef.getMWin().getButton("Load New Model");
-    		MenuItem mI1 = new MenuItem("Load New Mesh");
-    		if(a1 == null){
-    			mI1.setOnAction(new EventHandler<ActionEvent>() {
-        			public void handle(ActionEvent t){
-        				System.out.println("Suitable loader not installed.");
-        			}
-        		});
-    		}
-    		else {
-    			mI1.setOnAction(a1);
-    		}
-    		m.add(mI1);*/
-    			
-    		
-    		return m;
-    	}
-    	
-    	private boolean isWithin(String s, TreeItem<String> t){
-    		if(t == null){
-    			return false;
-    		}
-    		System.out.println(t.getValue());
-    		if(t.getValue().equals(s)){
-    			return true;
-    		}
-    		
-    		if(t.getParent() == null){
-    			return false;
-    		}
-    		
-    		if(t.getParent().getValue().equals("World")){
-    			return false;
-    		}
-    		else{
-    			return isWithin(s, t.getParent());
-    		}
-    		
-    	}
-    	
-    	private String getString(){
-    		return getItem() == null ? "" : getItem().toString();
-    	}
-    }
 }

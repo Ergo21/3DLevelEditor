@@ -26,6 +26,9 @@ public class WorldTreeWinPlugin extends TLEPlugin {
 		mainPlMan.getMWin().addMenuBarItem(event -> showYggdrasil(), "Plugins", "Data Tree", "New Window");
 	}
 	
+	/**
+	 * Method passed to start the Tree Window.
+	 */
 	public void showYggdrasil(){
 		WorldTreeWin ygg = new WorldTreeWin(mainPlMan);
     	ygg.pluginStart();
