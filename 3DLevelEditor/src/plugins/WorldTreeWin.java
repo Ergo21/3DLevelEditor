@@ -21,6 +21,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -82,7 +85,6 @@ public class WorldTreeWin {
 		((Group)curScene.getRoot()).getChildren().add(table);
 		table.prefWidthProperty().bind(curScene.widthProperty());
 		table.prefHeightProperty().bind(curScene.heightProperty());
-		//curScene.widthProperty().
 		
 		curLevel.setScene(curScene);
 		
@@ -105,46 +107,147 @@ public class WorldTreeWin {
         if(tWor != null){ 
         	keys = tWor.keySet().toArray(keys);
         	for(int i = 0; i < keys.length; i++){
-        		if(!keys[i].equals("CurrentLevel")){
-        			TreeItem<YggItem> item = new TreeItem<YggItem> (new YggItem(keys[i], new TLEData(keys[i], keys[i] + " Tree", "NA")));
-        			if(tWor.get(keys[i]).size() > 0){
-        				for(int j = 0; j < tWor.get(keys[i]).size(); j++){
-        					YggItem item2 = new YggItem(tWor.get(keys[i]).get(j).getName(), tWor.get(keys[i]).get(j));
-        					item2.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        		if(!keys[i].equals("CurrentLevel") && !keys[i].startsWith("Level")){
+        			root.getChildren().add(createLeaf(tWor, keys[i]));
+        		}
+        		else if(keys[i].startsWith("Level")){
+        			TreeItem<YggItem> levBra = new TreeItem<YggItem> (new YggItem("Levels", new TLEData("Levels", "Levels" + " Tree", "NA")));
+        			boolean found = false;
+        			for(int j = 0; j < root.getChildren().size(); j++){
+        				if(root.getChildren().get(j).getValue().getText().equals("Levels")){
+        					levBra = root.getChildren().get(j);
+        					found = true;
+        					break;
+        				}
+        			}	
+        			
+        			if(!found){
+        				root.getChildren().add(levBra);
+        			}
 
-								@Override
-								public void handle(MouseEvent e) {
-									if(e.getButton() == MouseButton.SECONDARY){
-										ContextMenu m = new ContextMenu();
-										MenuItem mI1 = new MenuItem("Load Mesh Into Current World");
-					        			mI1.setOnAction(new EventHandler<ActionEvent>() {
-					            			public void handle(ActionEvent t){
-					            				System.out.println("Loaded model into current.");
-					            				TLEData item3 = new TLEData(item2.getTLEData().getName(), item2.getTLEData().getID(), item2.getTLEData().getMeshPath());
-					            				item3.setMesh(item2.getTLEData().getMesh());					          
-					            				pMRef.getWorld().getData().get("CurrentLevel").add(item3);
-					            				pMRef.getWorld().runResetWindow();
-					            			}
-					            		});
-					        			m.getItems().add(mI1);
-					        			m.show(stage, e.getScreenX(), e.getScreenY());
-									}
-								}
-            				
-            				});
-        					TreeItem<YggItem> item3 = new TreeItem<YggItem>(item2);
-        				
-            				item.getChildren().add(item3);
-            			}
-        			}      		
-        		
-        			root.getChildren().add(item);
+        			levBra.getChildren().add(createLeaf(tWor, keys[i]));
         		}
         	}
         }
 
         return root;
     }    
+    
+    public TreeItem<YggItem> createLeaf(HashMap<String, ArrayList<TLEData>> tWor, String key){
+    	TreeItem<YggItem> item = new TreeItem<YggItem> (new YggItem(key, new TLEData(key, key + " Tree", "NA")));
+		
+		if(tWor.get(key).size() > 0){
+			for(int j = 0; j < tWor.get(key).size(); j++){
+				YggItem item2 = new YggItem(tWor.get(key).get(j).getName(), tWor.get(key).get(j));
+				
+				item2.setOnMouseClicked(createContextMenu(key, item2));
+				TreeItem<YggItem> item3 = new TreeItem<YggItem>(item2);
+			
+				item.getChildren().add(item3);
+			}
+		}
+		return item;
+    }
+    
+    public EventHandler<MouseEvent> createContextMenu(String key, YggItem curItem){
+    	EventHandler<MouseEvent> eve;
+    	if(key.startsWith("Level")){
+    		eve = new EventHandler<MouseEvent>(){
+
+    			@Override
+    			public void handle(MouseEvent e) {
+    				if(e.getButton() == MouseButton.SECONDARY){
+    					ContextMenu m = new ContextMenu();
+    					
+    					MenuItem mI1 = new MenuItem("New Level");
+    					mI1.setOnAction(new EventHandler<ActionEvent>() {
+                			public void handle(ActionEvent t){
+                				createNewLevel();
+                			}
+                		});
+            			m.getItems().add(mI1);
+    					
+    					MenuItem mI2 = new MenuItem("Load Level");
+            			mI2.setOnAction(new EventHandler<ActionEvent>() {
+                			public void handle(ActionEvent t){
+                				pMRef.getWorld().getData().put("CurrentLevel", pMRef.getWorld().getData().get(key));
+                				pMRef.getWorld().runResetWindow();
+                				System.out.println("Loaded level.");
+                			}
+                		});
+            			m.getItems().add(mI2);
+            			
+            			MenuItem mI3 = new MenuItem("Delete Level");
+            			mI3.setOnAction(new EventHandler<ActionEvent>() {
+                			public void handle(ActionEvent t){
+                				pMRef.getWorld().getData().remove(key);
+                				pMRef.getWorld().runResetWindow();
+                				System.out.println("Deleted level.");
+                			}
+                		});
+            			m.getItems().add(mI3);
+            			
+            			m.show(stage, e.getScreenX(), e.getScreenY());
+    				}
+    			}
+    		
+    		};
+    	}
+    	else{
+    		eve = new EventHandler<MouseEvent>(){
+
+    			@Override
+    			public void handle(MouseEvent e) {
+    				if(e.getButton() == MouseButton.SECONDARY){
+    					ContextMenu m = new ContextMenu();
+    					MenuItem mI1 = new MenuItem("Load Mesh Into Current Level");
+            			mI1.setOnAction(new EventHandler<ActionEvent>() {
+                			public void handle(ActionEvent t){
+                				TLEData item3 = new TLEData(curItem.getTLEData().getName(), curItem.getTLEData().getID(), curItem.getTLEData().getMeshPath());
+                				item3.setMesh(curItem.getTLEData().getMesh());					          
+                				pMRef.getWorld().getData().get("CurrentLevel").add(item3);
+                				pMRef.getWorld().runResetWindow();
+                				System.out.println("Loaded model into current level.");
+                			}
+                		});
+            			m.getItems().add(mI1);
+            			m.show(stage, e.getScreenX(), e.getScreenY());
+    				}
+    			}
+    		
+    		};
+    	}
+    	
+    	return eve;
+    }
+    
+    public void createNewLevel(){
+    	String[] keys = new String[0];		
+        keys = pMRef.getWorld().getData().keySet().toArray(keys);
+        int levNo = 1;
+        for(int i = 0; i < keys.length; i++){
+        	if(keys[i].startsWith("Level")){
+        		String number = keys[i].substring(5);
+        		System.out.println(number);
+        		int number2 = Integer.parseInt(number);
+        		System.out.println(number2);
+        		if(number2 >= levNo){
+        			levNo = number2 + 1;
+        		}
+        	}
+        }
+        
+        ArrayList<TLEData> newLev = new ArrayList<TLEData>();
+        TLEData t1 = new TLEData("Cube", "Cube 1", "NA");
+        Box c1 = new Box(1,1,1);
+        c1.setMaterial(new PhongMaterial(Color.ORANGE));
+        t1.setMesh(c1);
+        newLev.add(t1);
+		pMRef.getWorld().getData().put("Level" + levNo, newLev);
+		
+		pMRef.getWorld().runResetWindow();
+		System.out.println("Created new level.");
+    }
     
     public TableView<TabItem> createContentTable(){
     	TableView<TabItem> thiTab = new TableView<TabItem>();

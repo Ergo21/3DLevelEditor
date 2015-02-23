@@ -10,7 +10,8 @@ import common.*;
  */
 
 public class WorldTreeWinPlugin extends TLEPlugin {
-
+	private WorldTreeWin ygg;
+	
 	public WorldTreeWinPlugin(){
 		pluginName = "WorldTreeWinPlugin";
 	}
@@ -23,6 +24,8 @@ public class WorldTreeWinPlugin extends TLEPlugin {
 	@Override
 	public void install(PluginManager pM) {
 		mainPlMan = pM;
+		ygg = new WorldTreeWin(mainPlMan);
+		mainPlMan.getMWin().addMenuBarItem(event -> ygg.createNewLevel(), "File", "New", "Level");
 		mainPlMan.getMWin().addMenuBarItem(event -> showYggdrasil(), "Plugins", "Data Tree", "New Tree Windows");
 	}
 	
@@ -30,7 +33,7 @@ public class WorldTreeWinPlugin extends TLEPlugin {
 	 * Method passed to start the Tree Window.
 	 */
 	public void showYggdrasil(){
-		WorldTreeWin ygg = new WorldTreeWin(mainPlMan);
+		
     	ygg.pluginStart();
 	}
 }

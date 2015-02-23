@@ -39,6 +39,13 @@ public class World {
         cC.add(t2);
         cC.add(t3);
         
+        ArrayList<TLEData> l2 = new ArrayList<TLEData>();
+        TLEData t4 = new TLEData("Cube 4", "4", "NA");
+        Box c4 = new Box(5, 5,5);
+        c4.setMaterial(new PhongMaterial(Color.AZURE));
+        t4.setMesh(c4);
+        l2.add(t4);
+        worldData.put("Level1", cC);
         worldData.put("CurrentLevel", cC);
         worldData.put("Meshes", new ArrayList<TLEData>());
         rootWindow.addMenuBarItem(event -> clearLevel(), "File", "Delete Current Level");
