@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Function;
 
 import com.interactivemesh.jfx.importer.col.ColModelImporter;
 import com.interactivemesh.jfx.importer.fxml.FxmlModelImporter;
@@ -27,7 +28,7 @@ import common.TLEData;
 import common.TLEPlugin;
 
 public class WorSaverLoaderPlugin extends TLEPlugin {
-	File currentFile;
+	private File currentFile;
 	
 	public WorSaverLoaderPlugin(){
 		pluginName = "WorSaverLoaderPlugin";
@@ -44,6 +45,12 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		mainPlMan.getMWin().addMenuBarItem(event -> loadModel(), "Plugins", "3D Model Loader", "Load New Model");
 		mainPlMan.getMWin().addMenuBarItem(event -> saveWorldObj(), "File", "Save as", "World Save file");
 		mainPlMan.getMWin().addMenuBarItem(event -> loadWorldObj(), "File", "Load", "World Save file");
+		
+		Function<File,TLEData> readFileFunc = f -> {
+			TLEData t = readFile(f);
+			return t;
+		};
+		mainPlMan.getWorld().setModelLoader(readFileFunc);
 	}
 	
 	

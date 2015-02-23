@@ -1,7 +1,9 @@
 package baseProgram;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Function;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -14,9 +16,10 @@ import common.*;
  *
  */
 public class World {
-	MainWindow rootWindow;
-	HashMap<String, ArrayList<TLEData>> worldData;
-	HashMap<String, Runnable> resetWindows;
+	private MainWindow rootWindow;
+	private HashMap<String, ArrayList<TLEData>> worldData;
+	private HashMap<String, Runnable> resetWindows;
+	private Function<File, TLEData> modLoad;
 	
 	public World(MainWindow mW){
 		rootWindow = mW;
@@ -81,6 +84,20 @@ public class World {
 		for(int i = 0; i < s.length; i++){
 			resetWindows.get(s[i]).run();
 		}
+	}
+	
+	public void setModelLoader(Function<File, TLEData> f){
+		modLoad = f;
+	}
+	
+	public TLEData runModelLoader(String f){
+		TLEData t = null;
+		
+		if(modLoad != null){
+			t = modLoad.apply(new File(f));
+		}
+		
+		return t;
 	}
 	
 	/*class Cube extends Box implements Serializable {

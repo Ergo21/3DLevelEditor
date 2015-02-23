@@ -203,8 +203,7 @@ public class WorldTreeWin {
     					MenuItem mI1 = new MenuItem("Load Mesh Into Current Level");
             			mI1.setOnAction(new EventHandler<ActionEvent>() {
                 			public void handle(ActionEvent t){
-                				TLEData item3 = new TLEData(curItem.getTLEData().getName(), curItem.getTLEData().getID(), curItem.getTLEData().getMeshPath());
-                				item3.setMesh(curItem.getTLEData().getMesh());					          
+                				TLEData item3 = pMRef.getWorld().runModelLoader(curItem.getTLEData().getMeshPath());				          
                 				pMRef.getWorld().getData().get("CurrentLevel").add(item3);
                 				pMRef.getWorld().runResetWindow();
                 				System.out.println("Loaded model into current level.");
