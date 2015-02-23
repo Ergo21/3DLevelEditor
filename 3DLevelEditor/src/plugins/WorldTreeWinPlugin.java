@@ -23,7 +23,7 @@ public class WorldTreeWinPlugin extends TLEPlugin {
 	@Override
 	public void install(PluginManager pM) {
 		mainPlMan = pM;
-		mainPlMan.getMWin().addMenuBarItem(event -> showYggdrasil(), "Plugins", "Data Tree", "New Window");
+		mainPlMan.getMWin().addMenuBarItem(event -> showYggdrasil(), "Plugins", "Data Tree", "New Tree Windows");
 	}
 	
 	/**

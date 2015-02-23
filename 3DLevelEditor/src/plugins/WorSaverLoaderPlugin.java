@@ -354,7 +354,7 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 	}
 	
 	/**
-	 * Currently not implemented as Meshes are not either cloned or inherited.
+	 * Currently not implemented as Meshes are not either cloned or inherited, so is reloaded.
 	 * @param t Model to be checked.
 	 * @return Is the model t already loaded?
 	 */
