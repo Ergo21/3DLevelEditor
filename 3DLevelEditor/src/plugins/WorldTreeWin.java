@@ -90,7 +90,7 @@ public class WorldTreeWin {
 					            		public void handle(ActionEvent t){
 					            			System.out.println("Loaded model into current.");
 					            			TLEData item3 = new TLEData(item2.getTLEData().getName(), item2.getTLEData().getID(), item2.getTLEData().getMeshPath());
-					            			//item3.setMesh(item2.getTLEData().getMesh());
+					            			item3.setMesh(item2.getTLEData().getMesh());
 					            			//Group g = new Group();
 					            			//g.clone();
 					            			//item2.getTLEData().getMesh().getChildren().add(item3);

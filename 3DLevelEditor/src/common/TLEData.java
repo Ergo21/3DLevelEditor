@@ -9,7 +9,7 @@ public class TLEData extends Group {
 	private String meshPath;
 	private Node mesh;
 	
-	public TLEData(String n, String m, String i){
+	public TLEData(String n, String i, String m){
 		super();
 		name = n;
 		id = i;

@@ -20,13 +20,20 @@ public class WorldSave implements Serializable{
 		keys = data.keySet().toArray(keys);
 		
 		for(int i = 0; i < keys.length; i++){
-			ArrayList<NodeSave> curList = new ArrayList<NodeSave>();
-			wSave.put(keys[i], curList);
+			ArrayList<NodeSave> curList = new ArrayList<NodeSave>();		
 			
 			for(int j = 0; j < data.get(keys[i]).size(); j++){
-				curList.add(new NodeSave(data.get(keys[i]).get(j)));
+				NodeSave nS = new NodeSave(data.get(keys[i]).get(j));
+				if(nS != null && !nS.getMeshPath().equals(null) && !nS.getMeshPath().equals("NA")){
+					curList.add(nS);
+				}	
 			}
+			wSave.put(keys[i], curList);
 		}
+	}
+	
+	public HashMap<String, ArrayList<NodeSave>> getWorldSave(){
+		return wSave;
 	}
 	
 }
