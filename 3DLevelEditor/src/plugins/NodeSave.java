@@ -1,15 +1,17 @@
 package plugins;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-
-import common.TLEData;
-import javafx.collections.ObservableList;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.transform.Transform;
 
+import common.TLEData;
+
+
+/**
+ * NodeSave is the version of TLEData to be saved.
+ * @author Ergo21
+ *
+ */
 public class NodeSave implements Serializable{
 
 	/**
@@ -19,17 +21,15 @@ public class NodeSave implements Serializable{
 	private String name;
 	private String id;
 	private String meshPath;
-	private String className;
 	
 	private HashMap<String, Double> meshTrans;
 	
-	public NodeSave(Node n){
-		
-		if(TLEData.class.isAssignableFrom(n.getClass())){
-			className = "TLEData";
-			tleBuilder((TLEData) n);		
-		}
-
+	/**
+	 * Saves TLEData into a Serializable form.
+	 * @param n The TLEData to be saved.
+	 */
+	public NodeSave(TLEData n){
+			tleBuilder(n);		
 	}
 	
 	private void tleBuilder(TLEData data){
@@ -57,10 +57,6 @@ public class NodeSave implements Serializable{
 				
 			}
 		}
-	}
-	
-	public String getClassName(){
-		return className;
 	}
 	
 	public String getName(){

@@ -20,8 +20,6 @@ import javafx.scene.Node;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Affine;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import baseProgram.PluginManager;
@@ -48,6 +46,10 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		mainPlMan.getMWin().addMenuBarItem(event -> loadWorldObj(), "File", "Load", "World Save file");
 	}
 	
+	
+	/**
+	 * Saves World as .wsf into chosen location.
+	 */
 	public void saveWorldObj(){
 		Stage stage = new Stage();
 		stage.setWidth(200);
@@ -71,6 +73,9 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		}
 	}
 	
+	/**
+	 * Loads chosen .wsf save into World.
+	 */
 	public void loadWorldObj(){
 		Stage stage = new Stage();
 		stage.setWidth(200);
@@ -110,6 +115,11 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		mainPlMan.getWorld().runResetWindow();
 	}
 	
+	/**
+	 * Turns WorldSave back into World.
+	 * @param worSav WorldSave to be decrypted.
+	 * @return Decrypted World.
+	 */
 	public HashMap<String, ArrayList<TLEData>> decryptWorldSave(WorldSave worSav){
 		if(worSav == null){
 			System.out.println("worSav is null");
@@ -137,6 +147,11 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		return data;
 	}
 	
+	/**
+	 * Turns NodeSave back into TLEData.
+	 * @param nS NodeSave to decrypt.
+	 * @return Decrypted TLEData.
+	 */
 	public TLEData decryptNodeSave(NodeSave nS){
 		if(nS == null){
 			System.out.println("nS is null");
@@ -156,7 +171,12 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		return newTLE;
 	}
 	
-	public Transform makeTransforms(HashMap<String, Double> tra){
+	/**
+	 * Takes saved transform and reimplements it.
+	 * @param tra Saved transform
+	 * @return Loaded transform
+	 */
+	public Affine makeTransforms(HashMap<String, Double> tra){
 		Affine neTrans = new Affine();
 		
 		neTrans.setMxx(tra.get("Mxx"));
@@ -333,6 +353,11 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		return null;
 	}
 	
+	/**
+	 * Currently not implemented as Meshes are not either cloned or inherited.
+	 * @param t Model to be checked.
+	 * @return Is the model t already loaded?
+	 */
 	public boolean checkIfLoaded(TLEData t){
 		/*ArrayList<TLEData> m = mainPlMan.getWorld().getData().get("Meshes");
 		for(int i = 0; i < m.size(); i++){
