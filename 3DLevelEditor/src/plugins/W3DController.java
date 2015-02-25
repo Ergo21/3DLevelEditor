@@ -173,7 +173,6 @@ public class W3DController{
     		break;
     		case DELETE:
     		{
-    			System.out.println("Delete pressed");
     			targetBoxes.clear();
     			for(int i = 0; i < selected.size(); i++){
     				pMRef.getWorld().getData().get("CurrentLevel").remove(selected.get(i));
@@ -188,8 +187,8 @@ public class W3DController{
     }
     
     public void handleKeyboardRelease(KeyEvent ke){
-    	switch(ke.getText()){
-    		case "x":
+    	switch(ke.getCode()){
+    		case X:
     		{
     			if(ke.isControlDown()){      			
     				choAct = "rX";
@@ -205,7 +204,7 @@ public class W3DController{
     			}
     		}
     		break;
-    		case "y":
+    		case Y:
     		{
     			if(ke.isControlDown()){      			
     				choAct = "rY";
@@ -221,7 +220,7 @@ public class W3DController{
     			}
     		}
     		break;
-    		case "z":
+    		case Z:
     		{
     			if(ke.isControlDown()){      			
     				choAct = "rZ";

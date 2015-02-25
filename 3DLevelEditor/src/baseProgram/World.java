@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
 
+import javafx.scene.Group;
+import javafx.scene.PointLight;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -42,12 +44,15 @@ public class World {
         cC.add(t2);
         cC.add(t3);
         
-        ArrayList<TLEData> l2 = new ArrayList<TLEData>();
-        TLEData t4 = new TLEData("Cube 4", "4", "NA");
-        Box c4 = new Box(5, 5,5);
-        c4.setMaterial(new PhongMaterial(Color.AZURE));
-        t4.setMesh(c4);
-        l2.add(t4);
+        PointLight light = new PointLight();
+        light.setColor(Color.WHITE);
+        light.setTranslateY(-3);
+        TLEData l1 = new TLEData("Light 1", "1", "NA");
+        Group lightGro = new Group();
+        lightGro.getChildren().add(light);
+        l1.setMesh(lightGro);
+        //cC.add(l1);
+      
         worldData.put("Level1", cC);
         worldData.put("CurrentLevel", cC);
         worldData.put("Meshes", new ArrayList<TLEData>());
