@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
 
-import javafx.scene.Group;
 import javafx.scene.PointLight;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.DrawMode;
 import common.*;
 
 /**
@@ -29,29 +29,31 @@ public class World {
 		resetWindows = new HashMap<String, Runnable>();
 
         Box c2 = new Box(1, 1,1);
-        c2.setTranslateX(2);
         c2.setMaterial(new PhongMaterial(Color.BLUE));
 
         Box c3 = new Box(5, 5,5);
-        c3.setTranslateX(-10);
         c3.setMaterial(new PhongMaterial(Color.RED));
         
         ArrayList<TLEData> cC = new ArrayList<TLEData>();
         TLEData t2 = new TLEData("Cube 1", "1", "NA");
+        t2.setTranslateX(2);
         t2.setMesh(c2);
         TLEData t3 = new TLEData("Cube 2", "2", "NA");
         t3.setMesh(c3);
+        t3.setTranslateX(-10);
         cC.add(t2);
         cC.add(t3);
         
         PointLight light = new PointLight();
         light.setColor(Color.WHITE);
-        light.setTranslateY(-3);
+        //light.setTranslateY(-3);
+        Box lightMesh = new Box(2,2,2);
+        lightMesh.setMaterial(new PhongMaterial(Color.YELLOW));
+        lightMesh.setDrawMode(DrawMode.LINE);
         TLEData l1 = new TLEData("Light 1", "1", "NA");
-        Group lightGro = new Group();
-        lightGro.getChildren().add(light);
-        l1.setMesh(lightGro);
-        //cC.add(l1);
+        l1.setLight(light);
+        l1.setMesh(lightMesh);
+        cC.add(l1);
       
         worldData.put("Level1", cC);
         worldData.put("CurrentLevel", cC);

@@ -1,6 +1,8 @@
 package plugins;
 
 import java.util.ArrayList;
+
+import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
@@ -12,7 +14,6 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import baseProgram.PluginManager;
-
 import common.*;
 /**
  * Creates a 3D Window to display the world.
@@ -26,6 +27,7 @@ public class Window3D {
 	private SubScene subScene;
 	private PerspectiveCamera camera;
 	private Group root;
+	private AmbientLight globalLighting;
 	
 	public Window3D(PluginManager pM) {
 		pMRef = pM;
@@ -40,11 +42,13 @@ public class Window3D {
 		stage.setWidth(200);
 		stage.setHeight(200);
 		
+		globalLighting = new AmbientLight();
+		
 		camera = new PerspectiveCamera(true);
 
         Scene scene = new Scene(createContent());
         
-        control = new W3DController(pMRef, camera, stage, subScene, root);
+        control = new W3DController(pMRef, camera, stage, subScene, root, globalLighting);
         
         pMRef.getWorld().addResetWindow("Window3D", ()->control.resetWindow());
         
@@ -78,10 +82,16 @@ public class Window3D {
         if(tLev != null){
         	root.getChildren().addAll(tLev);
         }       	
+        root.getChildren().add(globalLighting);
+        for(int i = 0; i < tLev.size(); i++){
+        	if(tLev.get(i).getLight() != null){
+        		globalLighting.getScope().add(tLev.get(i));
+        	}
+        }
 
         subScene = new SubScene(root, 200, 200, true, SceneAntialiasing.BALANCED);
         subScene.setCamera(camera);
-        subScene.setFill(Color.BLACK);
+        subScene.setFill(Color.GREY);
         subScene.widthProperty().bind(stage.widthProperty());
         subScene.heightProperty().bind(stage.heightProperty());
         

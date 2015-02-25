@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import common.*;
 import baseProgram.PluginManager;
 import javafx.geometry.Point3D;
+import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
@@ -30,6 +31,7 @@ public class W3DController{
 	private Stage stage;
 	private Group root;
 	private SubScene subScene;
+	private AmbientLight globalLighting;
 	
 	private Rotate rotateX;
 	private Rotate rotateY;
@@ -53,13 +55,15 @@ public class W3DController{
 	 * @param ss SubScene from Stage
 	 * @param r The root
 	 */
-	public W3DController(PluginManager p, PerspectiveCamera c, Stage s, SubScene ss, Group r){
+	public W3DController(PluginManager p, PerspectiveCamera c, Stage s, SubScene ss, Group r, AmbientLight gL){
 		pMRef = p;
 		camera = c;
 		stage = s;
 		
 		subScene = ss;
 		root = r;
+		
+		globalLighting = gL;
 		
 		targetBoxes = new ArrayList<Box>();
 		selected = new ArrayList<Node>();
@@ -374,6 +378,7 @@ public class W3DController{
     	targetBoxes.get(targetBoxes.size()-1).setTranslateX(trX);
     	targetBoxes.get(targetBoxes.size()-1).setTranslateY(trY);
     	targetBoxes.get(targetBoxes.size()-1).setTranslateZ(trZ);
+    	globalLighting.getScope().add(targetBoxes.get(targetBoxes.size()-1));
     	
     	targetBoxes.get(targetBoxes.size()-1).setDrawMode(DrawMode.LINE);
     	

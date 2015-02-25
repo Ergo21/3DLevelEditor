@@ -1,6 +1,7 @@
 package common;
 
 import javafx.scene.Group;
+import javafx.scene.LightBase;
 import javafx.scene.Node;
 
 public class TLEData extends Group {
@@ -8,6 +9,7 @@ public class TLEData extends Group {
 	private String id;
 	private String meshPath;
 	private Node mesh;
+	private LightBase light;
 	
 	public TLEData(String n, String i, String m){
 		super();
@@ -15,6 +17,7 @@ public class TLEData extends Group {
 		id = i;
 		mesh = null;
 		meshPath = m;
+		light = null;
 	}
 	
 	public void setName(String n){
@@ -23,6 +26,12 @@ public class TLEData extends Group {
 	
 	public void setID(String i){
 		id = i;
+	}
+	
+	public void setLight(LightBase l){
+		super.getChildren().remove(light);
+		light = l;
+		super.getChildren().add(light);
 	}
 	
 	public void setMeshPath(String m){
@@ -43,6 +52,10 @@ public class TLEData extends Group {
 		return id;
 	}
 	
+	public LightBase getLight(){
+		return light;
+	}
+	
 	public String getMeshPath(){
 		return meshPath;
 	}
@@ -50,4 +63,5 @@ public class TLEData extends Group {
 	public Node getMesh(){
 		return mesh;
 	}
+	
 }
