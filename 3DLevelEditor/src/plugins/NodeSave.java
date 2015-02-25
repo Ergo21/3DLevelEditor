@@ -23,6 +23,7 @@ public class NodeSave implements Serializable{
 	private String meshPath;
 	
 	private HashMap<String, Double> meshTrans;
+	private HashMap<String, Double> lightColour;
 	
 	/**
 	 * Saves TLEData into a Serializable form.
@@ -57,6 +58,16 @@ public class NodeSave implements Serializable{
 				
 			}
 		}
+
+		lightColour = null;
+		if(data.getLight() != null){
+			lightColour = new HashMap<String, Double>();
+			lightColour.put("red", data.getLight().getColor().getRed());
+			lightColour.put("green", data.getLight().getColor().getGreen());
+			lightColour.put("blue", data.getLight().getColor().getBlue());
+			lightColour.put("alpha", data.getLight().getColor().getOpacity());
+		}
+
 	}
 	
 	public String getName(){
@@ -73,5 +84,9 @@ public class NodeSave implements Serializable{
 	
 	public HashMap<String, Double> getMeshTransforms(){
 		return meshTrans;
+	}
+	
+	public HashMap<String, Double> getLightColour(){
+		return lightColour;
 	}
 }

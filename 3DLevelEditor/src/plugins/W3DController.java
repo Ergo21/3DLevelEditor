@@ -593,6 +593,19 @@ public class W3DController{
         if(tLev != null){
         	root.getChildren().clear();
         	root.getChildren().addAll(tLev);
+        	
+        	boolean addGL = false;
+        	for(int i = 0; i < tLev.size(); i++){
+            	if(tLev.get(i).getLight() != null){
+            		globalLighting.getScope().add(tLev.get(i));
+            		addGL = true;
+            	}
+            }
+        	
+        	if(addGL){
+        		root.getChildren().add(globalLighting);
+        	}
+        	
         	rotateX.setAngle(0);
         	rotateY.setAngle(0);
         	camera.getTransforms().clear();

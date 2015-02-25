@@ -17,7 +17,13 @@ import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
 import com.interactivemesh.jfx.importer.x3d.X3dModelImporter;
 
 import javafx.scene.Group;
+import javafx.scene.LightBase;
 import javafx.scene.Node;
+import javafx.scene.PointLight;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
+import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Affine;
@@ -173,6 +179,16 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 			newTLE.setName(nS.getName());
 			newTLE.setID(nS.getSaveId());
 			newTLE.getMesh().getTransforms().add(makeTransforms(nS.getMeshTransforms()));
+			if(nS.getLightColour() != null){
+				newTLE.setLight(makeLight(nS.getLightColour()));
+			}
+		} else if(nS.getLightColour() != null){
+	        Box lightMesh = new Box(2,2,2);
+	        lightMesh.setMaterial(new PhongMaterial(Color.YELLOW));
+	        lightMesh.setDrawMode(DrawMode.LINE);
+	        newTLE.setLight(makeLight(nS.getLightColour()));
+	        newTLE.setMesh(lightMesh);
+	        newTLE.getMesh().getTransforms().add(makeTransforms(nS.getMeshTransforms()));
 		}
 		
 		return newTLE;
@@ -200,6 +216,12 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		neTrans.setTz(tra.get("Tz"));
 		
 		return neTrans;
+	}
+	
+	public LightBase makeLight(HashMap<String, Double> col){
+		PointLight l = new PointLight();
+		l.setColor(new Color(col.get("red"),col.get("green"), col.get("blue"), col.get("alpha")));
+		return l;
 	}
 	
 	/**
