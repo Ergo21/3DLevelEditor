@@ -31,7 +31,7 @@ import baseProgram.PluginManager;
 import common.*;
 
 /**
- * Creates a 3D Window to display the world.
+ * Creates a Tree to view the world, and a Table to view the Current Level.
  * @author Ergo21
  */
 
@@ -93,6 +93,7 @@ public class WorldTreeWin {
 	
 	public void pluginClose() {
 		stage.close();
+		curLevel.show();
 	}
 
 	/**
@@ -133,7 +134,7 @@ public class WorldTreeWin {
         return root;
     }    
     
-    public TreeItem<YggItem> createLeaf(HashMap<String, ArrayList<TLEData>> tWor, String key){
+    private TreeItem<YggItem> createLeaf(HashMap<String, ArrayList<TLEData>> tWor, String key){
     	TreeItem<YggItem> item = new TreeItem<YggItem> (new YggItem(key, new TLEData(key, key + " Tree", "NA")));
 		
 		if(tWor.get(key).size() > 0){
@@ -149,7 +150,7 @@ public class WorldTreeWin {
 		return item;
     }
     
-    public EventHandler<MouseEvent> createContextMenu(String key, YggItem curItem){
+    private EventHandler<MouseEvent> createContextMenu(String key, YggItem curItem){
     	EventHandler<MouseEvent> eve;
     	if(key.startsWith("Level")){
     		eve = new EventHandler<MouseEvent>(){
@@ -204,9 +205,11 @@ public class WorldTreeWin {
             			mI1.setOnAction(new EventHandler<ActionEvent>() {
                 			public void handle(ActionEvent t){
                 				TLEData item3 = pMRef.getWorld().runModelLoader(curItem.getTLEData().getMeshPath());				          
-                				pMRef.getWorld().getData().get("CurrentLevel").add(item3);
-                				pMRef.getWorld().runResetWindow();
-                				System.out.println("Loaded model into current level.");
+                				if(item3 != null){
+                					pMRef.getWorld().getData().get("CurrentLevel").add(item3);
+                    				pMRef.getWorld().runResetWindow();
+                    				System.out.println("Loaded model into current level.");
+                				}          				
                 			}
                 		});
             			m.getItems().add(mI1);
@@ -248,7 +251,7 @@ public class WorldTreeWin {
 		System.out.println("Created new level.");
     }
     
-    public TableView<TabItem> createContentTable(){
+    private TableView<TabItem> createContentTable(){
     	TableView<TabItem> thiTab = new TableView<TabItem>();
     	
     	curLev = FXCollections.observableArrayList();

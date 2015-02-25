@@ -4,7 +4,7 @@ import baseProgram.PluginManager;
 import common.*;
 
 /**
- * This plugin displays the overall structure of the World as a TreeView.
+ * This plugin displays the overall structure of the World as a TreeView and Table.
  * @author Ergo21
  *
  */
