@@ -3,7 +3,6 @@ package plugins;
 import java.util.ArrayList;
 
 import common.*;
-
 import baseProgram.PluginManager;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
@@ -78,9 +77,9 @@ public class W3DController{
 	 * @param ke KeyEvent
 	 */
 	
-    public void handleKeyboard(KeyEvent ke){
-        switch(ke.getText()){
-        	case "w":
+    public void handleKeyboard(KeyEvent ke){	
+        switch(ke.getCode()){
+        	case W:
         	{
         		camera.getTransforms().add(new Translate(0, 0, 1));
         		if(selected.size() > 0){
@@ -88,7 +87,7 @@ public class W3DController{
         		}
            	}
         	break;
-        	case "a":
+        	case A:
         	{
         		if(!ke.isAltDown()){
         			camera.getTransforms().add(new Translate(-1, 0, 0));
@@ -101,7 +100,7 @@ public class W3DController{
         		}
         	}
         	break;
-        	case "s":
+        	case S:
         	{
         		camera.getTransforms().add(new Translate(0, 0, -1));
         		if(selected.size() > 0){
@@ -109,7 +108,7 @@ public class W3DController{
         		}
         	}
         	break;
-        	case "d":
+        	case D:
         	{
         		camera.getTransforms().add(new Translate(1, 0, 0));
         		if(selected.size() > 0){
@@ -117,7 +116,7 @@ public class W3DController{
         		}
         	}
         	break;
-    		case "x":
+    		case X:
     		{
     			if(ke.isControlDown()){      			
     				choAct = "rX";
@@ -130,7 +129,7 @@ public class W3DController{
     			}
     		}
     		break;
-    		case "y":
+    		case Y:
     		{
     			if(ke.isControlDown()){      			
     				choAct = "rY";
@@ -143,7 +142,7 @@ public class W3DController{
     			}
     		}
     		break;
-    		case "z":
+    		case Z:
     		{
     			if(ke.isControlDown()){      			
     				choAct = "rZ";
@@ -157,21 +156,34 @@ public class W3DController{
     			
     		}
     		break;
-    		case "l":
+    		case L:
     		{
     			updateRotPoint();
     		}
     		break; 
-    		case "r":
+    		case R:
     		{
     			resetWindow();
     		}
     		break;
-    		case "t":
+    		case T:
     		{
     			
     		}
     		break;
+    		case DELETE:
+    		{
+    			System.out.println("Delete pressed");
+    			targetBoxes.clear();
+    			for(int i = 0; i < selected.size(); i++){
+    				pMRef.getWorld().getData().get("CurrentLevel").remove(selected.get(i));
+    			}
+    			selected.clear();
+    			pMRef.getWorld().runResetWindow();
+    		}
+    		break;
+		default:
+			break;
         }
     }
     
