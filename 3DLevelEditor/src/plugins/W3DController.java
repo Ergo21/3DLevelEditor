@@ -178,9 +178,10 @@ public class W3DController{
     		case DELETE:
     		{
     			targetBoxes.clear();
-    			for(int i = 0; i < selected.size(); i++){
-    				pMRef.getWorld().getData().get("CurrentLevel").remove(selected.get(i));
+    			for(int i = 0; i < selected.size(); i++){   				
+    				pMRef.getWorld().getData().get("CurrentLevel").remove(selected.get(i));		
     			}
+    			
     			selected.clear();
     			pMRef.getWorld().runResetWindow();
     		}
@@ -330,8 +331,13 @@ public class W3DController{
     		}
     		Node n = (Node)me.getTarget();
     		if(n.getParent() != null && n.getParent() != root){
-    			selected.add(n.getParent());
-        		selectObject();
+    			while(n != null && n != root && n.getClass() != TLEData.class){
+    				n = n.getParent();
+    			}
+    			if(n != null && n != root){
+    				selected.add(n);
+            		selectObject();
+    			}			
     		}
     		else{
             	selected.add((Node)me.getTarget());
