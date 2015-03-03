@@ -2,8 +2,8 @@ package plugins;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import javafx.scene.transform.Transform;
 
+import javafx.scene.transform.Transform;
 import common.TLEData;
 
 
@@ -23,7 +23,7 @@ public class NodeSave implements Serializable{
 	private String meshPath;
 	
 	private HashMap<String, Double> meshTrans;
-	private HashMap<String, Double> lightColour;
+	private HashMap<String, Double> objColour;
 	
 	/**
 	 * Saves TLEData into a Serializable form.
@@ -59,13 +59,20 @@ public class NodeSave implements Serializable{
 			}
 		}
 
-		lightColour = null;
+		objColour = null;
 		if(data.getLight() != null){
-			lightColour = new HashMap<String, Double>();
-			lightColour.put("red", data.getLight().getColor().getRed());
-			lightColour.put("green", data.getLight().getColor().getGreen());
-			lightColour.put("blue", data.getLight().getColor().getBlue());
-			lightColour.put("alpha", data.getLight().getColor().getOpacity());
+			objColour = new HashMap<String, Double>();
+			objColour.put("red", data.getLight().getColor().getRed());
+			objColour.put("green", data.getLight().getColor().getGreen());
+			objColour.put("blue", data.getLight().getColor().getBlue());
+			objColour.put("alpha", data.getLight().getColor().getOpacity());
+		}
+		else if(meshPath.equals("Cube") && data.getColour() != null){
+			objColour = new HashMap<String, Double>();
+			objColour.put("red", data.getColour().getRed());
+			objColour.put("green", data.getColour().getGreen());
+			objColour.put("blue", data.getColour().getBlue());
+			objColour.put("alpha", data.getColour().getOpacity());
 		}
 
 	}
@@ -86,7 +93,7 @@ public class NodeSave implements Serializable{
 		return meshTrans;
 	}
 	
-	public HashMap<String, Double> getLightColour(){
-		return lightColour;
+	public HashMap<String, Double> getObjColour(){
+		return objColour;
 	}
 }

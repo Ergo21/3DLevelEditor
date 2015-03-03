@@ -3,6 +3,7 @@ package common;
 import javafx.scene.Group;
 import javafx.scene.LightBase;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
 
 public class TLEData extends Group {
 	private String name;
@@ -10,6 +11,7 @@ public class TLEData extends Group {
 	private String meshPath;
 	private Node mesh;
 	private LightBase light;
+	private Color colour;
 	
 	public TLEData(String n, String i, String m){
 		super();
@@ -18,6 +20,7 @@ public class TLEData extends Group {
 		mesh = null;
 		meshPath = m;
 		light = null;
+		colour = null;
 	}
 	
 	public void setName(String n){
@@ -44,6 +47,10 @@ public class TLEData extends Group {
 		super.getChildren().add(mesh);
 	}
 	
+	public void setColour(Color c){
+		colour = c;
+	}
+	
 	public String getName(){
 		return name;
 	}
@@ -62,6 +69,10 @@ public class TLEData extends Group {
 	
 	public Node getMesh(){
 		return mesh;
+	}
+	
+	public Color getColour(){
+		return colour;
 	}
 	
 }

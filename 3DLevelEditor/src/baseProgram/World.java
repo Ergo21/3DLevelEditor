@@ -35,11 +35,13 @@ public class World {
         c3.setMaterial(new PhongMaterial(Color.RED));
         
         ArrayList<TLEData> cC = new ArrayList<TLEData>();
-        TLEData t2 = new TLEData("Cube 1", "1", "NA");
+        TLEData t2 = new TLEData("Cube 1", "1", "Cube");
         t2.setTranslateX(2);
         t2.setMesh(c2);
-        TLEData t3 = new TLEData("Cube 2", "2", "NA");
+        t2.setColour(Color.BLUE);
+        TLEData t3 = new TLEData("Cube 2", "2", "Cube");
         t3.setMesh(c3);
+        t3.setColour(Color.RED);
         t3.setTranslateX(-10);
         cC.add(t2);
         cC.add(t3);
@@ -50,7 +52,7 @@ public class World {
         Box lightMesh = new Box(2,2,2);
         lightMesh.setMaterial(new PhongMaterial(Color.YELLOW));
         lightMesh.setDrawMode(DrawMode.LINE);
-        TLEData l1 = new TLEData("Light 1", "1", "NA");
+        TLEData l1 = new TLEData("Light 1", "1", "Light");
         l1.setLight(light);
         l1.setMesh(lightMesh);
         cC.add(l1);
@@ -73,10 +75,10 @@ public class World {
 	
 	public void clearLevel(){
 		worldData.get("CurrentLevel").clear();
-		Box c = new Box(2, 2, 2);
-		c.setMaterial(new PhongMaterial(Color.AZURE));
+		Box c = new Box(1, 1, 1);
+		c.setMaterial(new PhongMaterial(Color.ORANGE));
 		c.setTranslateX(-10);
-        TLEData t = new TLEData("Cube 3", "3", "NA");
+        TLEData t = new TLEData("Cube 1", "1", "Cube");
         t.setMesh(c);
         worldData.get("CurrentLevel").add(t);
         runResetWindow();

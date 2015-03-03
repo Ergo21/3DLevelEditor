@@ -240,10 +240,11 @@ public class WorldTreeWin {
         }
         
         ArrayList<TLEData> newLev = new ArrayList<TLEData>();
-        TLEData t1 = new TLEData("Cube", "Cube 1", "NA");
+        TLEData t1 = new TLEData("Cube", "Cube 1", "Cube");
         Box c1 = new Box(1,1,1);
         c1.setMaterial(new PhongMaterial(Color.ORANGE));
         t1.setMesh(c1);
+        t1.setColour(Color.ORANGE);
         newLev.add(t1);
 		pMRef.getWorld().getData().put("Level" + levNo, newLev);
 		

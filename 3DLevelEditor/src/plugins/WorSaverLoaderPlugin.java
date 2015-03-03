@@ -151,7 +151,7 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		}
 		TLEData newTLE = new TLEData(nS.getName(), nS.getSaveId(), nS.getMeshPath());
 
-		if(!nS.getMeshPath().equals(null) && !nS.getMeshPath().equals("NA")){
+		if(!nS.getMeshPath().equals(null) && !nS.getMeshPath().equals("Cube") && !nS.getMeshPath().equals("Light")){
 			newTLE = mainPlMan.getWorld().runModelLoader(nS.getMeshPath());
 			if(newTLE == null){
 				return null;
@@ -159,15 +159,25 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 			newTLE.setName(nS.getName());
 			newTLE.setID(nS.getSaveId());
 			newTLE.getMesh().getTransforms().add(makeTransforms(nS.getMeshTransforms()));
-			if(nS.getLightColour() != null){
-				newTLE.setLight(makeLight(nS.getLightColour()));
+			if(nS.getObjColour() != null){
+				newTLE.setLight(makeLight(nS.getObjColour()));
 			}
-		} else if(nS.getLightColour() != null){
+		} else if(nS.getMeshPath().equals("Light") && nS.getObjColour() != null){
 	        Box lightMesh = new Box(2,2,2);
 	        lightMesh.setMaterial(new PhongMaterial(Color.YELLOW));
 	        lightMesh.setDrawMode(DrawMode.LINE);
-	        newTLE.setLight(makeLight(nS.getLightColour()));
+	        newTLE.setLight(makeLight(nS.getObjColour()));
 	        newTLE.setMesh(lightMesh);
+	        newTLE.getMesh().getTransforms().add(makeTransforms(nS.getMeshTransforms()));
+		}
+		else if(nS.getMeshPath().equals("Cube") && nS.getObjColour() != null){
+			Box cubeMesh = new Box(1,1,1);
+			cubeMesh.setMaterial(new PhongMaterial(new Color(
+													nS.getObjColour().get("red"),
+													nS.getObjColour().get("green"),
+													nS.getObjColour().get("blue"),
+													nS.getObjColour().get("alpha"))));
+			newTLE.setMesh(cubeMesh);
 	        newTLE.getMesh().getTransforms().add(makeTransforms(nS.getMeshTransforms()));
 		}
 		

@@ -16,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import baseProgram.PluginManager;
 
@@ -31,6 +32,7 @@ public class NItemWin {
 	private TextField colourGreen;
 	private TextField colourBlue;
 	private TextField colourAlpha;
+	private TextField itemSize;
 	
 	public NItemWin(PluginManager p){
 		pMRef = p;
@@ -60,6 +62,7 @@ public class NItemWin {
 		colourGreen = new TextField();
 		colourBlue = new TextField();
 		colourAlpha = new TextField();
+		itemSize = new TextField();
 		
 		GridPane grid = new GridPane();
 		grid.setVgap(4);
@@ -78,7 +81,7 @@ public class NItemWin {
 				stage.close();
 			}
 		});
-		grid.add(okayBut, 0, 5);
+		grid.add(okayBut, 0, 10);
 		
 		cancBut = new Button("Cancel");
 		cancBut.setOnAction(new EventHandler<ActionEvent>(){
@@ -87,7 +90,7 @@ public class NItemWin {
 				stage.close();
 			}
 		});
-		grid.add(cancBut, 1, 5);
+		grid.add(cancBut, 1, 10);
 		
 		itemComboBox.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
@@ -110,23 +113,37 @@ public class NItemWin {
 		grid.add(nameField, 1, 0);
 		grid.add(new Label("Item Type"), 0, 1);
 		grid.add(itemComboBox, 1, 1);
-		grid.add(okayBut, 0, 5);
-		grid.add(cancBut, 1, 5);
+		grid.add(okayBut, 0, 10);
+		grid.add(cancBut, 1, 10);
 		
 		switch(item){
 			case "":{
 			}
 			break;
 			case "Cube":{
-				
+				grid.add(new Label("Size"), 0, 2);
+				grid.add(itemSize, 1, 2);
+				grid.add(new Label("Colour RGBA (0-255)"), 0, 3);
+				grid.add(new Label("Red"), 0, 4);
+				grid.add(colourRed, 1, 4);
+				grid.add(new Label("Green"), 0, 5);
+				grid.add(colourGreen, 1, 5);
+				grid.add(new Label("Blue"), 0, 6);
+				grid.add(colourBlue, 1, 6);
+				grid.add(new Label("Alpha"), 0, 7);
+				grid.add(colourAlpha, 1, 7);
 			}
 			break;
 			case "Point Light":{
 				grid.add(new Label("Colour RGBA (0-255)"), 0, 2);
-				grid.add(colourRed, 0, 3);
-				grid.add(colourGreen, 1, 3);
-				grid.add(colourBlue, 0, 4);
-				grid.add(colourAlpha, 1, 4);
+				grid.add(new Label("Red"), 0, 3);
+				grid.add(colourRed, 1, 3);
+				grid.add(new Label("Green"), 0, 4);
+				grid.add(colourGreen, 1, 4);
+				grid.add(new Label("Blue"), 0, 5);
+				grid.add(colourBlue, 1, 5);
+				grid.add(new Label("Alpha"), 0, 6);
+				grid.add(colourAlpha, 1, 6);
 				
 			}
 		}
@@ -141,7 +158,41 @@ public class NItemWin {
 			}
 			break;
 			case "Cube":{
-			
+				System.out.println("Creating cube");
+				try{
+					System.out.println("R: " + colourRed.getText() + 
+										" G: " + colourGreen.getText() +
+										" B: " + colourBlue.getText() +
+										" A: " + colourAlpha.getText());
+					int r = Integer.parseInt(colourRed.getText());
+					double red = (double)r/255; 
+					int g = Integer.parseInt(colourGreen.getText());
+					double green = (double)g/255; 
+					int b = Integer.parseInt(colourBlue.getText());
+					double blue = (double)b/255; 
+					int a = Integer.parseInt(colourAlpha.getText());
+					double alpha = (double)a/255; 
+					int size = Integer.parseInt(itemSize.getText());
+					System.out.println("Doubles created");
+					System.out.println("R: " + red + 
+							" G: " + green +
+							" B: " + blue +
+							" A: " + alpha);
+					
+					TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, "Cube");
+					Box cubeMesh = new Box(1, 1, 1);
+					Color c = new Color(red, green, blue, alpha);
+		        	cubeMesh.setMaterial(new PhongMaterial(c));
+		        	cubeMesh.getTransforms().add(new Scale(size, size, size));
+		        	newItem.setMesh(cubeMesh);
+		        	newItem.setColour(c);
+		        	pMRef.getWorld().getData().get("CurrentLevel").add(newItem);
+		        	pMRef.getWorld().runResetWindow();
+		        	System.out.println("Added box");
+				}
+				catch (Exception e){
+					System.out.println(e.getMessage());
+				}	
 			}
 			break;
 			case "Point Light":{
@@ -151,15 +202,23 @@ public class NItemWin {
 										" G: " + colourGreen.getText() +
 										" B: " + colourBlue.getText() +
 										" A: " + colourAlpha.getText());
-					int red = Integer.parseInt(colourRed.getText());
-					int green = Integer.parseInt(colourGreen.getText());
-					int blue = Integer.parseInt(colourBlue.getText());
-					int alpha = Integer.parseInt(colourAlpha.getText());
-					System.out.println("Ints created");
+					int r = Integer.parseInt(colourRed.getText());
+					double red = (double)r/255; 
+					int g = Integer.parseInt(colourGreen.getText());
+					double green = (double)g/255; 
+					int b = Integer.parseInt(colourBlue.getText());
+					double blue = (double)b/255; 
+					int a = Integer.parseInt(colourAlpha.getText());
+					double alpha = (double)a/255; 
+					System.out.println("Doubles created");
+					System.out.println("R: " + red + 
+							" G: " + green +
+							" B: " + blue +
+							" A: " + alpha);
 					
-					TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, "NA");
+					TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, "Light");
 					newItem.setLight(new PointLight(
-									new Color(red/255, green/255, blue/255, alpha/255)));
+									new Color(red, green, blue, alpha)));
 					Box lightMesh = new Box(2,2,2);
 		        	lightMesh.setMaterial(new PhongMaterial(Color.YELLOW));
 		        	lightMesh.setDrawMode(DrawMode.LINE);
