@@ -1,5 +1,7 @@
 package common;
 
+import common.Global.TLEType;
+
 import javafx.scene.Group;
 import javafx.scene.LightBase;
 import javafx.scene.Node;
@@ -12,15 +14,24 @@ public class TLEData extends Group {
 	private Node mesh;
 	private LightBase light;
 	private Color colour;
+	private String activator;
+	private TLEType type;
 	
-	public TLEData(String n, String i, String m){
+	public TLEData(String n, String i, TLEType t){
 		super();
 		name = n;
 		id = i;
 		mesh = null;
-		meshPath = m;
+		type = t;
+		if(type != TLEType.MESH){
+			meshPath = "NA";
+		}
+		else{
+			meshPath = "";
+		}
 		light = null;
 		colour = null;
+		activator = "";
 	}
 	
 	public void setName(String n){
@@ -51,6 +62,10 @@ public class TLEData extends Group {
 		colour = c;
 	}
 	
+	public void setActivator(String a){
+		activator = a;
+	}
+	
 	public String getName(){
 		return name;
 	}
@@ -73,6 +88,14 @@ public class TLEData extends Group {
 	
 	public Color getColour(){
 		return colour;
+	}
+	
+	public String getActivator(){
+		return activator;
+	}
+	
+	public TLEType getType(){
+		return type;
 	}
 	
 }

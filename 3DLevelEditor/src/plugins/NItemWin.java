@@ -1,6 +1,7 @@
 package plugins;
 
 import common.TLEData;
+import common.Global.TLEType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -33,6 +35,7 @@ public class NItemWin {
 	private TextField colourBlue;
 	private TextField colourAlpha;
 	private TextField itemSize;
+	private TextArea actiArea;
 	
 	public NItemWin(PluginManager p){
 		pMRef = p;
@@ -56,13 +59,15 @@ public class NItemWin {
 		Scene curScene = new Scene(new Group(), 200, 200);
 		
 		itemComboBox = new ComboBox<String>();
-		itemComboBox.getItems().addAll("Cube", "Point Light");
+		itemComboBox.getItems().addAll("Activator", "Cube", "Point Light");
 		nameField = new TextField();
 		colourRed = new TextField();
 		colourGreen = new TextField();
 		colourBlue = new TextField();
 		colourAlpha = new TextField();
 		itemSize = new TextField();
+		actiArea = new TextArea();
+		actiArea.setPrefWidth(200);
 		
 		GridPane grid = new GridPane();
 		grid.setVgap(4);
@@ -120,6 +125,11 @@ public class NItemWin {
 			case "":{
 			}
 			break;
+			case "Activator":{
+				grid.add(new Label("Activator Script"), 0, 2);
+				grid.add(actiArea, 0, 3);
+			}
+			break;
 			case "Cube":{
 				grid.add(new Label("Size"), 0, 2);
 				grid.add(itemSize, 1, 2);
@@ -157,6 +167,20 @@ public class NItemWin {
 			case "":{
 			}
 			break;
+			case "Activator":{
+				TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, TLEType.ACTIVATOR);
+				Box actiMesh = new Box(1, 1, 1);
+	        	actiMesh.setMaterial(new PhongMaterial(Color.RED));
+	        	actiMesh.getTransforms().add(new Scale(2, 2, 2));
+	        	actiMesh.setDrawMode(DrawMode.LINE);
+	        	newItem.setMesh(actiMesh);
+	        	newItem.setActivator(actiArea.getText());
+	        	pMRef.getWorld().getData().get("CurrentLevel").add(newItem);
+	        	pMRef.getWorld().runResetWindow();
+	        	System.out.println("Added activator");
+	        	System.out.println("Code: " + newItem.getActivator());
+			}
+			break;
 			case "Cube":{
 				System.out.println("Creating cube");
 				try{
@@ -179,7 +203,7 @@ public class NItemWin {
 							" B: " + blue +
 							" A: " + alpha);
 					
-					TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, "Cube");
+					TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, TLEType.CUBE);
 					Box cubeMesh = new Box(1, 1, 1);
 					Color c = new Color(red, green, blue, alpha);
 		        	cubeMesh.setMaterial(new PhongMaterial(c));
@@ -216,7 +240,7 @@ public class NItemWin {
 							" B: " + blue +
 							" A: " + alpha);
 					
-					TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, "Light");
+					TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, TLEType.LIGHT);
 					newItem.setLight(new PointLight(
 									new Color(red, green, blue, alpha)));
 					Box lightMesh = new Box(2,2,2);

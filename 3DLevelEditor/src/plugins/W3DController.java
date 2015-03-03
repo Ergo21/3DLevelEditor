@@ -3,6 +3,7 @@ package plugins;
 import java.util.ArrayList;
 
 import common.*;
+import common.Global.TLEType;
 import baseProgram.PluginManager;
 import javafx.geometry.Point3D;
 import javafx.scene.AmbientLight;
@@ -602,7 +603,7 @@ public class W3DController{
         	
         	boolean addGL = false;
         	for(int i = 0; i < tLev.size(); i++){
-            	if(tLev.get(i).getLight() != null){
+        		if(tLev.get(i).getType() ==  TLEType.ACTIVATOR|| tLev.get(i).getType() == TLEType.LIGHT){
             		globalLighting.getScope().add(tLev.get(i));
             		addGL = true;
             	}

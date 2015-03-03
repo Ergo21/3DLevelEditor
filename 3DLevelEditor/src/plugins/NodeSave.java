@@ -21,6 +21,8 @@ public class NodeSave implements Serializable{
 	private String name;
 	private String id;
 	private String meshPath;
+	private String type;
+	private String activator;
 	
 	private HashMap<String, Double> meshTrans;
 	private HashMap<String, Double> objColour;
@@ -37,6 +39,14 @@ public class NodeSave implements Serializable{
 		name = data.getName();
 		id = data.getID();
 		meshPath = data.getMeshPath();
+		switch(data.getType()){
+			case ACTIVATOR: type = "Activator"; break;
+			case CUBE: type = "Cube"; break;
+			case LIGHT: type = "Light"; break;
+			case MESH: type = "Mesh"; break;
+			default: type = ""; break;
+		}
+		activator = "";
 		meshTrans = null;
 		if(data.getMesh() != null){
 			Transform lis = data.getMesh().getLocalToSceneTransform();
@@ -67,12 +77,15 @@ public class NodeSave implements Serializable{
 			objColour.put("blue", data.getLight().getColor().getBlue());
 			objColour.put("alpha", data.getLight().getColor().getOpacity());
 		}
-		else if(meshPath.equals("Cube") && data.getColour() != null){
+		else if(type.equals("Cube") && data.getColour() != null){
 			objColour = new HashMap<String, Double>();
 			objColour.put("red", data.getColour().getRed());
 			objColour.put("green", data.getColour().getGreen());
 			objColour.put("blue", data.getColour().getBlue());
 			objColour.put("alpha", data.getColour().getOpacity());
+		}
+		else if(type.equals("Activator")){
+			activator = data.getActivator();
 		}
 
 	}
@@ -87,6 +100,14 @@ public class NodeSave implements Serializable{
 	
 	public String getMeshPath(){
 		return meshPath;
+	}
+	
+	public String getType(){
+		return type;
+	}
+	
+	public String getActivator(){
+		return activator;
 	}
 	
 	public HashMap<String, Double> getMeshTransforms(){

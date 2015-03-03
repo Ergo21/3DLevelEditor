@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import baseProgram.PluginManager;
 import common.*;
+import common.Global.TLEType;
 /**
  * Creates a 3D Window to display the world.
  * @author Ergo21
@@ -84,7 +85,7 @@ public class Window3D {
         }       	
         root.getChildren().add(globalLighting);
         for(int i = 0; i < tLev.size(); i++){
-        	if(tLev.get(i).getLight() != null){
+        	if(tLev.get(i).getType() ==  TLEType.ACTIVATOR|| tLev.get(i).getType() == TLEType.LIGHT){
         		globalLighting.getScope().add(tLev.get(i));
         	}
         }

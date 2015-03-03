@@ -33,7 +33,7 @@ public class WorldSave implements Serializable{
 			
 			for(int j = 0; j < data.get(keys[i]).size(); j++){
 				NodeSave nS = new NodeSave(data.get(keys[i]).get(j));
-				if(nS != null && !nS.getMeshPath().equals(null) && !nS.getMeshPath().equals("NA")){
+				if(nS != null && nS.getType() != ""){
 					curList.add(nS);
 				}	
 			}

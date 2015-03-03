@@ -20,10 +20,10 @@ import com.interactivemesh.jfx.importer.x3d.X3dModelImporter;
 
 import common.TLEData;
 import common.TLEPlugin;
+import common.Global.TLEType;
 
 
 public class ModelLoaderPlugin extends TLEPlugin{
-	private PluginManager pMRef;
 	private File currentFile;
 	
 	public ModelLoaderPlugin(){
@@ -69,10 +69,10 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		if(currentFile != null){
 			TLEData t = readFile(currentFile);
 			if(t != null){
-				pMRef.getWorld().getData().get("Meshes").add(t);
+				mainPlMan.getWorld().getData().get("Meshes").add(t);
 			}
 		}
-		pMRef.getWorld().runResetWindow();
+		mainPlMan.getWorld().runResetWindow();
 	}
 	
 	public TLEData readFile(File f){
@@ -87,7 +87,8 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 	if(models != null && models.length > 0){ 
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
-		 		TLEData t = new TLEData(f.getName(), "obj1", f.getAbsolutePath());
+		 		TLEData t = new TLEData(f.getName(), "obj1", TLEType.MESH);
+		 		t.setMeshPath(f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			return t;
@@ -110,7 +111,8 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
 		 		
-		 		TLEData t = new TLEData(f.getName(), "3ds1", f.getAbsolutePath());
+		 		TLEData t = new TLEData(f.getName(), "3ds1", TLEType.MESH);
+		 		t.setMeshPath(f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			return t;
@@ -132,7 +134,8 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
 		 		
-		 		TLEData t = new TLEData(f.getName(), "d/zae1", f.getAbsolutePath());
+		 		TLEData t = new TLEData(f.getName(), "d/zae1", TLEType.MESH);
+		 		t.setMeshPath(f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			return t;
@@ -149,7 +152,8 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 	Node models = mI.getImport();
 		 	mI.close();
 		 	
-		 	TLEData t = new TLEData(f.getName(), "fxml1", f.getAbsolutePath());
+		 	TLEData t = new TLEData(f.getName(), "fxml1", TLEType.MESH);
+		 	t.setMeshPath(f.getAbsolutePath());
 	 		t.setMesh(models);
 	 		if(!checkIfLoaded(t)){
 	 			return t;
@@ -166,7 +170,8 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 	mI.close();
 		 	MeshView mV = new MeshView(models);
 		 	
-		 	TLEData t = new TLEData(f.getName(), "stl1", f.getAbsolutePath());
+		 	TLEData t = new TLEData(f.getName(), "stl1", TLEType.MESH);
+		 	t.setMeshPath(f.getAbsolutePath());
 	 		t.setMesh(mV);
 	 		if(!checkIfLoaded(t)){
 	 			return t;
@@ -186,7 +191,8 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
 		 		
-		 		TLEData t = new TLEData(f.getName(), "x3d/z1", f.getAbsolutePath());
+		 		TLEData t = new TLEData(f.getName(), "x3d/z1", TLEType.MESH);
+		 		t.setMeshPath(f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			return t;

@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import baseProgram.PluginManager;
 import common.*;
+import common.Global.TLEType;
 
 /**
  * Creates a Tree to view the world, and a Table to view the Current Level.
@@ -58,7 +59,7 @@ public class WorldTreeWin {
 		
 		pMRef.getWorld().addResetWindow("WindowTree", ()->resetWindowTree());
 	        
-	    rootItem = new TreeItem<YggItem> (new YggItem("World", new TLEData("World", "Yggdrasil", "NA")));
+	    rootItem = new TreeItem<YggItem> (new YggItem("World", new TLEData("World", "Yggdrasil", TLEType.BLANK)));
 	    rootItem.setExpanded(true);
 	    
 	    rootItem = createContentTree(rootItem);
@@ -112,7 +113,7 @@ public class WorldTreeWin {
         			root.getChildren().add(createLeaf(tWor, keys[i]));
         		}
         		else if(keys[i].startsWith("Level")){
-        			TreeItem<YggItem> levBra = new TreeItem<YggItem> (new YggItem("Levels", new TLEData("Levels", "Levels" + " Tree", "NA")));
+        			TreeItem<YggItem> levBra = new TreeItem<YggItem> (new YggItem("Levels", new TLEData("Levels", "Levels" + " Tree", TLEType.BLANK)));
         			boolean found = false;
         			for(int j = 0; j < root.getChildren().size(); j++){
         				if(root.getChildren().get(j).getValue().getText().equals("Levels")){
@@ -135,7 +136,7 @@ public class WorldTreeWin {
     }    
     
     private TreeItem<YggItem> createLeaf(HashMap<String, ArrayList<TLEData>> tWor, String key){
-    	TreeItem<YggItem> item = new TreeItem<YggItem> (new YggItem(key, new TLEData(key, key + " Tree", "NA")));
+    	TreeItem<YggItem> item = new TreeItem<YggItem> (new YggItem(key, new TLEData(key, key + " Tree", TLEType.BLANK)));
 		
 		if(tWor.get(key).size() > 0){
 			for(int j = 0; j < tWor.get(key).size(); j++){
@@ -240,7 +241,7 @@ public class WorldTreeWin {
         }
         
         ArrayList<TLEData> newLev = new ArrayList<TLEData>();
-        TLEData t1 = new TLEData("Cube", "Cube 1", "Cube");
+        TLEData t1 = new TLEData("Cube", "Cube 1", TLEType.CUBE);
         Box c1 = new Box(1,1,1);
         c1.setMaterial(new PhongMaterial(Color.ORANGE));
         t1.setMesh(c1);
@@ -261,11 +262,14 @@ public class WorldTreeWin {
     	name.setCellValueFactory(new PropertyValueFactory<>("itName"));
     	TableColumn<TabItem, String> id = new TableColumn<TabItem, String>("ID");
     	id.setCellValueFactory(new PropertyValueFactory<>("itID"));
+    	TableColumn<TabItem, String> type = new TableColumn<TabItem, String>("Type");
+    	type.setCellValueFactory(new PropertyValueFactory<>("itType"));
     	TableColumn<TabItem, String> path = new TableColumn<TabItem, String>("Path");
     	path.setCellValueFactory(new PropertyValueFactory<>("itPath"));
     	thiTab.setItems(curLev);
     	thiTab.getColumns().add(name);
     	thiTab.getColumns().add(id);
+    	thiTab.getColumns().add(type);
     	thiTab.getColumns().add(path);
     	
     	return thiTab;
@@ -276,7 +280,7 @@ public class WorldTreeWin {
     	curLev.clear();
     	
     	for(int i = 0; i < data.size(); i++){
-    		TabItem tI = new TabItem(data.get(i).getName(), data.get(i).getID(), data.get(i).getMeshPath()); 
+    		TabItem tI = new TabItem(data.get(i).getName(), data.get(i).getID(), data.get(i).getType(), data.get(i).getMeshPath()); 
     		curLev.add(tI);
     	}
     }
@@ -306,11 +310,21 @@ public class WorldTreeWin {
     	private StringProperty itName;
     	private StringProperty itID;
     	private StringProperty itPath;
+    	private StringProperty itType;
     	
-    	private TabItem(String name, String id, String path){
+    	private TabItem(String name, String id, TLEType t, String path){
     		itName = new SimpleStringProperty(name);
     		itID = new SimpleStringProperty(id);
     		itPath = new SimpleStringProperty(path);
+    		String tType = "Blank";
+    		switch(t){
+    			case ACTIVATOR: tType = "Activator"; break;
+    			case BLANK: tType = "BLANK!"; break;
+    			case CUBE: tType = "Cube"; break;
+    			case LIGHT: tType = "Light"; break;
+    			case MESH: tType = "Mesh"; break;
+    		}
+    		itType = new SimpleStringProperty(tType);
     	}
     	
     	 public StringProperty itNameProperty() {
@@ -335,6 +349,14 @@ public class WorldTreeWin {
   
          public void setPath(String p) {
              itPath.set(p);
+         }
+         
+         public StringProperty itTypeProperty() {
+        	 return itType;
+         }
+         
+         public void setType(String t){
+        	 itType.set(t);
          }
     }
     

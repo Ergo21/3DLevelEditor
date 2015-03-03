@@ -11,6 +11,7 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
 import common.*;
+import common.Global.TLEType;
 
 /**
  * The Level Editor's Data structure, all plugins read and edit this data.
@@ -35,11 +36,11 @@ public class World {
         c3.setMaterial(new PhongMaterial(Color.RED));
         
         ArrayList<TLEData> cC = new ArrayList<TLEData>();
-        TLEData t2 = new TLEData("Cube 1", "1", "Cube");
+        TLEData t2 = new TLEData("Cube 1", "1", TLEType.CUBE);
         t2.setTranslateX(2);
         t2.setMesh(c2);
         t2.setColour(Color.BLUE);
-        TLEData t3 = new TLEData("Cube 2", "2", "Cube");
+        TLEData t3 = new TLEData("Cube 2", "2", TLEType.CUBE);
         t3.setMesh(c3);
         t3.setColour(Color.RED);
         t3.setTranslateX(-10);
@@ -52,7 +53,7 @@ public class World {
         Box lightMesh = new Box(2,2,2);
         lightMesh.setMaterial(new PhongMaterial(Color.YELLOW));
         lightMesh.setDrawMode(DrawMode.LINE);
-        TLEData l1 = new TLEData("Light 1", "1", "Light");
+        TLEData l1 = new TLEData("Light 1", "1", TLEType.LIGHT);
         l1.setLight(light);
         l1.setMesh(lightMesh);
         cC.add(l1);
@@ -78,7 +79,7 @@ public class World {
 		Box c = new Box(1, 1, 1);
 		c.setMaterial(new PhongMaterial(Color.ORANGE));
 		c.setTranslateX(-10);
-        TLEData t = new TLEData("Cube 1", "1", "Cube");
+        TLEData t = new TLEData("Cube 1", "1", TLEType.CUBE);
         t.setMesh(c);
         worldData.get("CurrentLevel").add(t);
         runResetWindow();
