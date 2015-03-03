@@ -285,6 +285,20 @@ public class WorldTreeWin {
     	}
     }
     
+    public void ragnarok(){
+    	String[] keys = new String[0];		
+        keys = pMRef.getWorld().getData().keySet().toArray(keys);
+        for(int i = 0; i < keys.length; i++){
+        	if(keys[i].startsWith("Level")){
+        		if(pMRef.getWorld().getData().get(keys[i]).isEmpty()){
+        			pMRef.getWorld().getData().remove(keys[i]);
+        		}
+        	}
+        }
+		
+		pMRef.getWorld().runResetWindow();
+    }
+    
     /**
      *	Method passed to world to reset this window.
      */
