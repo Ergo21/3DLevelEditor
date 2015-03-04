@@ -3,7 +3,6 @@ package plugins;
 import java.util.ArrayList;
 
 import common.*;
-import common.Global.TLEType;
 import baseProgram.PluginManager;
 import javafx.geometry.Point3D;
 import javafx.scene.AmbientLight;
@@ -28,6 +27,7 @@ import javafx.stage.Stage;
 
 public class W3DController{
 	private PluginManager pMRef;
+	private Window3D mainWin;
 	private PerspectiveCamera camera;
 	private Stage stage;
 	private Group root;
@@ -56,15 +56,16 @@ public class W3DController{
 	 * @param ss SubScene from Stage
 	 * @param r The root
 	 */
-	public W3DController(PluginManager p, PerspectiveCamera c, Stage s, SubScene ss, Group r, AmbientLight gL){
+	public W3DController(PluginManager p, Window3D w){
+		mainWin = w;
 		pMRef = p;
-		camera = c;
-		stage = s;
+		camera = mainWin.getCamera();
+		stage = mainWin.getStage();
 		
-		subScene = ss;
-		root = r;
+		subScene = mainWin.getSubScene();
+		root = mainWin.getRoot();
 		
-		globalLighting = gL;
+		globalLighting = mainWin.getGLight();
 		
 		targetBoxes = new ArrayList<Box>();
 		selected = new ArrayList<Node>();
@@ -603,7 +604,7 @@ public class W3DController{
         	
         	boolean addGL = false;
         	for(int i = 0; i < tLev.size(); i++){
-        		if(tLev.get(i).getType() ==  TLEType.ACTIVATOR || tLev.get(i).getType() == TLEType.LIGHT || tLev.get(i).getType() == TLEType.SOUND){
+        		if(mainWin.getLitTypes().contains(tLev.get(i).getType())){
             		globalLighting.getScope().add(tLev.get(i));
             		addGL = true;
             	}

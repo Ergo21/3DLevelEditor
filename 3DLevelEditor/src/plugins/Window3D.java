@@ -29,6 +29,7 @@ public class Window3D {
 	private PerspectiveCamera camera;
 	private Group root;
 	private AmbientLight globalLighting;
+	private ArrayList<TLEType> litTypes;
 	
 	public Window3D(PluginManager pM) {
 		pMRef = pM;
@@ -46,10 +47,15 @@ public class Window3D {
 		globalLighting = new AmbientLight();
 		
 		camera = new PerspectiveCamera(true);
+		
+		litTypes = new ArrayList<TLEType>();
+        litTypes.add(TLEType.ACTIVATOR);
+        litTypes.add(TLEType.LIGHT);
+        litTypes.add(TLEType.SOUND);
 
         Scene scene = new Scene(createContent());
         
-        control = new W3DController(pMRef, camera, stage, subScene, root, globalLighting);
+        control = new W3DController(pMRef, this);
         
         pMRef.getWorld().addResetWindow("Window3D", ()->control.resetWindow());
         
@@ -85,7 +91,7 @@ public class Window3D {
         }       	
         root.getChildren().add(globalLighting);
         for(int i = 0; i < tLev.size(); i++){
-        	if(tLev.get(i).getType() ==  TLEType.ACTIVATOR || tLev.get(i).getType() == TLEType.LIGHT || tLev.get(i).getType() == TLEType.SOUND){
+        	if(litTypes.contains(tLev.get(i).getType())){
         		globalLighting.getScope().add(tLev.get(i));
         	}
         }
@@ -99,5 +105,28 @@ public class Window3D {
 
         return new Group(subScene);
     }    
+    
+    public ArrayList<TLEType> getLitTypes(){
+    	return litTypes;
+    }
 
+    public PerspectiveCamera getCamera(){
+    	return camera;
+    }
+    
+    public Stage getStage(){
+    	return stage;
+    }
+    
+    public SubScene getSubScene(){
+    	return subScene;
+    }
+    
+    public Group getRoot(){
+    	return root;
+    }
+    
+    public AmbientLight getGLight(){
+    	return globalLighting;
+    }
 }
