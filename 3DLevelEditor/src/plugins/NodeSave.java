@@ -20,7 +20,7 @@ public class NodeSave implements Serializable{
 	private static final long serialVersionUID = 6720706129414196456L;
 	private String name;
 	private String id;
-	private String meshPath;
+	private String filePath;
 	private String type;
 	private String activator;
 	
@@ -38,7 +38,7 @@ public class NodeSave implements Serializable{
 	private void tleBuilder(TLEData data){
 		name = data.getName();
 		id = data.getID();
-		meshPath = data.getMeshPath();
+		filePath = data.getFilePath();
 		switch(data.getType()){
 			case ACTIVATOR: type = "Activator"; break;
 			case CUBE: type = "Cube"; break;
@@ -98,8 +98,8 @@ public class NodeSave implements Serializable{
 		return id;
 	}
 	
-	public String getMeshPath(){
-		return meshPath;
+	public String getFilePath(){
+		return filePath;
 	}
 	
 	public String getType(){

@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 public class TLEData extends Group {
 	private String name;
 	private String id;
-	private String meshPath;
+	private String filePath;
 	private Node mesh;
 	private LightBase light;
 	private Color colour;
@@ -23,11 +23,11 @@ public class TLEData extends Group {
 		id = i;
 		mesh = null;
 		type = t;
-		if(type != TLEType.MESH){
-			meshPath = "NA";
+		if(type != TLEType.MESH && type != TLEType.SOUND){
+			filePath = "NA";
 		}
 		else{
-			meshPath = "";
+			filePath = "";
 		}
 		light = null;
 		colour = null;
@@ -48,8 +48,8 @@ public class TLEData extends Group {
 		super.getChildren().add(light);
 	}
 	
-	public void setMeshPath(String m){
-		meshPath = m;
+	public void setFilePath(String f){
+		filePath = f;
 	}
 	
 	public void setMesh(Node n){
@@ -78,8 +78,8 @@ public class TLEData extends Group {
 		return light;
 	}
 	
-	public String getMeshPath(){
-		return meshPath;
+	public String getFilePath(){
+		return filePath;
 	}
 	
 	public Node getMesh(){

@@ -22,7 +22,7 @@ public class WorEncDec{
 				TLEData curTle = curDat.get(j);
 				curStr += "<<Name=" + curTle.getName() + "> ";
 				curStr += "<ID=" + curTle.getID() + "> ";
-				curStr += "<Path=" + curTle.getMeshPath() + ">> {";
+				curStr += "<Path=" + curTle.getFilePath() + ">> {";
 				
 				ObservableList<Transform> curTrans = curTle.getTransforms();
 				for(int k = 0; k < curTrans.size(); k++){

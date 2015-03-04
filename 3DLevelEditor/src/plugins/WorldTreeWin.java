@@ -205,7 +205,7 @@ public class WorldTreeWin {
     					MenuItem mI1 = new MenuItem("Load Mesh Into Current Level");
             			mI1.setOnAction(new EventHandler<ActionEvent>() {
                 			public void handle(ActionEvent t){
-                				TLEData item3 = pMRef.getWorld().runModelLoader(curItem.getTLEData().getMeshPath());				          
+                				TLEData item3 = pMRef.getWorld().runModelLoader(curItem.getTLEData().getFilePath());				          
                 				if(item3 != null){
                 					pMRef.getWorld().getData().get("CurrentLevel").add(item3);
                     				pMRef.getWorld().runResetWindow();
@@ -280,7 +280,7 @@ public class WorldTreeWin {
     	curLev.clear();
     	
     	for(int i = 0; i < data.size(); i++){
-    		TabItem tI = new TabItem(data.get(i).getName(), data.get(i).getID(), data.get(i).getType(), data.get(i).getMeshPath()); 
+    		TabItem tI = new TabItem(data.get(i).getName(), data.get(i).getID(), data.get(i).getType(), data.get(i).getFilePath()); 
     		curLev.add(tI);
     	}
     }
@@ -337,6 +337,7 @@ public class WorldTreeWin {
     			case CUBE: tType = "Cube"; break;
     			case LIGHT: tType = "Light"; break;
     			case MESH: tType = "Mesh"; break;
+    			case SOUND: tType = "Sound"; break;
     		}
     		itType = new SimpleStringProperty(tType);
     	}

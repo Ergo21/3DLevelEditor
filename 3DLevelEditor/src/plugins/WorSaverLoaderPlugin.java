@@ -160,8 +160,8 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		}
 		TLEData newTLE = new TLEData(nS.getName(), nS.getSaveId(), t);
 
-		if(!nS.getMeshPath().equals(null) && nS.getType().equals("Mesh")){
-			newTLE = mainPlMan.getWorld().runModelLoader(nS.getMeshPath());
+		if(!nS.getFilePath().equals(null) && nS.getType().equals("Mesh")){
+			newTLE = mainPlMan.getWorld().runModelLoader(nS.getFilePath());
 			if(newTLE == null){
 				return null;
 			}

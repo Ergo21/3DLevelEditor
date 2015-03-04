@@ -88,7 +88,7 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 		Group gNode = new Group();
 		 		gNode.getChildren().addAll(models);
 		 		TLEData t = new TLEData(f.getName(), "obj1", TLEType.MESH);
-		 		t.setMeshPath(f.getAbsolutePath());
+		 		t.setFilePath(f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			return t;
@@ -112,7 +112,7 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 		gNode.getChildren().addAll(models);
 		 		
 		 		TLEData t = new TLEData(f.getName(), "3ds1", TLEType.MESH);
-		 		t.setMeshPath(f.getAbsolutePath());
+		 		t.setFilePath(f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			return t;
@@ -135,7 +135,7 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 		gNode.getChildren().addAll(models);
 		 		
 		 		TLEData t = new TLEData(f.getName(), "d/zae1", TLEType.MESH);
-		 		t.setMeshPath(f.getAbsolutePath());
+		 		t.setFilePath(f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			return t;
@@ -153,7 +153,7 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 	mI.close();
 		 	
 		 	TLEData t = new TLEData(f.getName(), "fxml1", TLEType.MESH);
-		 	t.setMeshPath(f.getAbsolutePath());
+		 	t.setFilePath(f.getAbsolutePath());
 	 		t.setMesh(models);
 	 		if(!checkIfLoaded(t)){
 	 			return t;
@@ -171,7 +171,7 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 	MeshView mV = new MeshView(models);
 		 	
 		 	TLEData t = new TLEData(f.getName(), "stl1", TLEType.MESH);
-		 	t.setMeshPath(f.getAbsolutePath());
+		 	t.setFilePath(f.getAbsolutePath());
 	 		t.setMesh(mV);
 	 		if(!checkIfLoaded(t)){
 	 			return t;
@@ -192,7 +192,7 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 		gNode.getChildren().addAll(models);
 		 		
 		 		TLEData t = new TLEData(f.getName(), "x3d/z1", TLEType.MESH);
-		 		t.setMeshPath(f.getAbsolutePath());
+		 		t.setFilePath(f.getAbsolutePath());
 		 		t.setMesh(gNode);
 		 		if(!checkIfLoaded(t)){
 		 			return t;
