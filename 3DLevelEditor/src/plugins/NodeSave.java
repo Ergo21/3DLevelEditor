@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import javafx.scene.transform.Transform;
+import common.Global.TLEType;
 import common.TLEData;
 
 
@@ -39,13 +40,7 @@ public class NodeSave implements Serializable{
 		name = data.getName();
 		id = data.getID();
 		filePath = data.getFilePath();
-		switch(data.getType()){
-			case ACTIVATOR: type = "Activator"; break;
-			case CUBE: type = "Cube"; break;
-			case LIGHT: type = "Light"; break;
-			case MESH: type = "Mesh"; break;
-			default: type = ""; break;
-		}
+		type = data.getType().toString();
 		activator = "";
 		meshTrans = null;
 		if(data.getMesh() != null){
@@ -70,21 +65,21 @@ public class NodeSave implements Serializable{
 		}
 
 		objColour = null;
-		if(data.getLight() != null){
+		if(data.getType() == TLEType.LIGHT && data.getColour() != null){
 			objColour = new HashMap<String, Double>();
 			objColour.put("red", data.getLight().getColor().getRed());
 			objColour.put("green", data.getLight().getColor().getGreen());
 			objColour.put("blue", data.getLight().getColor().getBlue());
 			objColour.put("alpha", data.getLight().getColor().getOpacity());
 		}
-		else if(type.equals("Cube") && data.getColour() != null){
+		else if(data.getType() == TLEType.CUBE && data.getColour() != null){
 			objColour = new HashMap<String, Double>();
 			objColour.put("red", data.getColour().getRed());
 			objColour.put("green", data.getColour().getGreen());
 			objColour.put("blue", data.getColour().getBlue());
 			objColour.put("alpha", data.getColour().getOpacity());
 		}
-		else if(type.equals("Activator")){
+		else if(data.getType() == TLEType.ACTIVATOR){
 			activator = data.getActivator();
 		}
 

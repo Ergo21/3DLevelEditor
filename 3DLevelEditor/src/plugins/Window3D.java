@@ -85,7 +85,7 @@ public class Window3D {
         }       	
         root.getChildren().add(globalLighting);
         for(int i = 0; i < tLev.size(); i++){
-        	if(tLev.get(i).getType() ==  TLEType.ACTIVATOR|| tLev.get(i).getType() == TLEType.LIGHT){
+        	if(tLev.get(i).getType() ==  TLEType.ACTIVATOR || tLev.get(i).getType() == TLEType.LIGHT || tLev.get(i).getType() == TLEType.SOUND){
         		globalLighting.getScope().add(tLev.get(i));
         	}
         }

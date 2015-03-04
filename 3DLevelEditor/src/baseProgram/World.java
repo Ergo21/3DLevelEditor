@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
+import javafx.scene.transform.Scale;
 import common.*;
 import common.Global.TLEType;
 
@@ -32,7 +33,8 @@ public class World {
         Box c2 = new Box(1, 1,1);
         c2.setMaterial(new PhongMaterial(Color.BLUE));
 
-        Box c3 = new Box(5, 5,5);
+        Box c3 = new Box(1, 1,1);
+        c3.getTransforms().add(new Scale(5,5,5));
         c3.setMaterial(new PhongMaterial(Color.RED));
         
         ArrayList<TLEData> cC = new ArrayList<TLEData>();
@@ -50,11 +52,13 @@ public class World {
         PointLight light = new PointLight();
         light.setColor(Color.WHITE);
         //light.setTranslateY(-3);
-        Box lightMesh = new Box(2,2,2);
+        Box lightMesh = new Box(1,1,1);
         lightMesh.setMaterial(new PhongMaterial(Color.YELLOW));
         lightMesh.setDrawMode(DrawMode.LINE);
+        lightMesh.getTransforms().add(new Scale(2,2,2));
         TLEData l1 = new TLEData("Light 1", "1", TLEType.LIGHT);
         l1.setLight(light);
+        l1.setColour(Color.YELLOW);
         l1.setMesh(lightMesh);
         cC.add(l1);
       

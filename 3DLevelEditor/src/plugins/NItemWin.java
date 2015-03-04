@@ -1,5 +1,7 @@
 package plugins;
 
+import java.io.File;
+
 import common.TLEData;
 import common.Global.TLEType;
 import javafx.event.ActionEvent;
@@ -19,6 +21,7 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Scale;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import baseProgram.PluginManager;
 
@@ -36,6 +39,10 @@ public class NItemWin {
 	private TextField colourAlpha;
 	private TextField itemSize;
 	private TextArea actiArea;
+	private TextField filePath;
+	private Button fileBrowse;
+	
+	private File currentFile;
 	
 	public NItemWin(PluginManager p){
 		pMRef = p;
@@ -59,7 +66,7 @@ public class NItemWin {
 		Scene curScene = new Scene(new Group(), 200, 200);
 		
 		itemComboBox = new ComboBox<String>();
-		itemComboBox.getItems().addAll("Activator", "Cube", "Point Light");
+		itemComboBox.getItems().addAll("Activator", "Cube", "Point Light", "Sound");
 		nameField = new TextField();
 		colourRed = new TextField();
 		colourGreen = new TextField();
@@ -68,6 +75,8 @@ public class NItemWin {
 		itemSize = new TextField();
 		actiArea = new TextArea();
 		actiArea.setPrefWidth(200);
+		filePath = new TextField();
+		fileBrowse = new Button("Browse");
 		
 		GridPane grid = new GridPane();
 		grid.setVgap(4);
@@ -156,6 +165,32 @@ public class NItemWin {
 				grid.add(colourAlpha, 1, 6);
 				
 			}
+			break;
+			case "Sound":{
+				grid.add(new Label("Audio File Directory"), 0, 2);
+				grid.add(filePath, 0, 3);
+				grid.add(fileBrowse, 1, 3);
+				fileBrowse.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent e) {
+						FileChooser fileChooser = new FileChooser();
+						fileChooser.setTitle("Open Resource File");
+						fileChooser.getExtensionFilters().addAll(
+						        new FileChooser.ExtensionFilter("Supported Audio Files", "*"));
+						 
+						if(currentFile != null){
+							fileChooser.setInitialDirectory(currentFile.getParentFile());
+						}
+						 
+						currentFile = fileChooser.showOpenDialog(stage);
+						
+						if(currentFile != null){
+							filePath.setText(currentFile.getAbsolutePath());
+						}
+					}					
+				});
+			}
+			break;
 		}
 	}
 	
@@ -243,9 +278,11 @@ public class NItemWin {
 					TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, TLEType.LIGHT);
 					newItem.setLight(new PointLight(
 									new Color(red, green, blue, alpha)));
-					Box lightMesh = new Box(2,2,2);
+					newItem.setColour(new Color(red, green, blue, alpha));
+					Box lightMesh = new Box(1,1,1);
 		        	lightMesh.setMaterial(new PhongMaterial(Color.YELLOW));
 		        	lightMesh.setDrawMode(DrawMode.LINE);
+		        	lightMesh.getTransforms().add(new Scale(2, 2, 2));
 		        	newItem.setMesh(lightMesh);
 		        	pMRef.getWorld().getData().get("CurrentLevel").add(newItem);
 		        	pMRef.getWorld().runResetWindow();
@@ -254,6 +291,19 @@ public class NItemWin {
 				catch (Exception e){
 					System.out.println(e.getMessage());
 				}			
+			}
+			break;
+			case "Sound":{
+				TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, TLEType.SOUND);
+				newItem.setFilePath(filePath.getText());
+				Box soundMesh = new Box(1,1,1);
+				soundMesh.setMaterial(new PhongMaterial(Color.AQUAMARINE));
+				soundMesh.setDrawMode(DrawMode.LINE);
+				soundMesh.getTransforms().add(new Scale(2, 2, 2));
+				newItem.setMesh(soundMesh);
+				pMRef.getWorld().getData().get("CurrentLevel").add(newItem);
+	        	pMRef.getWorld().runResetWindow();
+	        	System.out.println("Added sound");
 			}
 			break;
 		}
