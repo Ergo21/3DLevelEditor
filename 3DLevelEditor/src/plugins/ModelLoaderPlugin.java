@@ -75,6 +75,11 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		mainPlMan.getWorld().runResetWindow();
 	}
 	
+	/**
+	 * Reads model from given file, packages and returns in TLEData.
+	 * @param f Model file to read
+	 * @return Model in TLEData form
+	 */
 	public TLEData readFile(File f){
 		
 		if(f.getName().endsWith(".obj")){

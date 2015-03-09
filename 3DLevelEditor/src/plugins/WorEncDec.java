@@ -7,6 +7,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.transform.Transform;
 import common.TLEData;
 
+/**
+ * Currently unimplemented. Would be used to save the world in a format readable by multiple engines, e.g. XML.
+ * @author Ergo21
+ *
+ */
 public class WorEncDec{
 	
 	public ArrayList<String> encryptText(HashMap<String, ArrayList<TLEData>> d){

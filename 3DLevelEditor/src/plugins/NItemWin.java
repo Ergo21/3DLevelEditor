@@ -24,7 +24,11 @@ import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import baseProgram.PluginManager;
-
+/**
+ * Creates Window to pass in new item parameters to load into the current level.
+ * @author Ergo21
+ *
+ */
 public class NItemWin {
 	private PluginManager pMRef;
 	private Stage stage;

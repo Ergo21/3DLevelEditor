@@ -17,6 +17,12 @@ public class TLEData extends Group {
 	private String activator;
 	private TLEType type;
 	
+	/**
+	 * Creates TLEData the editor uses.
+	 * @param n Data name
+	 * @param i Data ID
+	 * @param t Type of Data
+	 */
 	public TLEData(String n, String i, TLEType t){
 		super();
 		name = n;

@@ -113,6 +113,7 @@ public class PluginManager {
 					jFile.close();
 					return (Class<? extends TLEPlugin>) c;
 				}
+				jFile.close();
 				
 			}
 		}

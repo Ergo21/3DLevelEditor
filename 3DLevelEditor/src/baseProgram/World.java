@@ -74,6 +74,10 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Gets the loaded world data.
+	 * @return World data
+	 */
 	public HashMap<String, ArrayList<TLEData>> getData(){
 		return worldData; 
 	}
@@ -89,10 +93,18 @@ public class World {
         runResetWindow();
 	}
 	
+	/**
+	 * Adds method to update window.
+	 * @param rN Window name.
+	 * @param rW Window reset method.
+	 */
 	public void addResetWindow(String rN, Runnable rW){
 		resetWindows.put(rN, rW);
 	}
 	
+	/**
+	 * Updates the other windows if the Data gets changed.
+	 */
 	public void runResetWindow(){
 		Object[] s = resetWindows.keySet().toArray();
 		for(int i = 0; i < s.length; i++){
@@ -100,10 +112,19 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Sets the model loader function the editor will use to read models.
+	 * @param f Function
+	 */
 	public void setModelLoader(Function<File, TLEData> f){
 		modLoad = f;
 	}
 	
+	/**
+	 * This runs the current model loader, finding the model in directory f and returns the model as TLEData.
+	 * @param f Model directory
+	 * @return The model found in f, returned as TLEData.
+	 */
 	public TLEData runModelLoader(String f){
 		TLEData t = null;
 		
@@ -113,17 +134,4 @@ public class World {
 		
 		return t;
 	}
-	
-	/*class Cube extends Box implements Serializable {
-		private static final long serialVersionUID = 7245809316554124934L;
-		final Rotate rx = new Rotate(0, Rotate.X_AXIS);
-        final Rotate ry = new Rotate(0, Rotate.Y_AXIS);
-        final Rotate rz = new Rotate(0, Rotate.Z_AXIS);
-
-        public Cube(double size, Color color) {
-            super(size, size, size);
-            setMaterial(new PhongMaterial(color));
-            getTransforms().addAll(rz, ry, rx);
-        }
-    }*/
 }
