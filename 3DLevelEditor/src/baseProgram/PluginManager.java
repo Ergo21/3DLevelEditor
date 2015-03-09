@@ -113,9 +113,9 @@ public class PluginManager {
 					jFile.close();
 					return (Class<? extends TLEPlugin>) c;
 				}
-				jFile.close();
 				
 			}
+			jFile.close();
 		}
 		catch(Exception e){
 			System.out.println("Error in PluginManager.getPlugin():" + e);

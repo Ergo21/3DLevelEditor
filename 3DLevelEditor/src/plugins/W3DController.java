@@ -51,10 +51,8 @@ public class W3DController{
 	/**
 	 * Handles user input to control the world.
 	 * 
-	 * @param c Camera from Stage
-	 * @param s Stage
-	 * @param ss SubScene from Stage
-	 * @param r The root
+	 * @param p PluginManager
+	 * @param w The display window
 	 */
 	public W3DController(PluginManager p, Window3D w){
 		mainWin = w;
