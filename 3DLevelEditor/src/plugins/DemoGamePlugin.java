@@ -3,6 +3,7 @@ package plugins;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.stage.Stage;
 import baseProgram.PluginManager;
 import common.*;
 
@@ -33,7 +34,7 @@ public class DemoGamePlugin extends TLEPlugin {
 	 * Creates a 3D Window showing the current level. Activated from "Plugins/Demo/Play Current Level" button. 
 	 */
 	public void createWindow(){
-		DemoGameWin thiDem = new DemoGameWin((HashMap<String, ArrayList<TLEData>>) mainPlMan.getWorld().getData().clone());
+		DemoGameWin thiDem = new DemoGameWin(new Stage(), (HashMap<String, ArrayList<TLEData>>) mainPlMan.getWorld().getData().clone());
 		thiDem.pluginStart();
 	}
 }

@@ -1,11 +1,9 @@
-package plugins;
+package common;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
 import javafx.scene.transform.Transform;
-import common.Global.TLEType;
-import common.TLEData;
 
 
 /**
@@ -65,21 +63,21 @@ public class NodeSave implements Serializable{
 		}
 
 		objColour = null;
-		if(data.getType() == TLEType.LIGHT && data.getColour() != null){
+		if(data.getType() == Global.TLEType.LIGHT && data.getColour() != null){
 			objColour = new HashMap<String, Double>();
 			objColour.put("red", data.getLight().getColor().getRed());
 			objColour.put("green", data.getLight().getColor().getGreen());
 			objColour.put("blue", data.getLight().getColor().getBlue());
 			objColour.put("alpha", data.getLight().getColor().getOpacity());
 		}
-		else if(data.getType() == TLEType.CUBE && data.getColour() != null){
+		else if(data.getType() == Global.TLEType.CUBE && data.getColour() != null){
 			objColour = new HashMap<String, Double>();
 			objColour.put("red", data.getColour().getRed());
 			objColour.put("green", data.getColour().getGreen());
 			objColour.put("blue", data.getColour().getBlue());
 			objColour.put("alpha", data.getColour().getOpacity());
 		}
-		else if(data.getType() == TLEType.ACTIVATOR){
+		else if(data.getType() == Global.TLEType.ACTIVATOR){
 			activator = data.getActivator();
 		}
 

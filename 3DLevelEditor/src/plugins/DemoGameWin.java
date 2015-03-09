@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import common.TLEData;
 import common.Global.TLEType;
-import javafx.application.*;
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -24,7 +23,7 @@ import javafx.stage.Stage;
  *
  */
 
-public class DemoGameWin extends Application {
+public class DemoGameWin {
 	
 	private Stage stage;
 	private HashMap<String,ArrayList<TLEData>> data;
@@ -35,9 +34,9 @@ public class DemoGameWin extends Application {
 	private SubScene subScene;
 	private Group root;
 	
-	public DemoGameWin(HashMap<String,ArrayList<TLEData>> d){
+	public DemoGameWin(Stage s, HashMap<String,ArrayList<TLEData>> d){
 		data = d;
-		stage = new Stage();
+		stage = s;
 	}
 	
 	public void pluginStart(){
@@ -125,18 +124,5 @@ public class DemoGameWin extends Application {
 	public SubScene getSubScene(){
 		return subScene;
 	}
-	
-    public static void main(String[] args) {
-        launch(args);
-    }
-    
-    @Override
-    public void start(Stage s) throws Exception {    	
-    	stage = s;
-    	
-    	//Load data
-    	//pluginStart();
-        
-    }
     
 }

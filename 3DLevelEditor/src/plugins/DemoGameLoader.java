@@ -3,76 +3,46 @@ package plugins;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.interactivemesh.jfx.importer.col.ColModelImporter;
+import com.interactivemesh.jfx.importer.fxml.FxmlModelImporter;
+import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
+import com.interactivemesh.jfx.importer.stl.StlMeshImporter;
+import com.interactivemesh.jfx.importer.tds.TdsModelImporter;
+import com.interactivemesh.jfx.importer.x3d.X3dModelImporter;
+
+import javafx.scene.Group;
 import javafx.scene.LightBase;
+import javafx.scene.Node;
 import javafx.scene.PointLight;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
+import javafx.scene.shape.MeshView;
+import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Affine;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import baseProgram.PluginManager;
-import common.Global.TLEType;
 import common.NodeSave;
 import common.TLEData;
-import common.TLEPlugin;
 import common.WorldSave;
+import common.Global.TLEType;
 
-public class WorSaverLoaderPlugin extends TLEPlugin {
+public class DemoGameLoader{
 	
-	public WorSaverLoaderPlugin(){
-		pluginName = "WorSaverLoaderPlugin";
-	}
-	
-	/**
-	 * Adds new buttons under File. 
-	 * 
-	 * @param pM	PluginManager for the Plugin to interact with the Base Program
-	 */
-	@Override
-	public void install(PluginManager pM) {
-		mainPlMan = pM;
-		mainPlMan.getMWin().addMenuBarItem(event -> saveWorldObj(), "File", "Save as", "World Save file");
-		mainPlMan.getMWin().addMenuBarItem(event -> loadWorldObj(), "File", "Load", "World Save file");
-	}
-	
-	
-	/**
-	 * Saves World as .wsf into chosen location.
-	 */
-	public void saveWorldObj(){
-		Stage stage = new Stage();
-		stage.setWidth(200);
-		stage.setHeight(200);
+	public DemoGameLoader(){
 		
-		FileChooser saveLoc = new FileChooser();
-		saveLoc.setTitle("Save World File");
-		saveLoc.getExtensionFilters().add(new FileChooser.ExtensionFilter("World Save File", "*.wsf"));
-		File file = saveLoc.showSaveDialog(stage);
-		if(file == null){
-			return;
-		}
-		
-		WorldSave savEnc = new WorldSave(mainPlMan.getWorld().getData());
-		try{
-			ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(file.toPath()));
-			oos.writeObject(savEnc);
-			oos.close();
-		} catch (IOException e){
-			System.out.println(e.getMessage());
-		}
 	}
 	
+
 	/**
 	 * Loads chosen .wsf save into World.
 	 */
-	public void loadWorldObj(){
+	public HashMap<String, ArrayList<TLEData>> loadWorldObj(){
 		Stage stage = new Stage();
 		stage.setWidth(200);
 		stage.setHeight(200);
@@ -82,7 +52,7 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		loadLoc.getExtensionFilters().add(new FileChooser.ExtensionFilter("World Save File", "*.wsf"));
 		File file = loadLoc.showOpenDialog(stage);
 		if(file == null){
-			return;
+			return null;
 		}
 		WorldSave data = null;
 		try{
@@ -102,15 +72,17 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		HashMap<String, ArrayList<TLEData>> uEData = decryptWorldSave(data);
 		
 		if(uEData != null){
-			mainPlMan.getWorld().setData(uEData);
+			return uEData;
 		}
 		else{
 			System.out.println("uEData is null");
 		}
 		
-		mainPlMan.getWorld().runResetWindow();
+		return null;
 	}
 	
+	
+
 	/**
 	 * Turns WorldSave back into World.
 	 * @param worSav WorldSave to be decrypted.
@@ -164,7 +136,7 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		}
 
 		if(!nS.getFilePath().equals(null) && t == TLEType.MESH){
-			newTLE = mainPlMan.getWorld().runModelLoader(nS.getFilePath());
+			newTLE = readFile(new File(nS.getFilePath()));
 			if(newTLE == null){
 				return null;
 			}
@@ -244,4 +216,149 @@ public class WorSaverLoaderPlugin extends TLEPlugin {
 		return l;
 	}
 	
+	private TLEData readFile(File f){
+		
+		if(f.getName().endsWith(".obj")){
+			ObjModelImporter mI = new ObjModelImporter();
+			mI.read(f);
+		 	
+		 	MeshView[] models = mI.getImport();
+		 	mI.close();
+		 	
+		 	if(models != null && models.length > 0){ 
+		 		Group gNode = new Group();
+		 		gNode.getChildren().addAll(models);
+		 		TLEData t = new TLEData(f.getName(), "obj1", TLEType.MESH);
+		 		t.setFilePath(f.getAbsolutePath());
+		 		t.setMesh(gNode);
+		 		if(!checkIfLoaded(t)){
+		 			return t;
+		 		}
+		 		else{
+		 			System.out.println("File already loaded");
+		 		}
+		 		
+		 	}
+		 	
+		}
+		else if(f.getName().endsWith(".3ds")){
+			TdsModelImporter mI = new TdsModelImporter();
+			mI.read(f);
+		 	
+		 	Node[] models = mI.getImport();
+		 	mI.close();
+		 	
+		 	if(models != null && models.length > 0){ 
+		 		Group gNode = new Group();
+		 		gNode.getChildren().addAll(models);
+		 		
+		 		TLEData t = new TLEData(f.getName(), "3ds1", TLEType.MESH);
+		 		t.setFilePath(f.getAbsolutePath());
+		 		t.setMesh(gNode);
+		 		if(!checkIfLoaded(t)){
+		 			return t;
+		 		}
+		 		else{
+		 			System.out.println("File already loaded");
+		 		}
+		 	}
+		 	
+		}
+		else if(f.getName().endsWith(".dae") || f.getName().endsWith(".zae")){
+			ColModelImporter mI = new ColModelImporter();
+			mI.read(f);
+		 	
+		 	Node[] models = mI.getImport();
+		 	mI.close();
+		 	
+		 	if(models != null && models.length > 0){ 
+		 		Group gNode = new Group();
+		 		gNode.getChildren().addAll(models);
+		 		
+		 		TLEData t = new TLEData(f.getName(), "d/zae1", TLEType.MESH);
+		 		t.setFilePath(f.getAbsolutePath());
+		 		t.setMesh(gNode);
+		 		if(!checkIfLoaded(t)){
+		 			return t;
+		 		}
+		 		else{
+		 			System.out.println("File already loaded");
+		 		}
+		 	}
+		}
+		else if(f.getName().endsWith(".fxml")){
+			FxmlModelImporter mI = new FxmlModelImporter();
+			mI.read(f);
+		 	
+		 	Node models = mI.getImport();
+		 	mI.close();
+		 	
+		 	TLEData t = new TLEData(f.getName(), "fxml1", TLEType.MESH);
+		 	t.setFilePath(f.getAbsolutePath());
+	 		t.setMesh(models);
+	 		if(!checkIfLoaded(t)){
+	 			return t;
+	 		}
+	 		else{
+	 			System.out.println("File already loaded");
+	 		}
+		}
+		else if(f.getName().endsWith(".stl")){
+			StlMeshImporter mI = new StlMeshImporter();
+			mI.read(f);
+		 	
+		 	TriangleMesh models = mI.getImport();
+		 	mI.close();
+		 	MeshView mV = new MeshView(models);
+		 	
+		 	TLEData t = new TLEData(f.getName(), "stl1", TLEType.MESH);
+		 	t.setFilePath(f.getAbsolutePath());
+	 		t.setMesh(mV);
+	 		if(!checkIfLoaded(t)){
+	 			return t;
+	 		}
+	 		else{
+	 			System.out.println("File already loaded");
+	 		}
+		}
+		else if(f.getName().endsWith(".x3d") || f.getName().endsWith(".x3dz")){
+			X3dModelImporter mI = new X3dModelImporter();
+			mI.read(f);
+		 	
+		 	Node[] models = mI.getImport();
+		 	mI.close();
+		 	
+		 	if(models != null && models.length > 0){ 
+		 		Group gNode = new Group();
+		 		gNode.getChildren().addAll(models);
+		 		
+		 		TLEData t = new TLEData(f.getName(), "x3d/z1", TLEType.MESH);
+		 		t.setFilePath(f.getAbsolutePath());
+		 		t.setMesh(gNode);
+		 		if(!checkIfLoaded(t)){
+		 			return t;
+		 		}
+		 		else{
+		 			System.out.println("File already loaded");
+		 		}
+		 	}
+		}
+	 	
+		return null;
+	}
+	
+	/**
+	 * Currently not implemented as Meshes are not either cloned or inherited, so is reloaded.
+	 * @param t Model to be checked.
+	 * @return Is the model t already loaded?
+	 */
+	public boolean checkIfLoaded(TLEData t){
+		/*ArrayList<TLEData> m = mainPlMan.getWorld().getData().get("Meshes");
+		for(int i = 0; i < m.size(); i++){
+			if(m.get(i).getName().equals(t.getName())){
+				return true;
+			}
+		}*/
+		return false;
+	}
 }

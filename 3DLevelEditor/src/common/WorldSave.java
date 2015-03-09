@@ -1,10 +1,8 @@
-package plugins;
+package common;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import common.TLEData;
 
 /**
  * WorldSave is the version of World to be saved.
