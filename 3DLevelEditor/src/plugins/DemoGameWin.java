@@ -82,7 +82,6 @@ public class DemoGameWin {
         
         if(tLev != null){
         	root.getChildren().addAll(tLev);
-        	root.getChildren().add(new Box(1,1,1));
         }       	
         root.getChildren().add(globalLighting);
         for(int i = 0; i < tLev.size(); i++){

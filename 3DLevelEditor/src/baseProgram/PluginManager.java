@@ -23,6 +23,8 @@ public class PluginManager {
 	private World thisWorld;
 	private ArrayList<String> pluginNames;
 	private HashMap<String, TLEPlugin> pluginList;
+	private String pluginFolder;
+	private String pluginFolder2;
 	
 	/**
 	 * Constructor for plugin manager, remembers parameters and creates a HashMap for plugins to be added to.
@@ -34,6 +36,8 @@ public class PluginManager {
 		thisWindow = mW;
 		thisWorld = w;
 		pluginList = new HashMap<String, TLEPlugin>();
+		pluginFolder = "bin/plugins";
+		pluginFolder2 = "plugins";
 	}
 	
 	/**
@@ -54,12 +58,16 @@ public class PluginManager {
 		}
 		
 	}
-	
-	String pluginFolder = "src/plugins/";
+
 	
 	private ArrayList<TLEPlugin> getPlugins() {
 		ArrayList<TLEPlugin> plugins = new ArrayList<TLEPlugin>();
 		File[] list = new File(pluginFolder).listFiles();
+		
+		if(list == null){
+			pluginFolder = pluginFolder2;
+			list = new File(pluginFolder).listFiles();
+		}
 		
 		for(int i = 0; i < list.length; i++) {
 			
