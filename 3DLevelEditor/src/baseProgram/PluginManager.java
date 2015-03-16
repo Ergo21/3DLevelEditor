@@ -36,8 +36,8 @@ public class PluginManager {
 		thisWindow = mW;
 		thisWorld = w;
 		pluginList = new HashMap<String, TLEPlugin>();
-		pluginFolder = "bin/plugins";
-		pluginFolder2 = "plugins";
+		pluginFolder = "src/plugins/";
+		pluginFolder2 = "plugins/";
 	}
 	
 	/**

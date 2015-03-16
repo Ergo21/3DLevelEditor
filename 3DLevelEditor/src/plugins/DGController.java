@@ -1,5 +1,7 @@
 package plugins;
 
+import java.util.ArrayList;
+
 import common.*;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -7,6 +9,7 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -22,6 +25,8 @@ public class DGController{
 	private PerspectiveCamera camera;
 	private Stage stage;
 	private Group root;
+	private ArrayList<TLEData> curLev;
+	private DGPhysics levPhysics;
 	
 	private Rotate rotateX;
 	private Rotate rotateY;
@@ -41,6 +46,8 @@ public class DGController{
 		stage = mainWin.getStage();
 		
 		root = mainWin.getRoot();
+		curLev = mainWin.getData().get("CurrentLevel");
+		levPhysics = new DGPhysics();
 		
 		rotateX = new Rotate(0, Rotate.X_AXIS);
         rotateY = new Rotate(0, Rotate.Y_AXIS);
@@ -55,22 +62,38 @@ public class DGController{
         switch(ke.getCode()){
         	case W:
         	{
-        		camera.getTransforms().add(new Translate(0, 0, 1));
+        		Translate t = new Translate(0, 0, 1);
+        		camera.getTransforms().add(t);
+        		if(levPhysics.thiCollideAny((Node)camera, curLev)){
+        			camera.getTransforms().remove(t);
+        		}
            	}
         	break;
         	case A:
         	{
-        		camera.getTransforms().add(new Translate(-1, 0, 0));
+        		Translate t = new Translate(-1, 0, 0);
+        		camera.getTransforms().add(t);
+        		if(levPhysics.thiCollideAny((Node)camera, curLev)){
+        			camera.getTransforms().remove(t);
+        		}
         	}
         	break;
         	case S:
         	{
-        		camera.getTransforms().add(new Translate(0, 0, -1));
+        		Translate t = new Translate(0, 0, -1);
+        		camera.getTransforms().add(t);
+        		if(levPhysics.thiCollideAny((Node)camera, curLev)){
+        			camera.getTransforms().remove(t);
+        		}
         	}
         	break;
         	case D:
         	{
-        		camera.getTransforms().add(new Translate(1, 0, 0));
+        		Translate t = new Translate(1, 0, 0);
+        		camera.getTransforms().add(t);
+        		if(levPhysics.thiCollideAny((Node)camera, curLev)){
+        			camera.getTransforms().remove(t);
+        		}
         	}
         	break;
 		default:
