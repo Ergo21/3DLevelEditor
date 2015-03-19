@@ -24,6 +24,7 @@ public class World {
 	private HashMap<String, ArrayList<TLEData>> worldData;
 	private HashMap<String, Runnable> resetWindows;
 	private Function<File, TLEData> modLoad;
+	private Function<TLEData, TLEData> cloneTLE;
 	
 	public World(MainWindow mW){
 		rootWindow = mW;
@@ -130,6 +131,20 @@ public class World {
 		
 		if(modLoad != null){
 			t = modLoad.apply(new File(f));
+		}
+		
+		return t;
+	}
+	
+	public void setCloneTLE(Function<TLEData, TLEData> f){
+		cloneTLE = f;
+	}
+	
+	public TLEData runCloneTLE(TLEData oT){
+		TLEData t = null;
+		
+		if(cloneTLE != null){
+			t = cloneTLE.apply(oT);
 		}
 		
 		return t;

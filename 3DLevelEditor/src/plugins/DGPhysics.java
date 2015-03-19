@@ -2,15 +2,22 @@ package plugins;
 
 import java.util.ArrayList;
 
+import common.Global.TLEType;
 import common.TLEData;
-
 import javafx.scene.Node;
+import javafx.scene.PerspectiveCamera;
 
 
 public class DGPhysics{
 	
+	private ArrayList<TLEType> antiGravity;
+	
 	public DGPhysics(){
-		
+		antiGravity = new ArrayList<TLEType>();
+		antiGravity.add(TLEType.ACTIVATOR);
+		antiGravity.add(TLEType.CUBE);
+		antiGravity.add(TLEType.LIGHT);
+		antiGravity.add(TLEType.SOUND);
 	}
 	
 	public boolean thiCollideAny(Node tar, ArrayList<TLEData> lis){
@@ -50,5 +57,33 @@ public class DGPhysics{
 		}
 		
 		return false;
+	}
+	
+	public void applyPhysics(ArrayList<TLEData> lis, PerspectiveCamera player){
+		System.out.println("Physics applied");
+		player.setTranslateY(player.getTranslateY() + 1);
+		boolean coll = thiCollideAny(player, lis);
+		if(coll){
+			player.setTranslateY(player.getTranslateY() - 1);
+		}
+		
+		for(int i = 0; i < lis.size(); i++){
+			TLEType temT = lis.get(i).getType();
+			if(!antiGravity.contains(temT)){
+				lis.get(i).setTranslateY(lis.get(i).getTranslateY() + 1);
+				for(int j = 0; j < lis.size(); j++){
+					if(i != j){
+						if(theColliding(lis.get(i), lis.get(j))){
+							lis.get(i).setTranslateY(lis.get(i).getTranslateY() - 1);
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void gravity(){
+		
 	}
 }

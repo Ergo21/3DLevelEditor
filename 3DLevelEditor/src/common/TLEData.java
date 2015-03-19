@@ -1,7 +1,6 @@
 package common;
 
 import common.Global.TLEType;
-
 import javafx.scene.Group;
 import javafx.scene.LightBase;
 import javafx.scene.Node;
@@ -27,8 +26,8 @@ public class TLEData extends Group {
 		super();
 		name = n;
 		id = i;
-		mesh = null;
 		type = t;
+		mesh = null;
 		if(type != TLEType.MESH && type != TLEType.SOUND){
 			filePath = "NA";
 		}

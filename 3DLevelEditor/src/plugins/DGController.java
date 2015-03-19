@@ -96,6 +96,16 @@ public class DGController{
         		}
         	}
         	break;
+        	case G:
+        	{
+        		levPhysics.applyPhysics(curLev, camera);
+        	}
+        	break;
+        	case SPACE:
+        	{
+        		camera.setTranslateY(camera.getTranslateY() - 2);
+        	}
+        	break;
 		default:
 			break;
         }
