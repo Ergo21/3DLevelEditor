@@ -4,8 +4,12 @@ import java.util.ArrayList;
 
 import common.Global.TLEType;
 import common.TLEData;
+import javafx.collections.ObservableList;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
+import javafx.scene.shape.Box;
+import javafx.scene.transform.Transform;
 
 
 public class DGPhysics{
@@ -31,6 +35,20 @@ public class DGPhysics{
 		}
 		
 		return false;
+	}
+	
+	public TLEData thiCollideType(Node tar, ArrayList<TLEData> lis, TLEType typ){
+		for(int i = 0; i < lis.size(); i++){
+			if(lis.get(i) != tar){
+				if(theColliding(tar, lis.get(i))){
+					if(lis.get(i).getType() == typ){
+						return lis.get(i);
+					}
+				}
+			}
+		}
+		
+		return null;
 	}
 	
 	public boolean theColliding(Node mover, Node test){
@@ -59,12 +77,14 @@ public class DGPhysics{
 		return false;
 	}
 	
-	public void applyPhysics(ArrayList<TLEData> lis, PerspectiveCamera player){
+	public void applyPhysics(ArrayList<TLEData> lis, PerspectiveCamera player, Box aB){
 		System.out.println("Physics applied");
 		player.setTranslateY(player.getTranslateY() + 1);
+		aB.setTranslateY(aB.getTranslateY() + 1);
 		boolean coll = thiCollideAny(player, lis);
 		if(coll){
 			player.setTranslateY(player.getTranslateY() - 1);
+			aB.setTranslateY(aB.getTranslateY() - 1);
 		}
 		
 		for(int i = 0; i < lis.size(); i++){
@@ -85,5 +105,19 @@ public class DGPhysics{
 	
 	public void gravity(){
 		
+	}
+	
+	public ArrayList<Transform> createInverse(ObservableList<Transform> lis){
+		ArrayList<Transform> inv = new ArrayList<Transform>();
+		
+		for(int i = 0; i < lis.size(); i++){
+			try{
+				Transform t = lis.get(i).createInverse();
+				inv.add(t);
+			}
+			catch(Exception e){};
+		}
+		
+		return inv;
 	}
 }

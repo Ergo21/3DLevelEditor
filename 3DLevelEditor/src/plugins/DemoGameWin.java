@@ -48,6 +48,8 @@ public class DemoGameWin {
 		
 		camera = new PerspectiveCamera(true);
 		
+		
+		
 		litTypes = new ArrayList<TLEType>();
         litTypes.add(TLEType.ACTIVATOR);
         litTypes.add(TLEType.LIGHT);

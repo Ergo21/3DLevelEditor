@@ -3,12 +3,15 @@ package plugins;
 import java.util.ArrayList;
 
 import common.*;
+import common.Global.TLEType;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
@@ -33,6 +36,9 @@ public class DGController{
 
     private double curMX = 0;
     private double curMY = 0;
+    
+    private Box actiBox;
+    private int aBDis;
 	
 	
 	/**
@@ -51,6 +57,14 @@ public class DGController{
 		
 		rotateX = new Rotate(0, Rotate.X_AXIS);
         rotateY = new Rotate(0, Rotate.Y_AXIS);
+        
+		actiBox = new Box(0.5,0.5,0.5);
+		actiBox.setMaterial(new PhongMaterial(Color.WHITE));
+		aBDis = 10;
+		placeActiBox();
+		
+		root.getChildren().add(actiBox);
+		mainWin.getGLight().getScope().add(actiBox);
 	}
 	
 	/**
@@ -96,19 +110,31 @@ public class DGController{
         		}
         	}
         	break;
+        	case E:
+        	{
+        		TLEData acti = levPhysics.thiCollideType(actiBox, curLev, TLEType.ACTIVATOR);
+        		if(acti != null && acti.getType() == TLEType.ACTIVATOR){
+        			//runActivator(acti.getActivator());
+        			System.out.println("Run activator: " + acti.getActivator());
+        		}
+        	}
+        	break;
         	case G:
         	{
-        		levPhysics.applyPhysics(curLev, camera);
+        		levPhysics.applyPhysics(curLev, camera, actiBox);
         	}
         	break;
         	case SPACE:
         	{
         		camera.setTranslateY(camera.getTranslateY() - 2);
+        		actiBox.setTranslateY(actiBox.getTranslateY() - 2);
         	}
         	break;
 		default:
 			break;
         }
+     
+        placeActiBox();
     }
     
     public void handleKeyboardRelease(KeyEvent ke){
@@ -140,6 +166,9 @@ public class DGController{
 		
         curMX = me.getSceneX();
     	curMY = me.getSceneY();
+    	
+    	
+    	placeActiBox();
     }
     
 	
@@ -162,5 +191,17 @@ public class DGController{
     		}
     		
     	}   
+    }
+    
+    
+    public void placeActiBox(){
+    	actiBox.getTransforms().setAll(camera.getTransforms());
+    	
+    	for(int i = 0; i < aBDis; i++){
+    		if(levPhysics.thiCollideAny(actiBox, curLev)){
+    			break;
+    		}
+    		actiBox.getTransforms().add(new Translate(0,0,1));
+    	}
     }
 }
