@@ -28,6 +28,7 @@ public class WorldTreeWinPlugin extends TLEPlugin {
 		mainPlMan.getMWin().addMenuBarItem(event -> ygg.createNewLevel(), "File", "New", "Level");
 		mainPlMan.getMWin().addMenuBarItem(event -> showYggdrasil(), "Plugins", "Data Tree", "New Tree Windows");
 		mainPlMan.getMWin().addMenuBarItem(event -> ygg.ragnarok(), "File", "Delete", "Delete empty levels");
+		mainPlMan.getAutoRunners().add(()->showYggdrasil());
 	}
 	
 	/**

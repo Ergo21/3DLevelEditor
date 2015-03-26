@@ -26,6 +26,7 @@ public class Window3DPlugin extends TLEPlugin {
 	public void install(PluginManager pM) {
 		mainPlMan = pM;
 		mainPlMan.getMWin().addMenuBarItem(event -> createWindow(), "Plugins", "3D Window", "New Window");
+		mainPlMan.getAutoRunners().add(()->createWindow());
 	}
 	
 	/**

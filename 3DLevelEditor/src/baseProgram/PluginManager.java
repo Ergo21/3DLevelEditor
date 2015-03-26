@@ -25,6 +25,8 @@ public class PluginManager {
 	private HashMap<String, TLEPlugin> pluginList;
 	private String pluginFolder;
 	private String pluginFolder2;
+	private ArrayList<Runnable> autoRunners;
+	private boolean autoRun;
 	
 	/**
 	 * Constructor for plugin manager, remembers parameters and creates a HashMap for plugins to be added to.
@@ -38,6 +40,8 @@ public class PluginManager {
 		pluginList = new HashMap<String, TLEPlugin>();
 		pluginFolder = "src/plugins/";
 		pluginFolder2 = "plugins/";
+		autoRun = true;
+		autoRunners = new ArrayList<Runnable>();
 	}
 	
 	/**
@@ -55,6 +59,14 @@ public class PluginManager {
 		for(int i = 0; i < plugins.size(); i++) {
 			pluginNames.add(plugins.get(i).getName());
 			pluginList.put(plugins.get(i).getName(), plugins.get(i));
+		}
+		
+		if(autoRunners.size() <= 0 || !autoRun){
+			return;
+		}
+		
+		for(int i = 0; i < autoRunners.size(); i++){
+			autoRunners.get(i).run();
 		}
 		
 	}
@@ -163,6 +175,10 @@ public class PluginManager {
 	 */
 	public World getWorld() {
 		return thisWorld;
+	}
+	
+	public ArrayList<Runnable> getAutoRunners(){
+		return autoRunners;
 	}
 
 }
