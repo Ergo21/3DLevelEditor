@@ -6,7 +6,6 @@ import java.util.HashMap;
 import common.TLEData;
 import common.Global.TLEType;
 import javafx.scene.AmbientLight;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
@@ -14,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
@@ -116,6 +114,10 @@ public class DemoGameWin {
         return new Group(subScene);
     }
 	
+	/**
+	 * Changes level being played to the given level.
+	 * @param nL New level's name.
+	 */
 	public void changeLevel(String nL){
 		ArrayList<TLEData> tLev = data.get(nL);
 		

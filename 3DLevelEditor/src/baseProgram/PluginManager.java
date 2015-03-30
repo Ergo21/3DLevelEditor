@@ -177,6 +177,10 @@ public class PluginManager {
 		return thisWorld;
 	}
 	
+	/**
+	 * Returns list of functions that should be automatically run after loading.
+	 * @return Functions to run.
+	 */
 	public ArrayList<Runnable> getAutoRunners(){
 		return autoRunners;
 	}

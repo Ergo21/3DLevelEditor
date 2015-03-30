@@ -249,12 +249,15 @@ public class WorldTreeWin {
         t1.setColour(Color.ORANGE);
         newLev.add(t1);
         
-        Box c = new Box(100, 1, 100);
+        Box c = new Box(1, 1, 1);
 		c.setMaterial(new PhongMaterial(Color.WHITE));
 		c.setTranslateX(-10);
 		c.setTranslateY(10);
+		c.setScaleX(100);
+		c.setScaleZ(100);
         TLEData t = new TLEData("Floor", "1", TLEType.CUBE);
         t.setMesh(c);
+        t.setColour(Color.WHITE);
         newLev.add(t);
         
 		pMRef.getWorld().getData().put("Level" + levNo, newLev);
@@ -330,6 +333,11 @@ public class WorldTreeWin {
     	}
     }
     
+    /**
+     * Creates a TreeItem that can be clicked on. 
+     * @author Ergo21
+     *
+     */
     public class TabItem{
     	private StringProperty itName;
     	private StringProperty itID;

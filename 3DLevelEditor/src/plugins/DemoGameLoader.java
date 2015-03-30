@@ -32,6 +32,11 @@ import common.TLEData;
 import common.WorldSave;
 import common.Global.TLEType;
 
+/**
+ * Loads data for the DemoGame.
+ * @author Ergo21
+ *
+ */
 public class DemoGameLoader{
 	
 	public DemoGameLoader(){
@@ -39,8 +44,10 @@ public class DemoGameLoader{
 	}
 	
 
+
 	/**
-	 * Loads chosen .wsf save into World.
+	 * Loads chosen .wsf save and sets World to it.
+	 * @return File translated.
 	 */
 	public HashMap<String, ArrayList<TLEData>> loadWorldObj(){
 		Stage stage = new Stage();
@@ -210,6 +217,11 @@ public class DemoGameLoader{
 		return neTrans;
 	}
 	
+	/**
+	 * Creates light based on given colours.
+	 * @param col Colour of light.
+	 * @return New PointLight
+	 */
 	public LightBase makeLight(HashMap<String, Double> col){
 		PointLight l = new PointLight();
 		l.setColor(new Color(col.get("red"),col.get("green"), col.get("blue"), col.get("alpha")));

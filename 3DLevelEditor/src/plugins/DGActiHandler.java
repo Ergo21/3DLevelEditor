@@ -2,17 +2,23 @@ package plugins;
 
 import common.TLEData;
 
-
+/**
+ * In charge of reading activator scripts and acting upon them.
+ * @author Ergo21
+ *
+ */
 public class DGActiHandler{
 	
 	private DemoGameWin mainWin;
-	private DGController mainCon;
 	
-	public DGActiHandler(DemoGameWin mw, DGController mc){
+	public DGActiHandler(DemoGameWin mw){
 		mainWin = mw;
-		mainCon = mc;
 	}
 	
+	/**
+	 * Enacts given Activator script, if valid.
+	 * @param acti Activator script.
+	 */
 	public void runActivator(String acti){
 		String newActi = acti.toLowerCase();
 		newActi = newActi.replaceAll("\\s+", "");
@@ -71,6 +77,7 @@ public class DGActiHandler{
 				if(mainWin.getCurLev().get(i).getID().equals(val)){
 					TLEData rem = mainWin.getCurLev().remove(i);
 					mainWin.getRoot().getChildren().remove(rem);
+					break;
 				}
 			}
 			

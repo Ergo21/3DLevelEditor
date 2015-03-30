@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import common.Global.TLEType;
 import common.TLEData;
 import javafx.collections.ObservableList;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Transform;
 
-
+/**
+ * Handles in game physics. Currently only handles basic collision and on demand gravity.
+ * @author Ergo21
+ *
+ */
 public class DGPhysics{
 	
 	private ArrayList<TLEType> antiGravity;

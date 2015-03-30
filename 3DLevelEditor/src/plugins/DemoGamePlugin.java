@@ -38,6 +38,10 @@ public class DemoGamePlugin extends TLEPlugin {
 		thiDem.pluginStart();
 	}
 	
+	/**
+	 * Creates copy of the world to play in so original is not changed.
+	 * @return Clone of World
+	 */
 	public HashMap<String, ArrayList<TLEData>> createLocalWorld(){
 		HashMap<String, ArrayList<TLEData>> oriWorld = mainPlMan.getWorld().getData();
 		HashMap<String, ArrayList<TLEData>> cloWorld = new HashMap<String, ArrayList<TLEData>>();

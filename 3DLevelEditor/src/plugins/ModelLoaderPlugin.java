@@ -22,7 +22,11 @@ import common.TLEData;
 import common.TLEPlugin;
 import common.Global.TLEType;
 
-
+/**
+ * Loads models into world.
+ * @author Ergo21
+ *
+ */
 public class ModelLoaderPlugin extends TLEPlugin{
 	private File currentFile;
 	

@@ -56,7 +56,7 @@ public class DGController{
 		root = mainWin.getRoot();
 		curLev = mainWin.getCurLev();
 		levPhysics = new DGPhysics();
-		levActivities = new DGActiHandler(mainWin, this);
+		levActivities = new DGActiHandler(mainWin);
 		
 		rotateX = new Rotate(0, Rotate.X_AXIS);
         rotateY = new Rotate(0, Rotate.Y_AXIS);
@@ -207,7 +207,9 @@ public class DGController{
     	}   
     }
     
-    
+    /**
+     * Sets the Activator box in front of player.
+     */
     public void placeActiBox(){
     	actiBox.getTransforms().setAll(camera.getTransforms());
     	

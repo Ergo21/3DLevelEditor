@@ -13,7 +13,7 @@ import baseProgram.PluginManager;
 import common.*;
 
 /**
- * This plugin creates a simple game to test the current World.
+ * This plugin clones TLEData, for use in DemoGame etc.
  * @author Ergo21
  *
  */
@@ -40,7 +40,11 @@ public class ClonerPlugin extends TLEPlugin {
 		mainPlMan.getWorld().setCloneTLE(cloneTLEFunc);
 	}
 	
-	
+	/**
+	 * Clones passed TLEData and returns clone.
+	 * @param t TLEData to be cloned.
+	 * @return Clone of TLEData
+	 */
 	public TLEData cloneTLEData(TLEData t){
 		TLEData clone = new TLEData(t.getName(), t.getID(), t.getType());
 		

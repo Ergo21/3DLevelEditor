@@ -8,6 +8,11 @@ import common.TLEData;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Main class for using DemoGame outside the Level Editor.
+ * @author Ergo21
+ *
+ */
 public class DemoGameMain extends Application{
 
 	public static void main(String[] args) {

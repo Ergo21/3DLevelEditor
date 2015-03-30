@@ -336,12 +336,12 @@ public class W3DController{
     			}
     			if(n != null && n != root){
     				selected.add(n);
-            		selectObject();
+            		createTarBox();
     			}			
     		}
     		else{
             	selected.add((Node)me.getTarget());
-        		selectObject();
+        		createTarBox();
     		}
     	}    	
     	else if(me.getButton() == MouseButton.PRIMARY && me.getTarget() == subScene && !me.isControlDown()){ 		
@@ -359,10 +359,9 @@ public class W3DController{
     
     
     /**
-     * Adds object b to selection.
-     * @param b Added to selection
+     * Creates box that encompasses newly selected item.
      */
-    public void selectObject(){
+    public void createTarBox(){
     	
     	Point3D p = new Point3D(0, 0, 0);
     	

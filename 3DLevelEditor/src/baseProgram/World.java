@@ -11,6 +11,7 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 import common.*;
 import common.Global.TLEType;
 
@@ -70,12 +71,15 @@ public class World {
         cC.add(l1);
       
         
-        Box c = new Box(100, 1, 100);
+        Box c = new Box(1, 1, 1);
 		c.setMaterial(new PhongMaterial(Color.WHITE));
 		c.setTranslateX(-10);
 		c.setTranslateY(10);
+		c.setScaleX(100);
+		c.setScaleZ(100);
         TLEData t = new TLEData("Floor", getNewID(), TLEType.CUBE);
         t.setMesh(c);
+        t.setColour(Color.WHITE);
         cC.add(t);
         
         rootWindow.addMenuBarItem(event -> clearLevel(), "File", "Delete Current Level");
@@ -95,6 +99,10 @@ public class World {
 		return worldData; 
 	}
 	
+	/**
+	 * Returns unique id for the current level.
+	 * @return Unique ID
+	 */
 	public String getNewID(){
 		ArrayList<TLEData> curLev = worldData.get("CurrentLevel");
 		
@@ -115,22 +123,23 @@ public class World {
 		return Integer.toString(id);
 	}
 	
+	/**
+	 * Deletes everything in the level.
+	 */
 	public void clearLevel(){
 		worldData.get("CurrentLevel").clear();
-		Box c = new Box(100, 1, 100);
+		Box c = new Box(1, 1, 1);
 		c.setMaterial(new PhongMaterial(Color.WHITE));
 		c.setTranslateX(-10);
+		c.getTransforms().add(new Translate(0, 10, 0));
 		c.setTranslateY(10);
+		c.setScaleX(100);
+		c.setScaleZ(100);
         TLEData t = new TLEData("Floor", getNewID(), TLEType.CUBE);
         t.setMesh(c);
+        t.setColour(Color.WHITE);
         worldData.get("CurrentLevel").add(t);
-        
-        c = new Box(1, 1, 1);
-		c.setMaterial(new PhongMaterial(Color.ORANGE));
-		c.setTranslateX(-10);
-        t = new TLEData("Cube 1", getNewID(), TLEType.CUBE);
-        t.setMesh(c);
-        worldData.get("CurrentLevel").add(t);
+
         runResetWindow();
 	}
 	
@@ -176,10 +185,19 @@ public class World {
 		return t;
 	}
 	
+	/**
+	 * Sets the TLEData cloner.
+	 * @param f The Clone function.
+	 */
 	public void setCloneTLE(Function<TLEData, TLEData> f){
 		cloneTLE = f;
 	}
 	
+	/**
+	 * Clones and returns clone of the given TLEData.
+	 * @param oT Original TLEData
+	 * @return Clone of TLEData
+	 */
 	public TLEData runCloneTLE(TLEData oT){
 		TLEData t = null;
 		
