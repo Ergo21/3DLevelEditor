@@ -100,7 +100,30 @@ public class DemoGameWin {
         
 
         return new Group(subScene);
-    }    
+    }
+	
+	public void changeLevel(String nL){
+		ArrayList<TLEData> tLev = data.get(nL);
+		
+		if(tLev == null){
+			return;
+		}
+		
+		data.put("CurrentLevel", tLev);
+		
+		root.getChildren().clear();
+		root.getChildren().addAll(tLev);
+		
+		globalLighting.getScope().clear();
+		for(int i = 0; i < tLev.size(); i++){
+        	if(litTypes.contains(tLev.get(i).getType())){
+        		globalLighting.getScope().add(tLev.get(i));
+        	}
+        }
+		root.getChildren().add(globalLighting);
+		
+		control.resetLevel();
+	}
 	
 	public HashMap<String,ArrayList<TLEData>> getData(){
 		return data;

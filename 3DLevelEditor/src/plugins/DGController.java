@@ -30,6 +30,7 @@ public class DGController{
 	private Group root;
 	private ArrayList<TLEData> curLev;
 	private DGPhysics levPhysics;
+	private DGActiHandler levActivities;
 	
 	private Rotate rotateX;
 	private Rotate rotateY;
@@ -54,6 +55,7 @@ public class DGController{
 		root = mainWin.getRoot();
 		curLev = mainWin.getData().get("CurrentLevel");
 		levPhysics = new DGPhysics();
+		levActivities = new DGActiHandler(mainWin);
 		
 		rotateX = new Rotate(0, Rotate.X_AXIS);
         rotateY = new Rotate(0, Rotate.Y_AXIS);
@@ -64,6 +66,17 @@ public class DGController{
 		placeActiBox();
 		
 		root.getChildren().add(actiBox);
+		mainWin.getGLight().getScope().add(actiBox);
+	}
+	
+	public void resetLevel(){
+		curLev = mainWin.getData().get("CurrentLevel");
+		rotateX.setAngle(0);
+    	rotateY.setAngle(0);
+    	camera.getTransforms().clear();
+    	camera.getTransforms().add(new Translate(0, 0, -10));
+    	placeActiBox();
+    	root.getChildren().add(actiBox);
 		mainWin.getGLight().getScope().add(actiBox);
 	}
 	
@@ -114,8 +127,7 @@ public class DGController{
         	{
         		TLEData acti = levPhysics.thiCollideType(actiBox, curLev, TLEType.ACTIVATOR);
         		if(acti != null && acti.getType() == TLEType.ACTIVATOR){
-        			//runActivator(acti.getActivator());
-        			System.out.println("Run activator: " + acti.getActivator());
+        			levActivities.runActivator(acti.getActivator());
         		}
         	}
         	break;
