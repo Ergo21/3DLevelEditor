@@ -129,6 +129,10 @@ public class DemoGameWin {
 		return data;
 	}
 	
+	public ArrayList<TLEData> getCurLev(){
+		return data.get("CurrentLevel");
+	}
+	
 	public PerspectiveCamera getCamera(){
 		return camera;
 	}

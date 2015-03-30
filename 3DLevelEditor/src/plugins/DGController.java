@@ -53,9 +53,9 @@ public class DGController{
 		stage = mainWin.getStage();
 		
 		root = mainWin.getRoot();
-		curLev = mainWin.getData().get("CurrentLevel");
+		curLev = mainWin.getCurLev();
 		levPhysics = new DGPhysics();
-		levActivities = new DGActiHandler(mainWin);
+		levActivities = new DGActiHandler(mainWin, this);
 		
 		rotateX = new Rotate(0, Rotate.X_AXIS);
         rotateY = new Rotate(0, Rotate.Y_AXIS);
@@ -70,7 +70,7 @@ public class DGController{
 	}
 	
 	public void resetLevel(){
-		curLev = mainWin.getData().get("CurrentLevel");
+		curLev = mainWin.getCurLev();
 		rotateX.setAngle(0);
     	rotateY.setAngle(0);
     	camera.getTransforms().clear();

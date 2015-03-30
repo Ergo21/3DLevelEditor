@@ -1,12 +1,16 @@
 package plugins;
 
+import common.TLEData;
+
 
 public class DGActiHandler{
 	
 	private DemoGameWin mainWin;
+	private DGController mainCon;
 	
-	public DGActiHandler(DemoGameWin mw){
+	public DGActiHandler(DemoGameWin mw, DGController mc){
 		mainWin = mw;
+		mainCon = mc;
 	}
 	
 	public void runActivator(String acti){
@@ -55,11 +59,21 @@ public class DGActiHandler{
 	private void performAction(String action){
 		String command = action.substring(0, action.indexOf('('));
 		System.out.println(command);
+		String val = action.substring(action.indexOf('(') + 1, action.indexOf(')'));
+		System.out.println(val);
 		switch(command){
-		case "setlevel":{
-			String val = action.substring(action.indexOf('(') + 1, action.indexOf(')'));
-			System.out.println(val);
+		case "setlevel":{		
 			mainWin.changeLevel("Level" + val);
+		}
+		break;
+		case "remove": {
+			for(int i = 0; i < mainWin.getCurLev().size(); i++){
+				if(mainWin.getCurLev().get(i).getID().equals(val)){
+					TLEData rem = mainWin.getCurLev().remove(i);
+					mainWin.getRoot().getChildren().remove(rem);
+				}
+			}
+			
 		}
 		break;
 		}
