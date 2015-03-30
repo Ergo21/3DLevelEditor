@@ -207,7 +207,7 @@ public class NItemWin {
 			}
 			break;
 			case "Activator":{
-				TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, TLEType.ACTIVATOR);
+				TLEData newItem = new TLEData(nameField.getText(), pMRef.getWorld().getNewID(), TLEType.ACTIVATOR);
 				Box actiMesh = new Box(1, 1, 1);
 	        	actiMesh.setMaterial(new PhongMaterial(Color.RED));
 	        	actiMesh.getTransforms().add(new Scale(2, 2, 2));
@@ -242,7 +242,7 @@ public class NItemWin {
 							" B: " + blue +
 							" A: " + alpha);
 					
-					TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, TLEType.CUBE);
+					TLEData newItem = new TLEData(nameField.getText(), pMRef.getWorld().getNewID(), TLEType.CUBE);
 					Box cubeMesh = new Box(1, 1, 1);
 					Color c = new Color(red, green, blue, alpha);
 		        	cubeMesh.setMaterial(new PhongMaterial(c));
@@ -279,7 +279,7 @@ public class NItemWin {
 							" B: " + blue +
 							" A: " + alpha);
 					
-					TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, TLEType.LIGHT);
+					TLEData newItem = new TLEData(nameField.getText(), pMRef.getWorld().getNewID(), TLEType.LIGHT);
 					newItem.setLight(new PointLight(
 									new Color(red, green, blue, alpha)));
 					newItem.setColour(new Color(red, green, blue, alpha));
@@ -298,7 +298,7 @@ public class NItemWin {
 			}
 			break;
 			case "Sound":{
-				TLEData newItem = new TLEData(nameField.getText(), nameField.getText()+1, TLEType.SOUND);
+				TLEData newItem = new TLEData(nameField.getText(), pMRef.getWorld().getNewID(), TLEType.SOUND);
 				newItem.setFilePath(filePath.getText());
 				Box soundMesh = new Box(1,1,1);
 				soundMesh.setMaterial(new PhongMaterial(Color.AQUAMARINE));

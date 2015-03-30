@@ -30,6 +30,11 @@ public class World {
 		rootWindow = mW;
 		worldData = new HashMap<String, ArrayList<TLEData>>();
 		resetWindows = new HashMap<String, Runnable>();
+		ArrayList<TLEData> cC = new ArrayList<TLEData>();
+
+		worldData.put("Level1", cC);
+        worldData.put("CurrentLevel", cC);
+        worldData.put("Meshes", new ArrayList<TLEData>());
 
         Box c2 = new Box(1, 1,1);
         c2.setMaterial(new PhongMaterial(Color.BLUE));
@@ -38,16 +43,17 @@ public class World {
         c3.getTransforms().add(new Scale(5,5,5));
         c3.setMaterial(new PhongMaterial(Color.RED));
         
-        ArrayList<TLEData> cC = new ArrayList<TLEData>();
-        TLEData t2 = new TLEData("Cube 1", "1", TLEType.CUBE);
+        
+        TLEData t2 = new TLEData("Cube 1", getNewID(), TLEType.CUBE);
         t2.setTranslateX(2);
         t2.setMesh(c2);
         t2.setColour(Color.BLUE);
-        TLEData t3 = new TLEData("Cube 2", "2", TLEType.CUBE);
+        cC.add(t2);
+        
+        TLEData t3 = new TLEData("Cube 2", getNewID(), TLEType.CUBE);
         t3.setMesh(c3);
         t3.setColour(Color.RED);
-        t3.setTranslateX(-10);
-        cC.add(t2);
+        t3.setTranslateX(-10);       
         cC.add(t3);
         
         PointLight light = new PointLight();
@@ -57,15 +63,21 @@ public class World {
         lightMesh.setMaterial(new PhongMaterial(Color.YELLOW));
         lightMesh.setDrawMode(DrawMode.LINE);
         lightMesh.getTransforms().add(new Scale(2,2,2));
-        TLEData l1 = new TLEData("Light 1", "1", TLEType.LIGHT);
+        TLEData l1 = new TLEData("Light 1", getNewID(), TLEType.LIGHT);
         l1.setLight(light);
         l1.setColour(Color.YELLOW);
         l1.setMesh(lightMesh);
         cC.add(l1);
       
-        worldData.put("Level1", cC);
-        worldData.put("CurrentLevel", cC);
-        worldData.put("Meshes", new ArrayList<TLEData>());
+        
+        Box c = new Box(100, 1, 100);
+		c.setMaterial(new PhongMaterial(Color.WHITE));
+		c.setTranslateX(-10);
+		c.setTranslateY(10);
+        TLEData t = new TLEData("Floor", getNewID(), TLEType.CUBE);
+        t.setMesh(c);
+        cC.add(t);
+        
         rootWindow.addMenuBarItem(event -> clearLevel(), "File", "Delete Current Level");
 	}
 	
@@ -83,12 +95,40 @@ public class World {
 		return worldData; 
 	}
 	
+	public String getNewID(){
+		ArrayList<TLEData> curLev = worldData.get("CurrentLevel");
+		
+		int id = 0;
+		boolean nIDFon = false;
+		
+		while(!nIDFon){
+			id++;
+			nIDFon = true;
+			for(int i = 0; i < curLev.size(); i++){
+				if(curLev.get(i).getID().equals(Integer.toString(id))){
+					nIDFon = false;
+					break;
+				}
+			}
+		}
+		
+		return Integer.toString(id);
+	}
+	
 	public void clearLevel(){
 		worldData.get("CurrentLevel").clear();
-		Box c = new Box(1, 1, 1);
+		Box c = new Box(100, 1, 100);
+		c.setMaterial(new PhongMaterial(Color.WHITE));
+		c.setTranslateX(-10);
+		c.setTranslateY(10);
+        TLEData t = new TLEData("Floor", getNewID(), TLEType.CUBE);
+        t.setMesh(c);
+        worldData.get("CurrentLevel").add(t);
+        
+        c = new Box(1, 1, 1);
 		c.setMaterial(new PhongMaterial(Color.ORANGE));
 		c.setTranslateX(-10);
-        TLEData t = new TLEData("Cube 1", "1", TLEType.CUBE);
+        t = new TLEData("Cube 1", getNewID(), TLEType.CUBE);
         t.setMesh(c);
         worldData.get("CurrentLevel").add(t);
         runResetWindow();

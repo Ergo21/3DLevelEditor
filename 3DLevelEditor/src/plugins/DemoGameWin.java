@@ -6,6 +6,7 @@ import java.util.HashMap;
 import common.TLEData;
 import common.Global.TLEType;
 import javafx.scene.AmbientLight;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
@@ -33,6 +34,7 @@ public class DemoGameWin {
 	private DGController control;
 	private SubScene subScene;
 	private Group root;
+	private boolean showInvisible;
 	
 	public DemoGameWin(Stage s, HashMap<String,ArrayList<TLEData>> d){
 		data = d;
@@ -47,13 +49,12 @@ public class DemoGameWin {
 		globalLighting = new AmbientLight();
 		
 		camera = new PerspectiveCamera(true);
-		
-		
-		
+			
 		litTypes = new ArrayList<TLEType>();
         litTypes.add(TLEType.ACTIVATOR);
         litTypes.add(TLEType.LIGHT);
         litTypes.add(TLEType.SOUND);
+        showInvisible = true;
 
         Scene scene = new Scene(createContent());
         
@@ -64,6 +65,8 @@ public class DemoGameWin {
         scene.setOnMouseMoved(event->control.handleMouseMove(event));
         scene.setOnMouseClicked(event->control.handleMouseInput(event));
         scene.setOnMouseDragged(event->control.handleMouseMove(event));
+        
+        //scene.setCursor(Cursor.CROSSHAIR);
         
         stage.setScene(scene);
         
@@ -85,6 +88,17 @@ public class DemoGameWin {
         if(tLev != null){
         	root.getChildren().addAll(tLev);
         }       	
+        
+        if(!showInvisible){
+			for(int i = 0; i < tLev.size(); i++){
+				if(tLev.get(i).getType() == TLEType.ACTIVATOR ||
+						tLev.get(i).getType() == TLEType.LIGHT ||
+						tLev.get(i).getType() == TLEType.SOUND ){
+					tLev.get(i).getMesh().setVisible(false);
+				}
+			}
+		}
+        
         root.getChildren().add(globalLighting);
         for(int i = 0; i < tLev.size(); i++){
         	if(litTypes.contains(tLev.get(i).getType())){
@@ -113,6 +127,16 @@ public class DemoGameWin {
 		
 		root.getChildren().clear();
 		root.getChildren().addAll(tLev);
+		
+		if(!showInvisible){
+			for(int i = 0; i < tLev.size(); i++){
+				if(tLev.get(i).getType() == TLEType.ACTIVATOR ||
+						tLev.get(i).getType() == TLEType.LIGHT ||
+						tLev.get(i).getType() == TLEType.SOUND ){
+					tLev.get(i).getMesh().setVisible(false);
+				}
+			}
+		}
 		
 		globalLighting.getScope().clear();
 		for(int i = 0; i < tLev.size(); i++){

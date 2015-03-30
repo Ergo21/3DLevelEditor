@@ -207,6 +207,7 @@ public class WorldTreeWin {
                 			public void handle(ActionEvent t){
                 				TLEData item3 = pMRef.getWorld().runModelLoader(curItem.getTLEData().getFilePath());				          
                 				if(item3 != null){
+                					item3.setID(pMRef.getWorld().getNewID());
                 					pMRef.getWorld().getData().get("CurrentLevel").add(item3);
                     				pMRef.getWorld().runResetWindow();
                     				System.out.println("Loaded model into current level.");
@@ -241,12 +242,21 @@ public class WorldTreeWin {
         }
         
         ArrayList<TLEData> newLev = new ArrayList<TLEData>();
-        TLEData t1 = new TLEData("Cube", "Cube 1", TLEType.CUBE);
+        TLEData t1 = new TLEData("Cube 1", "2", TLEType.CUBE);
         Box c1 = new Box(1,1,1);
         c1.setMaterial(new PhongMaterial(Color.ORANGE));
         t1.setMesh(c1);
         t1.setColour(Color.ORANGE);
         newLev.add(t1);
+        
+        Box c = new Box(100, 1, 100);
+		c.setMaterial(new PhongMaterial(Color.WHITE));
+		c.setTranslateX(-10);
+		c.setTranslateY(10);
+        TLEData t = new TLEData("Floor", "1", TLEType.CUBE);
+        t.setMesh(c);
+        newLev.add(t);
+        
 		pMRef.getWorld().getData().put("Level" + levNo, newLev);
 		
 		pMRef.getWorld().runResetWindow();

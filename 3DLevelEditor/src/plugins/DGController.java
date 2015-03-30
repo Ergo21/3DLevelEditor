@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -62,6 +63,7 @@ public class DGController{
         
 		actiBox = new Box(0.5,0.5,0.5);
 		actiBox.setMaterial(new PhongMaterial(Color.WHITE));
+		actiBox.setDrawMode(DrawMode.LINE);
 		aBDis = 10;
 		placeActiBox();
 		
