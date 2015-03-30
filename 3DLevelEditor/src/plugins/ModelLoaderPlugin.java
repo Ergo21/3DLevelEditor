@@ -75,13 +75,8 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		 
 		if(currentFile != null){
 			TLEData t = null;
-			try{
-				Files.copy(currentFile.toPath(), new File("data/"+currentFile.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+				copyFileToLocal(currentFile);
 				t = readFile(currentFile);
-			}
-			catch(IOException e){
-				System.out.println("File copy failed");
-			}
 			if(t != null){
 				mainPlMan.getWorld().getData().get("Meshes").add(t);
 			}
@@ -89,6 +84,27 @@ public class ModelLoaderPlugin extends TLEPlugin{
 		mainPlMan.getWorld().runResetWindow();
 	}
 	
+	private void copyFileToLocal(File cF) {
+		try{
+			File f = new File("data/"+cF.getName());
+			Files.copy(cF.toPath(), f.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			
+			if(cF.toPath().toString().endsWith(".obj")){
+				String mtlNam = cF.toPath().toString();
+				mtlNam = mtlNam.substring(0, mtlNam.length()-3);
+				mtlNam += "mtl";
+				System.out.println("Getting mtl from: " + mtlNam);
+				Files.copy(new File(mtlNam).toPath(), new File("data/"+new File(mtlNam).getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+			}
+			
+			System.out.println("Data copied to:" + f.toPath().toString());
+		}
+		catch(IOException e){
+			System.out.println("Copy failed");
+		}
+		
+	}
+
 	/**
 	 * Reads model from given file, packages and returns in TLEData.
 	 * @param f Model file to read
